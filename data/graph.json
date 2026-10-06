@@ -168,7 +168,8 @@
         "Realizado: 2023",
         "Territorio: Puerto Claro",
         "Formato: cine",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 2",
+        "Recursos reutilizados registrados: 2"
       ],
       "scale": 0.75,
       "outcome": 0.81
@@ -195,7 +196,8 @@
         "Realizado: 2024",
         "Territorio: Ribera Norte",
         "Formato: escénicas",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 3",
+        "Recursos reutilizados registrados: 2"
       ],
       "scale": 0.95,
       "outcome": 0.67
@@ -222,7 +224,8 @@
         "Realizado: 2024",
         "Territorio: Centro Abierto",
         "Formato: archivo sonoro",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 1",
+        "Recursos reutilizados registrados: 2"
       ],
       "scale": 0.35,
       "outcome": 0.65
@@ -249,7 +252,8 @@
         "Realizado: 2025",
         "Territorio: Ladera Verde",
         "Formato: talleres",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 1",
+        "Recursos reutilizados registrados: 8"
       ],
       "scale": 0.75,
       "outcome": 0.81
@@ -276,7 +280,8 @@
         "Realizado: 2025",
         "Territorio: Ribera Norte",
         "Formato: escénicas",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 1",
+        "Recursos reutilizados registrados: 6"
       ],
       "scale": 0.95,
       "outcome": 0.84
@@ -302,7 +307,8 @@
         "Realizado: 2022",
         "Territorio: Ladera Verde",
         "Formato: talleres",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 2",
+        "Sin recursos reutilizados registrados"
       ],
       "scale": 0.95,
       "outcome": 0.7
@@ -329,7 +335,8 @@
         "Realizado: 2022",
         "Territorio: Puerto Claro",
         "Formato: cine",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 2",
+        "Sin recursos reutilizados registrados"
       ],
       "scale": 0.35,
       "outcome": 0.93
@@ -355,7 +362,8 @@
         "Realizado: 2023",
         "Territorio: Centro Abierto",
         "Formato: archivo",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 2",
+        "Sin recursos reutilizados registrados"
       ],
       "scale": 0.75,
       "outcome": 0.76
@@ -381,7 +389,8 @@
         "Realizado: 2023",
         "Territorio: Ladera Verde",
         "Formato: escénicas",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 1",
+        "Recursos reutilizados registrados: 1"
       ],
       "scale": 0.75,
       "outcome": 0.75
@@ -408,7 +417,8 @@
         "Realizado: 2024",
         "Territorio: Ribera Norte",
         "Formato: encuentro",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 2",
+        "Recursos reutilizados registrados: 5"
       ],
       "scale": 0.75,
       "outcome": 0.67
@@ -435,7 +445,8 @@
         "Realizado: 2025",
         "Territorio: Centro Abierto",
         "Formato: talleres",
-        "Memoria de proyecto disponible para reutilización"
+        "Recursos propios producidos y disponibles: 1",
+        "Recursos reutilizados registrados: 2"
       ],
       "scale": 0.55,
       "outcome": 0.96
@@ -462,7 +473,8 @@
         "Realizado: 2025",
         "Territorio: Puerto Claro",
         "Formato: sonido",
-        "Memoria de proyecto disponible para reutilización"
+        "Sin recurso propio producido registrado",
+        "Recursos reutilizados registrados: 6"
       ],
       "scale": 0.55,
       "outcome": 0.96
@@ -3719,7 +3731,7 @@
       "id": "access",
       "label": "Accesibilidad",
       "question": "¿Quién puede ayudar con accesibilidad en una sede nueva?",
-      "answer": "Taller Horizonte aportó accesibilidad a Festival Cauce. Ese proyecto produjo un kit que después reutilizó Umbrales en Movimiento.",
+      "answer": "Taller Horizonte participó en Festival Cauce y aporta accesibilidad. Ese proyecto produjo un kit que después reutilizó Umbrales en Movimiento.",
       "edge_ids": [
         "e053",
         "e112",
@@ -3745,7 +3757,7 @@
       "id": "memory",
       "label": "Memoria transferible",
       "question": "¿Qué aprendizaje pasó de un proyecto a otro?",
-      "answer": "Archivo Vivo documentó Mapa Sonoro. Su bitácora de entrevistas se reutilizó en Ronda de Oficios para registrar decisiones.",
+      "answer": "Archivo Vivo participó en Mapa Sonoro y aporta documentación. La bitácora producida en Mapa Sonoro se reutilizó en Ronda de Oficios.",
       "edge_ids": [
         "e055",
         "e114",

@@ -113,7 +113,7 @@ def generate(seed=SEED):
                       "description": f"{'Proyecto en preparación' if planned else 'Proyecto realizado'} de {fmt} en {TERRITORIES[territory]}. Datos completamente ficticios.",
                       "facts": [f"{'Planificado' if planned else 'Realizado'}: {year}", f"Territorio: {TERRITORIES[territory]}",
                                 f"Necesita: {', '.join(CAPABILITIES[c][1].lower() for c in caps)}", "Vínculos propuestos sujetos a acuerdos entre equipos"] if planned else
-                               [f"Realizado: {year}", f"Territorio: {TERRITORIES[territory]}", f"Formato: {fmt}", "Memoria de proyecto disponible para reutilización"],
+                               [f"Realizado: {year}", f"Territorio: {TERRITORIES[territory]}", f"Formato: {fmt}"],
                       "scale": rng.choice([0.35, 0.55, 0.75, 0.95]), "outcome": round(rng.uniform(0.62, 0.97), 2) if not planned else None})
         for c in caps:
             edge(ident, cap_ids[c], "requires", "requiere", year)
@@ -167,15 +167,20 @@ def generate(seed=SEED):
         elif n["type"] == "resource":
             reused = [by_id[e["source"]]["name"] for e in edges if e["target"] == n["id"] and e["type"] == "reused"]
             n["facts"].append(f"Reutilizado en: {', '.join(reused) if reused else 'aún sin reutilización registrada'}")
+        elif n["type"] == "project" and n["status"] == "completed":
+            produced = [e for e in edges if e["source"] == n["id"] and e["type"] == "produced"]
+            reused = [e for e in edges if e["source"] == n["id"] and e["type"] == "reused"]
+            n["facts"].append(f"Recursos propios producidos y disponibles: {len(produced)}" if produced else "Sin recurso propio producido registrado")
+            n["facts"].append(f"Recursos reutilizados registrados: {len(reused)}" if reused else "Sin recursos reutilizados registrados")
 
     def route(*triples):
         return [e["id"] for e in edges if (e["source"], e["target"], e["type"]) in triples]
 
     scenarios = [
         {"id": "all", "label": "Toda la red", "question": "¿Cómo circulan capacidades y aprendizajes entre proyectos?", "answer": "La red reúne proyectos realizados entre 2022 y 2025 y cuatro propuestas para 2026. Explorá sus necesidades y la experiencia registrada.", "edge_ids": []},
-        {"id": "access", "label": "Accesibilidad", "question": "¿Quién puede ayudar con accesibilidad en una sede nueva?", "answer": "Taller Horizonte aportó accesibilidad a Festival Cauce. Ese proyecto produjo un kit que después reutilizó Umbrales en Movimiento.", "edge_ids": route(("a_horizonte", "p_cauce", "participated"), ("a_horizonte", "c_acceso", "has_capability"), ("p_cauce", "r_acceso", "produced"), ("p_umbrales", "r_acceso", "reused"), ("r_acceso", "c_acceso", "documents"))},
+        {"id": "access", "label": "Accesibilidad", "question": "¿Quién puede ayudar con accesibilidad en una sede nueva?", "answer": "Taller Horizonte participó en Festival Cauce y aporta accesibilidad. Ese proyecto produjo un kit que después reutilizó Umbrales en Movimiento.", "edge_ids": route(("a_horizonte", "p_cauce", "participated"), ("a_horizonte", "c_acceso", "has_capability"), ("p_cauce", "r_acceso", "produced"), ("p_umbrales", "r_acceso", "reused"), ("r_acceso", "c_acceso", "documents"))},
         {"id": "permits", "label": "Permisos", "question": "¿Cómo resolvemos permisos para otro encuentro?", "answer": "Mesa de Producción trabajó en Cine al Patio y aporta gestión de permisos. El mapa creado allí se reutilizó en Ronda de Oficios.", "edge_ids": route(("a_mesa", "p_patio", "participated"), ("a_mesa", "c_permisos", "has_capability"), ("p_patio", "r_permisos", "produced"), ("p_ronda", "r_permisos", "reused"), ("r_permisos", "c_permisos", "documents"))},
-        {"id": "memory", "label": "Memoria transferible", "question": "¿Qué aprendizaje pasó de un proyecto a otro?", "answer": "Archivo Vivo documentó Mapa Sonoro. Su bitácora de entrevistas se reutilizó en Ronda de Oficios para registrar decisiones.", "edge_ids": route(("a_archivo", "p_mapa", "participated"), ("a_archivo", "c_documenta", "has_capability"), ("p_mapa", "r_bitacora", "produced"), ("p_ronda", "r_bitacora", "reused"), ("r_bitacora", "c_documenta", "documents"))},
+        {"id": "memory", "label": "Memoria transferible", "question": "¿Qué aprendizaje pasó de un proyecto a otro?", "answer": "Archivo Vivo participó en Mapa Sonoro y aporta documentación. La bitácora producida en Mapa Sonoro se reutilizó en Ronda de Oficios.", "edge_ids": route(("a_archivo", "p_mapa", "participated"), ("a_archivo", "c_documenta", "has_capability"), ("p_mapa", "r_bitacora", "produced"), ("p_ronda", "r_bitacora", "reused"), ("r_bitacora", "c_documenta", "documents"))},
         {"id": "mobile", "label": "Montaje móvil", "question": "¿Qué sirve para montar programación itinerante?", "answer": "Red Móvil participó en Festival Cauce y Umbrales en Movimiento. El rider técnico producido en el primero se reutilizó en el segundo.", "edge_ids": route(("a_movil", "p_cauce", "participated"), ("a_movil", "p_umbrales", "participated"), ("a_movil", "c_logistica", "has_capability"), ("p_cauce", "r_rider", "produced"), ("p_umbrales", "r_rider", "reused"), ("r_rider", "c_logistica", "documents"))},
     ]
     return {"meta": {"title": "Red cultural ficticia SINC", "fictional": True, "seed": seed, "version": "2.0", "territories": TERRITORIES,

@@ -111,9 +111,26 @@ def synthetic_world(seed):
         ranks = [(len(set(ac) & set(caps)) / len(caps) + 0.35 * (a["territory"] == project["territory"]) + rng.uniform(0, 0.6), a) for a, ac in actors]
         for _, actor in sorted(ranks, key=lambda pair: pair[0], reverse=True)[:int(rng.integers(4, 9))]:
             edge(actor["id"], project["id"], "participated", project["year"])
+    actor_capabilities = {actor["id"]: set(caps) for actor, caps in actors}
+    participant_capabilities = {project["id"]: set() for project, _ in projects[:N_HIST]}
+    for relation in edges:
+        if relation["type"] == "participated":
+            participant_capabilities[relation["target"]].update(actor_capabilities[relation["source"]])
     for i in range(N_RESOURCE):
         source, source_caps = projects[int(rng.integers(N_HIST))]
-        caps = sorted(rng.choice(source_caps, size=min(len(source_caps), int(rng.integers(1, 3))), replace=False).tolist())
+        caps = set(rng.choice(source_caps, size=min(len(source_caps), int(rng.integers(1, 3))), replace=False).tolist())
+        # A project's requirements are not an exhaustive ontology of what its
+        # teams can document. Include an extra participant skill in some worlds;
+        # occasionally a known capability outside that recorded participant set.
+        if rng.uniform() < 0.45:
+            extra_pool = sorted(participant_capabilities[source["id"]] - set(source_caps))
+            if extra_pool:
+                caps.add(int(rng.choice(extra_pool)))
+        if rng.uniform() < 0.08:
+            extra_pool = sorted(set(range(N_CAP)) - caps)
+            if extra_pool:
+                caps.add(int(rng.choice(extra_pool)))
+        caps = sorted(caps)
         resource = {"id": f"r_{i}", "type": "resource", "year": source["year"], "territory": source["territory"],
                     "quality": float(rng.uniform(0.65, 0.98)), "status": "available"}
         nodes.append(resource)
@@ -324,6 +341,8 @@ def main():
                                  "noFutureTargetEdges": True, "identityFeatures": False, "selection": "early stopping on validation NDCG@3; test worlds are only evaluated after model selection"},
                        "limitations": ["Las etiquetas representan supuestos del generador; no resultados de comunidades reales.",
                                        "El test mide transferencia a mundos nuevos del mismo generador; no a redes culturales reales.",
+                                       "El grafo público combina definiciones curadas a mano y vínculos generados: su distribución puede diferir de los mundos del benchmark.",
+                                       "La desviación estándar publicada mide variación entre tres inicializaciones del modelo sobre el mismo test; no incertidumbre de las consultas ni un intervalo de confianza.",
                                        "El score es una salida del modelo entrenado, no una probabilidad calibrada ni un hecho del grafo.",
                                        "La disponibilidad y la calidad son atributos ficticios; cualquier propuesta requiere acuerdo entre participantes.",
                                        "Las rutas de evidencia son hechos que apoyan la propuesta; no una explicación causal de las activaciones de la GNN.",
@@ -331,6 +350,8 @@ def main():
                        "labelAssumptions": {"actor": "Top 4 por proyecto según 46% coincidencia de capacidades + 12% territorio + 16% disponibilidad + 20% experiencia histórica similar ponderada por resultado + 6% experiencia del mismo formato.",
                                             "resource": "Top 3 por proyecto según 44% capacidades + 8% territorio + 16% completitud + 6% recencia + 20% contexto histórico similar ponderado por resultado + 6% mismo formato."},
                        "baseline": {"actor": "72% coincidencia de capacidades + 18% territorio + 10% disponibilidad", "resource": "72% coincidencia de capacidades + 12% territorio + 12% completitud + 4% recencia"},
+                       "generatorAssumptions": {"documentedCapabilities": "Cada recurso parte de 1–2 capacidades requeridas por su productor. Con probabilidad 0.45 incorpora otra capacidad de sus equipos participantes; con probabilidad 0.08 incorpora otra capacidad conocida. Así puede documentar capacidades fuera de los requisitos del productor.",
+                                                "publicGraph": "Proyectos, equipos y recursos definidos manualmente; participación y reutilización ampliadas de forma reproducible. Los mundos del benchmark son independientes y completamente generados."},
                        "references": [{"title": "GraphSAGE: Inductive Representation Learning on Large Graphs", "url": "https://arxiv.org/abs/1706.02216"}],
                        "training": {"device": "cpu", "python": platform.python_version(), "torch": torch.__version__, "numpy": np.__version__,
                                     "threads": args.threads, "maxEpochs": args.epochs, "hidden": 32, "layers": 2, "optimizer": "AdamW", "learningRate": 0.006,
@@ -373,9 +394,11 @@ def main():
                                   "description": "Ordena equipos candidatos según necesidades y experiencia conectada." if task == "actor" else "Ordena recursos candidatos según necesidades y sus contextos de producción y reutilización.",
                                   "metrics": all_metrics, "runs": runs, "predictions": predictions, "selectedModel": selected_run,
                                   "evaluation": {"queries": args.test_worlds * N_PLAN, "candidatesPerQuery": candidate_count, "positivesPerQuery": 4 if task == "actor" else 3,
-                                                 "pairs": int(test["y"].numel()), "metricAggregation": "AP y AUC sobre todos los pares; NDCG, Recall y Precision@3 promediados por consulta. GNN/MLP: media de tres inicializaciones."}}
+                                                 "pairs": int(test["y"].numel()), "metricAggregation": "AP y AUC sobre todos los pares; NDCG, Recall y Precision@3 promediados por consulta. GNN/MLP: media de tres inicializaciones.",
+                                                 "stdMeaning": "Desviación entre inicializaciones sobre el mismo conjunto test; no intervalo de confianza ni incertidumbre por consulta."}}
         checkpoint = HERE / "data" / f"gnn-{task}.pt"
-        torch.save({"state_dict": best_model.state_dict(), "featureDim": FEATURE_DIM, "hidden": 32, "task": task, "synthetic": True, "validationNdcgAt3": best_val, "selectedSeed": selected_run["seed"]}, checkpoint)
+        torch.save({"state_dict": best_model.state_dict(), "featureDim": FEATURE_DIM, "hidden": 32, "task": task, "synthetic": True,
+                    "validationNdcgAt3": best_val, "selectedSeed": selected_run["seed"], "graphSha256": hashlib.sha256(public_bytes).hexdigest()}, checkpoint)
         state = best_model.state_dict()
         model_export["models"][task] = {"validationNdcgAt3": best_val, "selectedSeed": selected_run["seed"],
                                         **{key: {"weight": state[f"{torch_name}.weight"].tolist(), "bias": state[f"{torch_name}.bias"].tolist()}
