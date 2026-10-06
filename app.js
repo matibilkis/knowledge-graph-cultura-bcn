@@ -1,157 +1,295 @@
-const svg = document.getElementById('network');
-const graphScroll = document.querySelector('.graph-scroll');
-const detail = document.getElementById('node-detail');
-const answer = document.getElementById('query-answer');
-const buttons = document.getElementById('query-buttons');
-const graphTitle = document.getElementById('graph-title');
-const graphCount = document.getElementById('graph-count');
-const svgNS = 'http://www.w3.org/2000/svg';
+import { GraphStore, GraphAgent, isPlanned } from './graph-engine.js';
+import { GraphView } from './graph-view.js';
+import { initMotion } from './motion.js';
+import { GraphSAGERuntime } from './gnn-runtime.js';
 
-let graph;
-let nodesById;
-let edgesById;
-let selectedId = 'p_cauce';
-let activeScenario = 'all';
+const byId = id => document.getElementById(id);
+const el = (tag, className, text) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+};
+let store, agent, view;
+let filterType = 'all';
+let querying = false;
+let predictionsAvailable = false;
+let gnnRuntime;
 
-function svgElement(tag, attributes = {}) {
-  const element = document.createElementNS(svgNS, tag);
-  for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
-  return element;
+function status(id, text) { if (byId(id)) byId(id).textContent = text; }
+async function fetchJSON(path) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`No se pudo cargar ${path}: HTTP ${response.status}`);
+  const text = await response.text();
+  const value = JSON.parse(text);
+  if(path==='data/graph.json' && globalThis.crypto?.subtle) {
+    const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)));
+    Object.defineProperty(value,'sourceHash',{value:[...bytes].map(byte=>byte.toString(16).padStart(2,'0')).join('')});
+  }
+  return value;
 }
-
-function renderDetail(node) {
-  detail.replaceChildren();
-  const type = document.createElement('p');
-  type.className = 'detail-type';
-  type.textContent = { project: 'Proyecto', actor: 'Equipo', capability: 'Capacidad', resource: 'Recurso reutilizable' }[node.type];
-  const title = document.createElement('h3');
-  title.textContent = node.name;
-  const description = document.createElement('p');
-  description.textContent = node.description;
-  const heading = document.createElement('h4');
-  heading.textContent = 'En esta red';
-  const list = document.createElement('ul');
-  list.className = 'detail-list';
-  node.facts.forEach(fact => {
-    const item = document.createElement('li');
-    item.textContent = fact;
-    list.append(item);
-  });
-  const connections = graph.edges.filter(edge => edge.source === node.id || edge.target === node.id);
-  const connectionsTitle = document.createElement('h4');
-  connectionsTitle.textContent = `Vínculos (${connections.length})`;
-  const connectionsList = document.createElement('ul');
-  connectionsList.className = 'connection-list';
-  connections.forEach(edge => {
-    const other = nodesById[edge.source === node.id ? edge.target : edge.source];
-    const item = document.createElement('li');
-    const link = document.createElement('button');
-    link.type = 'button';
-    link.textContent = `${other.name} · ${edge.label} (${edge.year})`;
-    link.addEventListener('click', () => selectNode(other.id));
-    item.append(link);
-    connectionsList.append(item);
-  });
-  const note = document.createElement('p');
-  note.className = 'detail-note';
-  note.textContent = 'Ficha y vínculos inventados para esta demostración.';
-  detail.append(type, title, description, heading, list, connectionsTitle, connectionsList, note);
+function focusEvidence(nodeIds, edgeIds = []) {
+  byId('graph-search').value=''; byId('project-filter').value=''; byId('year-filter').value=''; filterType='all'; setTypeButtons();
+  const evidence = store.evidence(nodeIds, edgeIds);
+  view.update({ nodeIds: evidence.nodeIds, edgeIds: evidence.edgeIds.length ? evidence.edgeIds : store.data.edges.filter(edge => evidence.nodeIds.includes(edge.source) && evidence.nodeIds.includes(edge.target)).map(edge => edge.id), selectedId:null, highlightIds: evidence.nodeIds, highlightEdgeIds: evidence.edgeIds });
+  byId('node-detail').replaceChildren(el('p','empty-state','Seleccioná un nodo de este contexto para abrir su ficha.'));
+  view.fit();
+  status('graph-title','Contexto seleccionado');
+  status('graph-subtitle', `${evidence.nodeIds.length} nodos vinculados con el resultado seleccionado`);
 }
-
-function renderGraph() {
-  svg.replaceChildren();
-  const scenario = graph.scenarios.find(item => item.id === activeScenario);
-  const highlightedEdges = new Set(scenario.edge_ids);
-  const highlightedNodes = new Set(scenario.edge_ids.flatMap(id => [edgesById[id].source, edgesById[id].target]));
-  const focused = activeScenario !== 'all';
-  const edgeLayer = svgElement('g');
-  graph.edges.forEach(edge => {
-    const from = nodesById[edge.source];
-    const to = nodesById[edge.target];
-    const line = svgElement('line', {
-      x1: from.x, y1: from.y, x2: to.x, y2: to.y,
-      class: `graph-edge${focused && highlightedEdges.has(edge.id) ? ' is-highlighted' : ''}${focused && !highlightedEdges.has(edge.id) ? ' is-muted' : ''}`
-    });
-    const title = svgElement('title');
-    title.textContent = `${from.name} → ${to.name}: ${edge.label} (${edge.year})`;
-    line.append(title);
-    edgeLayer.append(line);
-  });
-  svg.append(edgeLayer);
-
-  const colors = { project: '#285b4b', actor: '#ce8b63', capability: '#8c94b6', resource: '#d1b66f' };
-  const radius = { project: 25, actor: 18, capability: 16, resource: 17 };
-  const nodeLayer = svgElement('g');
-  graph.nodes.forEach(node => {
-    const group = svgElement('g', {
-      class: `graph-node${node.id === selectedId ? ' is-selected' : ''}${focused && !highlightedNodes.has(node.id) ? ' is-muted' : ''}`,
-      role: 'button', tabindex: '0', 'aria-label': `Ver ficha de ${node.name}`
-    });
-    const circle = svgElement('circle', { cx: node.x, cy: node.y, r: radius[node.type], fill: colors[node.type] });
-    const label = svgElement('text', { x: node.x, y: node.y + radius[node.type] + 17, 'text-anchor': 'middle' });
-    label.textContent = node.name;
-    group.append(circle, label);
-    group.addEventListener('click', () => selectNode(node.id));
-    group.addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        selectNode(node.id);
+function evidenceButton(label, nodeIds, edgeIds = []) {
+  const button = el('button', 'evidence-link', label);
+  if(store.nodes.get(nodeIds[0]))button.dataset.type=store.nodes.get(nodeIds[0]).type;
+  button.type = 'button';
+  button.addEventListener('click', () => { focusEvidence(nodeIds, edgeIds); if (nodeIds[0]) showNode(nodeIds[0]); });
+  return button;
+}
+function showNode(id) {
+  const node = store.nodes.get(id);
+  if (!node) return;
+  const panel = byId('node-detail');
+  panel.replaceChildren();
+  panel.append(el('p', 'detail-type', { project: 'Proyecto', actor: 'Equipo', capability: 'Capacidad', resource: 'Recurso' }[node.type]), el('h3', '', node.name), el('p', '', node.description));
+  if (node.territory || node.year || node.status) panel.append(el('p', 'detail-meta', [node.territory, node.year, isPlanned(node) ? 'Planificado' : null].filter(Boolean).join(' · ')));
+  if (node.facts?.length) {
+    const facts = el('ul', 'detail-list');
+    node.facts.forEach(fact => facts.append(el('li', '', fact)));
+    panel.append(facts);
+  }
+  const links = store.links(id);
+  panel.append(el('h4', '', `Vínculos registrados (${links.length})`));
+  const list = el('ul', 'connection-list');
+  for (const edge of links) {
+    const other = store.other(edge, id);
+    const item = el('li');
+    const button = el('button', '', `${store.nodes.get(edge.source).name} → ${edge.label} → ${store.nodes.get(edge.target).name} · ${edge.year}`);
+    button.type = 'button';
+    button.addEventListener('click', () => { focusEvidence([id, other.id], [edge.id]); showNode(other.id); });
+    item.append(button); list.append(item);
+  }
+  panel.append(list);
+  if (node.type === 'project') {
+    const button = el('button', 'evidence-link', 'Consultar este proyecto');
+    button.type = 'button';
+    button.addEventListener('click', () => runAgent(`Mostrá el contexto de ${node.name}`));
+    panel.append(button);
+  }
+  view.update({ selectedId: id });
+}
+function applyFilters() {
+  const visible = store.visible({ type: filterType, query: byId('graph-search').value, projectId: byId('project-filter').value, year: byId('year-filter').value });
+  view.update({ ...visible, highlightIds: [], highlightEdgeIds: [] });
+  status('graph-title', byId('project-filter').value ? store.nodes.get(byId('project-filter').value).name : 'Explorar la red');
+  status('graph-subtitle', `${visible.nodeIds.length} nodos · ${visible.edgeIds.length} vínculos en esta vista`);
+  view.fit();
+}
+function fillOverview() {
+  const summary = byId('dataset-stats');
+  summary.replaceChildren();
+  for (const [type, label] of [['project','proyectos'], ['actor','equipos'], ['capability','capacidades'], ['resource','recursos']]) {
+    const cell = el('div', 'metric-cell');
+    cell.append(el('strong', '', String(store.ofType(type).length)), el('span', '', label));
+    summary.append(cell);
+  }
+  status('graph-count', `${store.nodes.size} nodos · ${store.edges.size} vínculos`);
+  const cards = byId('project-list');
+  cards.replaceChildren();
+  for (const project of store.ofType('project')) {
+    const card = el('button', 'project-card');
+    card.dataset.status=project.status || '';
+    card.type = 'button';
+    card.append(el('span', 'project-card-meta', [project.year, project.territory, isPlanned(project) ? 'Planificado' : 'Realizado'].filter(Boolean).join(' · ')), el('strong', '', project.name), el('span', '', project.description));
+    card.addEventListener('click', () => { byId('project-filter').value = project.id; byId('graph-search').value = ''; filterType = 'all'; setTypeButtons(); applyFilters(); showNode(project.id); byId('network').closest('section')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); });
+    cards.append(card);
+    byId('project-filter').append(new Option(project.name, project.id));
+    if (isPlanned(project)) byId('gnn-project').append(new Option(project.name, project.id));
+  }
+  for (const year of [...new Set(store.data.edges.map(edge => edge.year))].sort((a,b)=>a-b)) byId('year-filter').append(new Option(String(year), String(year)));
+}
+function setTypeButtons() {
+  byId('type-filters').querySelectorAll('button').forEach(button => { const selected = button.dataset.type === filterType; button.classList.toggle('active', selected); button.setAttribute('aria-pressed', String(selected)); });
+}
+function addAgentMessage(role, text) {
+  const container = byId('agent-chat');
+  const message = el('article', `agent-message ${role}`);
+  message.append(el('span', 'message-role', role === 'user' ? 'Vos' : 'Agente SINC'), el('p', 'agent-answer', text));
+  container.append(message);
+  while (container.children.length > 24) container.firstElementChild.remove();
+  return message;
+}
+async function runAgent(query) {
+  if (querying || !query.trim()) return;
+  querying = true;
+  const submit = byId('agent-submit');
+  submit.disabled = true;
+  byId('agent-form').setAttribute('aria-busy', 'true');
+  status('agent-status', 'Consultando el grafo…');
+  addAgentMessage('user', query.trim().slice(0,500));
+  byId('agent-input').value = '';
+  try {
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    const result = agent.query(query);
+    const message = addAgentMessage('assistant', result.text);
+    for (const section of result.sections) {
+      const group = el('div', 'agent-evidence');
+      group.append(el('h4', '', section.title));
+      for (const item of section.items) {
+        const card = el('div', 'recommendation-card');
+        if(!Number.isFinite(item.score))card.classList.add('is-known');
+        card.append(el('strong', '', item.label), el('p', '', item.description));
+        if (Number.isFinite(item.score)) card.append(el('span', 'score', `Puntuación del modelo: ${item.score.toFixed(3)}`));
+        card.append(evidenceButton('Ver vínculos', item.nodeIds, item.edgeIds));
+        group.append(card);
       }
-    });
-    nodeLayer.append(group);
-  });
-  svg.append(nodeLayer);
-}
-
-function selectNode(id) {
-  selectedId = id;
-  renderDetail(nodesById[id]);
-  renderGraph();
-  [...svg.querySelectorAll('.graph-node')].find(group => group.getAttribute('aria-label') === `Ver ficha de ${nodesById[id].name}`)?.focus();
-}
-
-function selectScenario(id) {
-  const scenario = graph.scenarios.find(item => item.id === id);
-  activeScenario = id;
-  graphTitle.textContent = scenario.question;
-  answer.textContent = scenario.answer;
-  buttons.querySelectorAll('button').forEach(button => {
-    const active = button.dataset.scenario === id;
-    button.classList.toggle('active', active);
-    button.setAttribute('aria-pressed', String(active));
-  });
-  renderGraph();
-  if (scenario.edge_ids.length) {
-    const ids = new Set(scenario.edge_ids.flatMap(edgeId => [edgesById[edgeId].source, edgesById[edgeId].target]));
-    const centerX = [...ids].reduce((sum, nodeId) => sum + nodesById[nodeId].x, 0) / ids.size;
-    graphScroll.scrollLeft = centerX / 860 * graphScroll.scrollWidth - graphScroll.clientWidth / 2;
+      message.append(group);
+    }
+    if (result.trace.length) {
+      const trace = el('details', 'agent-trace');
+      trace.append(el('summary', '', `${result.trace.length} consultas ejecutadas · ver recorrido`));
+      const list = el('ol');
+      for (const step of result.trace) {
+        const item = el('li');
+        item.append(el('strong', '', step.tool.replaceAll('_', ' ')), el('span', '', ` — ${step.summary}`));
+        list.append(item);
+      }
+      trace.append(list); message.append(trace);
+    }
+    for (const suggestion of result.suggestions) {
+      const button = el('button', 'evidence-link', suggestion);
+      button.type = 'button'; button.addEventListener('click',()=>runAgent(suggestion)); message.append(button);
+    }
+    if (result.highlightNodeIds.length) focusEvidence(result.highlightNodeIds, result.highlightEdgeIds);
+    status('agent-status', 'Consulta resuelta con datos de la base');
+    message.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+  } catch (error) {
+    addAgentMessage('assistant', 'No pude completar esta consulta. Probá con una capacidad o un proyecto de la red.');
+    status('agent-status', 'La consulta no se completó');
+    console.error(error);
+  } finally {
+    querying = false; submit.disabled = false; byId('agent-form').removeAttribute('aria-busy');
   }
 }
-
-async function init() {
+function renderMetrics(task) {
+  const panel = byId('gnn-metrics'); panel.replaceChildren();
+  const grid=el('div','metric-grid');
+  const metrics = task.metrics || {};
+  for (const [name, values] of Object.entries(metrics)) {
+    const cell = el('div', 'metric-cell');
+    cell.append(el('strong', '', { gnn: 'GraphSAGE', baseline: 'Reglas', mlp: 'MLP sin grafo' }[name] || name));
+    for (const [metric, value] of Object.entries(values)) if (Number.isFinite(value)) cell.append(el('span', '', `${{ap:'Precisión media',rocAuc:'AUC',ndcgAt3:'NDCG@3',recallAt3:'Cobertura @3',precisionAt3:'Precisión @3'}[metric] || metric}: ${value.toFixed(3)}`));
+    grid.append(cell);
+  }
+  panel.append(grid);
+}
+function renderGNN() {
+  const panel = byId('gnn-results'); panel.replaceChildren();
+  if (!predictionsAvailable) { status('gnn-status', 'El experimento no está disponible. Las consultas al grafo siguen funcionando.'); return; }
+  const taskId = byId('gnn-task').value;
+  const projectId = byId('gnn-project').value;
+  const task = store.predictions.tasks[taskId];
+  const project = store.nodes.get(projectId);
+  const results = store.recommend(projectId, taskId);
+  if(byId('gnn-ranking')?.value==='baseline')results.sort((a,b)=>(b.baselineScore || 0)-(a.baselineScore || 0));
+  renderMetrics(task);
+  status('gnn-status', results.length ? `${results.length} candidatos para ${project.name}. Sugerencias pendientes de validación.` : 'No hay resultados del modelo para este proyecto.');
+  for (const item of results.slice(0,6)) {
+    const card = el('article', 'recommendation-card');
+    card.append(el('h4', '', item.node.name), el('span', 'score', `Puntuación GNN ${item.score.toFixed(3)}`), el('p', '', item.reason || item.node.description));
+    if (Number.isFinite(item.baselineScore)) card.append(el('p', 'baseline-score', `Puntuación de reglas ${item.baselineScore.toFixed(3)} · escala propia de cada método`));
+    card.append(evidenceButton('Explorar contexto', item.nodeIds, item.edgeIds));
+    panel.append(card);
+  }
+  const meta = store.predictions.meta;
+  const method = byId('gnn-method'); method.replaceChildren();
+  const gnnNdcg = task.metrics?.gnn?.ndcgAt3, baselineNdcg = task.metrics?.baseline?.ndcgAt3;
+  if(Number.isFinite(gnnNdcg) && Number.isFinite(baselineNdcg)) method.append(el('p','benchmark-conclusion',gnnNdcg < baselineNdcg ? 'En este experimento las reglas ordenan mejor los tres primeros candidatos que la GNN. Conviene conservarlas como referencia.' : `La GNN mejora NDCG@3 en ${(gnnNdcg-baselineNdcg).toFixed(3)} frente a las reglas. Esa diferencia describe este experimento sintético; no demuestra una mejora en redes reales.`));
+  const details=el('details');details.append(el('summary','','Cómo se entrenó y evaluó'));
+  details.append(el('p', '', `${meta.model || 'GraphSAGE'} entrenado en CPU sobre grafos sintéticos. Los mundos de evaluación son distintos de los de entrenamiento; los vínculos a predecir se excluyen de la entrada del modelo.`));
+  const limitations = Array.isArray(meta.limitations) ? meta.limitations : [meta.limitations || 'Los resultados describen el generador ficticio y requieren validación con datos reales.'];
+  limitations.forEach(text => details.append(el('p','',text)));
+  if (meta.split?.worlds) details.append(el('p','',`${meta.split.worlds.train} mundos de entrenamiento, ${meta.split.worlds.validation} de validación y ${meta.split.worlds.test} de evaluación. Métricas promediadas sobre ${meta.training?.initializations || 3} inicializaciones; NDCG@3 mide el orden de los tres primeros candidatos.`));
+  const download = el('a', '', 'Ver resultados y metodología'); download.href='data/gnn-results.json'; download.setAttribute('download',''); details.append(download);method.append(details);
+}
+function runGNN() {
+  if (!gnnRuntime) { renderGNN(); return; }
+  const task = byId('gnn-task').value;
+  const projectId = byId('gnn-project').value;
+  if (!projectId) return;
+  const start = performance.now();
+  const candidates = store.ofType(task).map(node=>node.id);
   try {
-    const response = await fetch('data/graph.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    graph = await response.json();
-    nodesById = Object.fromEntries(graph.nodes.map(node => [node.id, node]));
-    edgesById = Object.fromEntries(graph.edges.map(edge => [edge.id, edge]));
-    graphCount.textContent = `${graph.nodes.length} nodos · ${graph.edges.length} vínculos · ${graph.nodes.filter(node => node.type === 'project').length} proyectos`;
-    graph.scenarios.forEach(scenario => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.dataset.scenario = scenario.id;
-      button.textContent = scenario.label;
-      button.title = scenario.question;
-      button.addEventListener('click', () => selectScenario(scenario.id));
-      buttons.append(button);
+    const previous = store.predictions.tasks[task].predictions;
+    const ranking = gnnRuntime.rank(task,projectId,candidates);
+    const updated = ranking.map(item=> {
+      const stored = previous.find(row=>row.projectId===projectId && row.candidateId===item.candidateId);
+      const candidate = store.nodes.get(item.candidateId);
+      const matched = store.capabilities(item.candidateId).filter(id=>store.requirements(projectId).includes(id));
+      const evidence = store.evidence([item.candidateId,projectId,...matched],store.links(item.candidateId).filter(edge=> ['has_capability','documents','participated','produced'].includes(edge.type)).slice(0,7).map(edge=>edge.id));
+      return { ...stored, ...item, projectId, reason: stored?.reason || `${candidate.name}: ${matched.length} capacidades registradas coinciden con las necesidades del proyecto. Este contexto permite revisar la sugerencia, no explica por sí solo la decisión del modelo.`, evidenceNodeIds: stored?.evidenceNodeIds || evidence.nodeIds, evidenceEdgeIds: stored?.evidenceEdgeIds || evidence.edgeIds };
     });
-    renderDetail(nodesById[selectedId]);
-    selectScenario('access');
-  } catch (error) {
-    graphCount.textContent = 'No se pudo cargar la red';
-    answer.textContent = 'Abrí esta página desde un servidor web para cargar los datos de prueba.';
+    store.predictions.tasks[task].predictions = [...previous.filter(row=>row.projectId!==projectId),...updated];
+    renderGNN();
+    status('gnn-status',`Inferencia local: ${ranking.length} candidatos evaluados en ${(performance.now()-start).toFixed(0)} ms. Sugerencias pendientes de validación.`);
+  } catch(error) {
+    status('gnn-status','No se pudo ejecutar la inferencia local.');
     console.error(error);
   }
 }
+function bind() {
+  byId('graph-search').addEventListener('input', applyFilters);
+  byId('project-filter').addEventListener('change', ()=>{applyFilters();if(byId('project-filter').value)showNode(byId('project-filter').value);});
+  byId('year-filter').addEventListener('change', applyFilters);
+  byId('type-filters').addEventListener('click', event => { const button = event.target.closest('[data-type]'); if (!button) return; filterType=button.dataset.type; setTypeButtons(); applyFilters(); });
+  byId('reset-view').addEventListener('click',()=> { byId('graph-search').value=''; byId('project-filter').value=''; byId('year-filter').value=''; filterType='all'; setTypeButtons(); applyFilters(); });
+  byId('zoom-in').addEventListener('click',()=>view.zoom(1.25));
+  byId('zoom-out').addEventListener('click',()=>view.zoom(0.8));
+  byId('fit-view').addEventListener('click',()=>view.fit());
+  byId('agent-form').addEventListener('submit',event=> {event.preventDefault(); runAgent(byId('agent-input').value);});
+  document.querySelectorAll('.agent-suggestion[data-prompt]').forEach(button=>button.addEventListener('click',()=>runAgent(button.dataset.prompt)));
+  byId('agent-reset').addEventListener('click',()=> { if(querying)return; agent.reset(); byId('agent-chat').replaceChildren(); addAgentMessage('assistant','¿Qué necesitás encontrar? Puedo consultar capacidades, recursos, caminos y pendientes de los proyectos de esta red.'); status('agent-status','Listo para consultar'); });
+  byId('gnn-run').addEventListener('click', runGNN);
+  byId('gnn-project').addEventListener('change', renderGNN);
+  byId('gnn-task').addEventListener('change', renderGNN);
+  byId('gnn-ranking')?.addEventListener('change',renderGNN);
+  byId('gnn-animate').addEventListener('click',()=> {
+    const projectId = byId('gnn-project').value;
+    const top = store.recommend(projectId,byId('gnn-task').value)[0];
+    if(top) {
+      const roots = [projectId,top.candidateId];
+      const ids = gnnRuntime ? gnnRuntime.receptiveField(roots) : unique([...roots,...top.nodeIds]);
+      const edges = store.data.edges.filter(edge=>ids.includes(edge.source) && ids.includes(edge.target)).map(edge=>edge.id);
+      focusEvidence(ids,edges);
+      view.pulseMessagePassing(roots);
+      status('gnn-status','Dos rondas de agregación sobre vínculos observados. La animación ilustra el vecindario usado, no el peso de cada vínculo.');
+    }
+  });
+}
+const unique = values => [...new Set(values)];
 
+async function init() {
+  try {
+    const [graphResult, predictionResult, modelResult, inputResult] = await Promise.allSettled([fetchJSON('data/graph.json'), fetchJSON('data/gnn-results.json'),fetchJSON('data/gnn-model.json'),fetchJSON('data/gnn-input.json')]);
+    if(graphResult.status !== 'fulfilled') throw graphResult.reason;
+    const graphHash = graphResult.value.sourceHash;
+    const predictions = predictionResult.status === 'fulfilled' && predictionResult.value.meta?.synthetic && (!graphHash || graphHash===predictionResult.value.meta?.training?.graphSha256) ? predictionResult.value : null;
+    store = new GraphStore(graphResult.value,predictions); agent = new GraphAgent(store);
+    predictionsAvailable=Boolean(predictions?.tasks?.actor && predictions?.tasks?.resource);
+    if(predictions && modelResult.status==='fulfilled' && inputResult.status==='fulfilled' && (!graphHash || inputResult.value.meta?.graphSha256===graphHash)) {
+      try { gnnRuntime=new GraphSAGERuntime(modelResult.value,inputResult.value); } catch(error) { console.error(error); }
+    }
+    view=new GraphView(byId('network'),{onSelect:showNode});
+    view.setData(store.data.nodes,store.data.edges);
+    fillOverview(); bind(); applyFilters();
+    showNode(store.ofType('project')[0].id);
+    addAgentMessage('assistant','¿Qué necesitás encontrar? Puedo consultar capacidades, recursos, caminos y pendientes de los proyectos de esta red.');
+    status('agent-status','Listo · consultas locales sobre datos ficticios');
+    renderGNN(); initMotion();
+    document.documentElement.dataset.ready='true';
+  } catch(error) {
+    status('graph-count','No se pudieron cargar los datos');
+    status('agent-status','No se pudo iniciar el agente. Recargá la página.');
+    if(byId('agent-submit')) byId('agent-submit').disabled=true;
+    console.error(error);
+  }
+}
 init();

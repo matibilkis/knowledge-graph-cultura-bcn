@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+node_modules/
+*.tmp
+_dev.html
+_dev.js
