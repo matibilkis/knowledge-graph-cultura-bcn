@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Instrument+Sans:wght@400..600&display=swap" />
     <link rel="stylesheet" href="styles.css?v=20261006" />
-    <script type="module" src="app.js?v=20261006"></script>
+    <script type="module" src="app.js?v=20261006-agent2"></script>
   </head>
   <body>
     <a class="skip-link" href="#espacio">Saltar al espacio de trabajo</a>
@@ -135,10 +135,12 @@
             <header class="panel-head">
               <p class="label">Consultas</p>
               <h2 id="agent-title">Preguntale a la red</h2>
-              <p class="panel-note">Este agente reconoce tipos de pregunta y consulta la red con herramientas locales de búsqueda, capacidades y caminos. Funciona en tu navegador y muestra los vínculos y pasos que sostienen cada respuesta.</p>
+              <p class="panel-note">Preguntá de qué se trata SINC, cómo usar la página o qué registra esta red ficticia. El agente responde con información de la herramienta y consultas locales al grafo, con referencias y vínculos para revisar. Si falta un dato o la pregunta sale de ese alcance, te lo indica.</p>
             </header>
 
             <div class="suggestions" role="group" aria-label="Preguntas de ejemplo">
+              <button type="button" class="agent-suggestion" data-prompt="¿De qué se trata SINC?">¿De qué se trata SINC?</button>
+              <button type="button" class="agent-suggestion" data-prompt="¿Cómo uso esta página?">¿Cómo uso esta página?</button>
               <button type="button" class="agent-suggestion" data-prompt="¿Quién puede ayudar con accesibilidad?">¿Quién puede ayudar con accesibilidad?</button>
               <button type="button" class="agent-suggestion" data-prompt="¿Qué recursos podemos reutilizar?">¿Qué recursos podemos reutilizar?</button>
               <button type="button" class="agent-suggestion" data-prompt="Armá un equipo y recursos para Mareas Accesibles">Armá un equipo y recursos para Mareas Accesibles</button>
@@ -151,7 +153,7 @@
             <form class="agent-form" id="agent-form">
               <label for="agent-input">Tu pregunta</label>
               <div class="agent-compose">
-                <textarea id="agent-input" name="q" rows="2" maxlength="500" placeholder="Por ejemplo: ¿quién trabajó con Colectivo Trama?" required></textarea>
+                <textarea id="agent-input" name="q" rows="2" maxlength="500" placeholder="Por ejemplo: ¿para qué sirve SINC? ¿Quién participó en Festival Cauce?" required></textarea>
                 <button type="submit" class="button button-primary" id="agent-submit">Preguntar</button>
               </div>
               <div class="agent-foot">

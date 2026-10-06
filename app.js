@@ -1,4 +1,4 @@
-import { GraphStore, GraphAgent, isPlanned } from './graph-engine.js?v=20261006';
+import { GraphStore, GraphAgent, isPlanned } from './graph-engine.js?v=20261006-agent2';
 import { GraphView } from './graph-view.js?v=20261006';
 import { initMotion } from './motion.js?v=20261006';
 import { GraphSAGERuntime } from './gnn-runtime.js?v=20261006';
@@ -132,7 +132,7 @@ async function runAgent(query) {
   const submit = byId('agent-submit');
   submit.disabled = true;
   byId('agent-form').setAttribute('aria-busy', 'true');
-  status('agent-status', 'Consultando el grafo…');
+  status('agent-status', 'Revisando la pregunta…');
   addAgentMessage('user', query.trim().slice(0,500));
   byId('agent-input').value = '';
   try {
@@ -147,14 +147,23 @@ async function runAgent(query) {
         if(!Number.isFinite(item.score))card.classList.add('is-known');
         card.append(el('strong', '', item.label), el('p', '', item.description));
         if (Number.isFinite(item.score)) card.append(scoreBadge('GNN',item.score));
-        card.append(evidenceButton('Ver vínculos', item.nodeIds, item.edgeIds));
+        if (item.nodeIds?.length) card.append(evidenceButton('Ver vínculos', item.nodeIds, item.edgeIds));
         group.append(card);
       }
       message.append(group);
     }
+    if (result.sources?.length) {
+      const sources = el('div', 'agent-evidence');
+      sources.append(el('h4', '', 'Información de referencia'));
+      for (const source of result.sources) {
+        const link = el('a', 'evidence-link', source.label);
+        link.href = source.href; sources.append(link);
+      }
+      message.append(sources);
+    }
     if (result.trace.length) {
       const trace = el('details', 'agent-trace');
-      trace.append(el('summary', '', `${result.trace.length} consultas ejecutadas · ver recorrido`));
+      trace.append(el('summary', '', `${result.trace.length} pasos de consulta · ver recorrido`));
       const list = el('ol');
       for (const step of result.trace) {
         const item = el('li');
@@ -168,7 +177,7 @@ async function runAgent(query) {
       button.type = 'button'; button.addEventListener('click',()=>runAgent(suggestion)); message.append(button);
     }
     if (result.highlightNodeIds.length) focusEvidence(result.highlightNodeIds, result.highlightEdgeIds);
-    status('agent-status', 'Consulta resuelta con datos de la base');
+    status('agent-status', { project: 'Respuesta basada en información de la herramienta', missing: 'Información no registrada en esta base', scope: 'Pregunta fuera de alcance o sin una consulta reconocida' }[result.kind] || 'Consulta resuelta con registros del grafo ficticio');
     message.scrollIntoView({ block: 'nearest', behavior: 'instant' });
   } catch (error) {
     addAgentMessage('assistant', 'No pude completar esta consulta. Probá con una capacidad o un proyecto de la red.');
@@ -262,7 +271,7 @@ function bind() {
   byId('fit-view').addEventListener('click',()=>view.fit());
   byId('agent-form').addEventListener('submit',event=> {event.preventDefault(); runAgent(byId('agent-input').value);});
   document.querySelectorAll('.agent-suggestion[data-prompt]').forEach(button=>button.addEventListener('click',()=>runAgent(button.dataset.prompt)));
-  byId('agent-reset').addEventListener('click',()=> { if(querying)return; agent.reset(); byId('agent-chat').replaceChildren(); addAgentMessage('assistant','¿Qué necesitás encontrar? Puedo consultar capacidades, recursos, caminos y pendientes de los proyectos de esta red.'); status('agent-status','Listo para consultar'); });
+  byId('agent-reset').addEventListener('click',()=> { if(querying)return; agent.reset(); byId('agent-chat').replaceChildren(); addAgentMessage('assistant',agent.greeting); status('agent-status','Listo para consultar'); });
   byId('gnn-run').addEventListener('click', runGNN);
   const changeExperiment=()=>{view.update({});renderGNN();};
   byId('gnn-project').addEventListener('change', changeExperiment);
@@ -298,7 +307,7 @@ async function init() {
     view.setData(store.data.nodes,store.data.edges);
     fillOverview(); bind(); applyFilters();
     showNode(store.ofType('project')[0].id);
-    addAgentMessage('assistant','¿Qué necesitás encontrar? Puedo consultar capacidades, recursos, caminos y pendientes de los proyectos de esta red.');
+    addAgentMessage('assistant',agent.greeting);
     status('agent-status','Listo · consultas locales sobre datos ficticios');
     renderGNN(); initMotion();
     document.documentElement.dataset.ready='true';
