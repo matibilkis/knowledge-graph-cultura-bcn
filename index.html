@@ -1,87 +1,231 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-AR">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f5f2ea" />
-    <meta name="description" content="SINC: una exploración sobre cómo conservar las relaciones, capacidades y aprendizajes de proyectos culturales." />
+    <meta name="theme-color" content="#f6f1e7" />
+    <meta name="description" content="SINC: un espacio de trabajo para explorar la memoria de proyectos culturales como una red de actores, capacidades y recursos. Demostración con datos ficticios." />
     <title>SINC — La memoria de los proyectos culturales</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Instrument+Sans:wght@400..600&display=swap" />
     <link rel="stylesheet" href="styles.css" />
-    <script src="app.js" defer></script>
+    <script type="module" src="app.js"></script>
   </head>
   <body>
-    <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <header class="site-header">
-      <a class="brand" href="#inicio" aria-label="SINC, ir al inicio"><span class="brand-mark" aria-hidden="true">✳</span><span>SINC<span class="brand-period">.</span></span></a>
-      <nav aria-label="Navegación principal">
-        <a href="#aplicaciones">Aplicaciones</a>
-        <a href="#idea">La idea</a>
-        <a href="#demo">Explorar demo</a>
+    <a class="skip-link" href="#espacio">Saltar al espacio de trabajo</a>
+
+    <header class="topbar" id="inicio">
+      <a class="brand" href="#inicio" aria-label="SINC, ir al inicio">
+        <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+          <path d="M6 20 14 6l8 14M6 20h16" />
+          <circle cx="14" cy="6" r="3.2" /><circle cx="6" cy="20" r="3.2" /><circle cx="22" cy="20" r="3.2" />
+        </svg>
+        <span>SINC<span class="brand-period">.</span></span>
+      </a>
+      <nav class="topnav" aria-label="Secciones">
+        <a href="#espacio">La red</a>
+        <a href="#consultas">Consultas</a>
+        <a href="#sugerencias">Sugerencias</a>
+        <a href="#datos">Datos</a>
       </nav>
-      <span class="header-label">Concepto en exploración <span class="status-dot" aria-hidden="true"></span></span>
+      <p class="synthetic-note"><span class="synthetic-dot" aria-hidden="true"></span>Datos sintéticos: todo lo que ves es ficticio</p>
     </header>
 
-    <main id="contenido">
-      <section class="hero shell" id="inicio" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-line"></span> Sistema Internacional de Nodos Culturales <span class="muted">/ nombre tentativo</span></p>
-          <h1 id="hero-title">Los proyectos terminan.<br /><em>Lo aprendido</em> debería quedarse.</h1>
-          <p class="hero-lede">SINC explora una forma de conservar las personas, capacidades, acuerdos y aprendizajes que hacen posible un proyecto cultural, para que la próxima iniciativa no empiece desde cero.</p>
-          <div class="hero-actions">
-            <a class="button button-dark" href="#demo">Explorar un caso ficticio <span aria-hidden="true">↗</span></a>
-            <a class="text-link" href="#aplicaciones">Ver posibles usos <span aria-hidden="true">↓</span></a>
-          </div>
+    <main>
+      <section class="intro shell" aria-labelledby="intro-title">
+        <div class="intro-copy" data-reveal>
+          <p class="eyebrow">Memoria de proyectos culturales</p>
+          <h1 id="intro-title">Los proyectos terminan. <em>Lo aprendido</em> debería quedarse.</h1>
+          <p class="lede">Cada proyecto cultural deja algo más que un resultado: quién trabajó con quién, qué sabía hacer cada equipo, qué materiales quedaron listos para usar de nuevo. SINC guarda eso como una red, para que la próxima iniciativa no arranque de cero.</p>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <svg viewBox="0 0 540 520" role="presentation">
-            <defs><linearGradient id="hero-gradient" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#dce8d8"/><stop offset="1" stop-color="#ebe2d0"/></linearGradient></defs>
-            <circle cx="270" cy="260" r="230" fill="url(#hero-gradient)"/>
-            <circle cx="270" cy="260" r="164" fill="none" stroke="#8da79b" stroke-dasharray="4 9"/>
-            <circle cx="270" cy="260" r="95" fill="none" stroke="#8da79b" stroke-dasharray="4 9"/>
-            <g stroke="#5d8276" stroke-width="1.5" opacity=".64"><path d="M270 260 124 130M270 260 365 95M270 260 430 200M270 260 408 365M270 260 230 435M270 260 92 330M124 130 365 95M365 95 430 200M430 200 408 365M408 365 230 435M230 435 92 330M92 330 124 130"/></g>
-            <g fill="#f8f6ef" stroke="#264c43" stroke-width="2"><circle cx="124" cy="130" r="23"/><circle cx="365" cy="95" r="16"/><circle cx="430" cy="200" r="25"/><circle cx="408" cy="365" r="18"/><circle cx="230" cy="435" r="23"/><circle cx="92" cy="330" r="16"/></g>
-            <circle cx="270" cy="260" r="46" fill="#244e43"/><text x="270" y="269" text-anchor="middle" fill="white" font-size="21" font-family="Arial, sans-serif" font-weight="700">SINC</text>
-            <circle cx="124" cy="130" r="6" fill="#d17957"/><circle cx="365" cy="95" r="6" fill="#d17957"/><circle cx="430" cy="200" r="6" fill="#d17957"/><circle cx="408" cy="365" r="6" fill="#d17957"/><circle cx="230" cy="435" r="6" fill="#d17957"/><circle cx="92" cy="330" r="6" fill="#d17957"/>
-            <text x="94" y="97" class="art-label">PERSONAS</text><text x="390" y="70" class="art-label">SABERES</text><text x="452" y="203" class="art-label">ESPACIOS</text><text x="420" y="410" class="art-label">ACUERDOS</text><text x="176" y="486" class="art-label">PROYECTOS</text>
+        <div class="intro-side" data-reveal>
+          <svg class="intro-motif" viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+            <g class="motif-links">
+              <path d="M52 132 118 62" /><path d="M118 62 196 104" /><path d="M196 104 268 48" /><path d="M196 104 236 162" />
+              <path d="M52 132 132 158" /><path d="M132 158 196 104" /><path d="M118 62 172 28" />
+              <path class="motif-suggested" d="M132 158 236 162" />
+            </g>
+            <g class="motif-nodes">
+              <circle class="m-project" cx="118" cy="62" r="11" /><circle class="m-project" cx="196" cy="104" r="13" />
+              <circle class="m-actor" cx="52" cy="132" r="7" /><circle class="m-actor" cx="268" cy="48" r="7" /><circle class="m-actor" cx="172" cy="28" r="6" />
+              <rect class="m-capability" x="125" y="151" width="14" height="14" rx="2" transform="rotate(45 132 158)" />
+              <rect class="m-resource" x="228" y="154" width="16" height="16" rx="4" />
+            </g>
           </svg>
-          <div class="art-caption"><span>01 / 03</span><span>La red que permanece</span></div>
+          <ol class="intro-steps">
+            <li><a href="#espacio"><span>Explorá</span> la red completa o un proyecto por vez.</a></li>
+            <li><a href="#consultas"><span>Preguntá</span> quién puede ayudar o qué se puede reutilizar.</a></li>
+            <li><a href="#sugerencias"><span>Anticipá</span> equipos y recursos para un proyecto que todavía no empezó.</a></li>
+          </ol>
+        </div>
+        <div class="intro-stats" data-reveal>
+          <p class="label">La red de esta demo</p>
+          <div id="dataset-stats" class="dataset-stats" aria-live="polite"><span class="placeholder">Cargando la red…</span></div>
         </div>
       </section>
 
-      <section class="statement" aria-label="Problema central"><div class="shell statement-inner"><span class="section-index">01 / El problema</span><p>Cuando termina un proyecto, también puede perderse la forma en que las personas lograron hacerlo posible.</p><span class="statement-credit">Una pregunta para explorar con SINC</span></div></section>
+      <div class="workspace shell" id="espacio">
+        <section class="stage" aria-labelledby="graph-title">
+          <header class="stage-head">
+            <div class="stage-titles">
+              <h2 id="graph-title">Toda la red</h2>
+              <p id="graph-subtitle">Elegí un nodo para ver su ficha y sus vínculos.</p>
+            </div>
+            <p class="count" id="graph-count" aria-live="polite"></p>
+          </header>
 
-      <section class="origin shell section-pad" id="aplicaciones" aria-labelledby="origin-title">
-        <div class="section-heading"><span class="section-index">02 / Posibles aplicaciones</span><h2 id="origin-title">Donde la colaboración<br /><em>deja aprendizaje.</em></h2><p>Distintos proyectos culturales comparten un desafío: identificar capacidades, coordinar actores y conservar lo que funcionó. Estos escenarios son ejemplos generales de uso.</p></div>
-        <div class="experience-grid">
-          <article class="experience-card featured"><span class="card-number">01</span><span class="card-icon" aria-hidden="true">◉</span><h3>Encuentros culturales</h3><p>Un equipo reúne artistas, espacios y organizaciones para producir una programación. La red puede registrar quién aportó qué, cómo se coordinó el trabajo y qué acuerdos servirían para otra edición.</p><span class="card-foot">Programación · comunidad · alianzas</span></article>
-          <article class="experience-card"><span class="card-number">02</span><span class="card-icon" aria-hidden="true">↗</span><h3>Territorios y saberes</h3><p>Una comunidad identifica un problema local y necesita encontrar experiencia complementaria. El mapa ayuda a conectar capacidades disponibles y a conservar las soluciones construidas en conjunto.</p><span class="card-foot">Territorio · conocimiento · soluciones</span></article>
-          <article class="experience-card"><span class="card-number">03</span><span class="card-icon" aria-hidden="true">⌁</span><h3>Trabajo entre sectores</h3><p>Instituciones, empresas y colectivos pueden colaborar en una iniciativa compartida. Documentar responsabilidades, canales de comunicación y decisiones reduce la dependencia de una sola persona.</p><span class="card-foot">Coordinación · escucha · transferencia</span></article>
+          <form class="filters" role="search" aria-label="Filtrar la red" onsubmit="return false">
+            <div class="field field-search">
+              <label for="graph-search">Buscar</label>
+              <input id="graph-search" type="search" placeholder="Nombre de proyecto, actor, recurso…" autocomplete="off" spellcheck="false" />
+            </div>
+            <div class="field">
+              <label for="project-filter">Proyecto</label>
+              <select id="project-filter"><option value="">Toda la red</option></select>
+            </div>
+            <div class="field">
+              <label for="year-filter">Año</label>
+              <select id="year-filter"><option value="">Todos los años</option></select>
+            </div>
+            <div class="type-filters" id="type-filters" role="group" aria-label="Tipo de nodo">
+              <button type="button" class="type-chip is-active" data-type="all" aria-pressed="true">Todos</button>
+              <button type="button" class="type-chip" data-type="project" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><circle class="g-project" cx="8" cy="8" r="6" /></svg>Proyectos</button>
+              <button type="button" class="type-chip" data-type="actor" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><circle class="g-actor" cx="8" cy="8" r="5" /></svg>Actores</button>
+              <button type="button" class="type-chip" data-type="capability" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect class="g-capability" x="4" y="4" width="8" height="8" rx="1" transform="rotate(45 8 8)" /></svg>Capacidades</button>
+              <button type="button" class="type-chip" data-type="resource" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect class="g-resource" x="3.5" y="3.5" width="9" height="9" rx="2.5" /></svg>Recursos</button>
+            </div>
+          </form>
+
+          <div class="graph-canvas">
+            <svg id="network" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Mapa interactivo de la red de proyectos, actores, capacidades y recursos" aria-describedby="graph-help"></svg>
+            <div class="graph-controls" role="group" aria-label="Controles del mapa">
+              <button type="button" id="zoom-in" aria-label="Acercar" title="Acercar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" /></svg></button>
+              <button type="button" id="zoom-out" aria-label="Alejar" title="Alejar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12" /></svg></button>
+              <button type="button" id="fit-view" aria-label="Encuadrar la red" title="Encuadrar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 8V4h4M16 8V4h-4M4 12v4h4M16 12v4h-4" /></svg></button>
+              <button type="button" id="reset-view" class="text-control">Restablecer</button>
+            </div>
+            <ul class="graph-legend" aria-label="Cómo leer las líneas">
+              <li><span class="swatch swatch-observed" aria-hidden="true"></span>Vínculo registrado</li>
+              <li><span class="swatch swatch-suggested" aria-hidden="true"></span>Sugerencia del modelo</li>
+            </ul>
+          </div>
+          <p class="graph-help" id="graph-help">
+            <span class="help-pointer">Arrastrá para mover. Ctrl + rueda para acercar.</span>
+            <span class="help-touch">Deslizá de costado para mover; pellizcá para acercar.</span>
+            <span class="help-keys">Con teclado: flechas entre nodos, Enter para abrir la ficha.</span>
+          </p>
+
+          <aside class="node-detail" id="node-detail" aria-live="polite" aria-label="Ficha del nodo seleccionado">
+            <p class="empty-state">Todavía no elegiste ningún nodo. Tocá uno en el mapa o usá el buscador.</p>
+          </aside>
+        </section>
+
+        <div class="panels">
+          <section class="panel" id="proyectos" aria-labelledby="projects-title" data-reveal>
+            <header class="panel-head">
+              <p class="label">Punto de partida</p>
+              <h2 id="projects-title">Proyectos</h2>
+            </header>
+            <div class="project-list" id="project-list" aria-live="polite"><p class="placeholder">Cargando proyectos…</p></div>
+          </section>
+
+          <section class="panel" id="consultas" aria-labelledby="agent-title" data-reveal>
+            <header class="panel-head">
+              <p class="label">Consultas</p>
+              <h2 id="agent-title">Preguntale a la red</h2>
+              <p class="panel-note">Este asistente no es un modelo de lenguaje: reconoce el tipo de pregunta y recorre la red con herramientas locales —búsqueda, vecinos, caminos—, todo en tu navegador. Cada respuesta muestra los nodos y los pasos en que se apoya.</p>
+            </header>
+
+            <div class="suggestions" role="group" aria-label="Preguntas de ejemplo">
+              <button type="button" class="agent-suggestion" data-prompt="¿Quién puede ayudar con accesibilidad?">¿Quién puede ayudar con accesibilidad?</button>
+              <button type="button" class="agent-suggestion" data-prompt="¿Qué recursos podemos reutilizar?">¿Qué recursos podemos reutilizar?</button>
+              <button type="button" class="agent-suggestion" data-prompt="Buscá un equipo para Festival Cauce">Buscá un equipo para Festival Cauce</button>
+              <button type="button" class="agent-suggestion" data-prompt="¿Cómo se conectan Festival Cauce y Ronda de Oficios?">¿Cómo se conectan Festival Cauce y Ronda de Oficios?</button>
+              <button type="button" class="agent-suggestion" data-prompt="¿Dónde falta documentación?">¿Dónde falta documentación?</button>
+            </div>
+
+            <div class="agent-chat" id="agent-chat" role="log" aria-live="polite" aria-label="Conversación" tabindex="0" data-empty="Elegí una pregunta de ejemplo o escribí la tuya. Las respuestas resaltan en el mapa los nodos que usan."></div>
+
+            <form class="agent-form" id="agent-form">
+              <label for="agent-input">Tu pregunta</label>
+              <div class="agent-compose">
+                <textarea id="agent-input" name="q" rows="2" maxlength="500" placeholder="Por ejemplo: ¿quién trabajó con Colectivo Trama?" required></textarea>
+                <button type="submit" class="button button-primary" id="agent-submit">Preguntar</button>
+              </div>
+              <div class="agent-foot">
+                <p class="status" id="agent-status" role="status" aria-live="polite"></p>
+                <button type="button" class="button-quiet" id="agent-reset">Borrar conversación</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel" id="sugerencias" aria-labelledby="gnn-title" data-reveal>
+            <header class="panel-head">
+              <p class="label">Sugerencias del modelo</p>
+              <h2 id="gnn-title">¿Con quién y con qué arrancar?</h2>
+              <p class="panel-note">Para un proyecto planificado, un modelo de grafos entrenado sobre esta misma red propone vínculos que todavía no existen. Son hipótesis para conversar, no registros.</p>
+            </header>
+
+            <form class="gnn-form" onsubmit="return false">
+              <div class="field">
+                <label for="gnn-task">Qué querés anticipar</label>
+                <select id="gnn-task">
+                  <option value="actor">Un equipo para el proyecto</option>
+                  <option value="resource">Recursos que se pueden reutilizar</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="gnn-project">Proyecto planificado</label>
+                <select id="gnn-project"></select>
+              </div>
+              <div class="gnn-actions">
+                <button type="button" class="button button-primary" id="gnn-run">Ver sugerencias</button>
+                <button type="button" class="button button-outline" id="gnn-animate" aria-describedby="gnn-animate-help">Animar en el mapa</button>
+              </div>
+              <p class="field-help" id="gnn-animate-help">La animación muestra cómo cada nodo recibe información de sus vecinos antes de que el modelo compare candidatos.</p>
+            </form>
+            <p class="status" id="gnn-status" role="status" aria-live="polite"></p>
+
+            <div class="known-vs-suggested" role="note">
+              <p><span class="swatch swatch-observed" aria-hidden="true"></span><strong>Registrado</strong> Vínculos que ya figuran en la red.</p>
+              <p><span class="swatch swatch-suggested" aria-hidden="true"></span><strong>Sugerido</strong> Candidatos que ordena el modelo. El puntaje sirve para comparar entre sí; no es una probabilidad.</p>
+            </div>
+
+            <h3 class="sub-title" id="gnn-results-title">Candidatos sugeridos</h3>
+            <div class="gnn-results" id="gnn-results" aria-live="polite" aria-labelledby="gnn-results-title" data-empty="Elegí un proyecto y pedí sugerencias para ver los candidatos."></div>
+
+            <h3 class="sub-title" id="gnn-metrics-title">Cómo le fue al modelo en la evaluación</h3>
+            <div class="gnn-metrics" id="gnn-metrics" aria-labelledby="gnn-metrics-title" data-empty="Las métricas aparecen cuando se cargan los resultados del experimento."></div>
+
+            <h3 class="sub-title" id="gnn-method-title">Método y límites</h3>
+            <div class="gnn-method" id="gnn-method" aria-labelledby="gnn-method-title" data-empty="La descripción del experimento se carga junto con los resultados."></div>
+          </section>
+
+          <section class="panel panel-data" id="datos" aria-labelledby="data-title" data-reveal>
+            <header class="panel-head">
+              <p class="label">Datos abiertos de la demo</p>
+              <h2 id="data-title">Llevate la red</h2>
+              <p class="panel-note">El mismo conjunto que usa esta página, para revisarlo o probar tus propias consultas.</p>
+            </header>
+            <div class="downloads">
+              <a class="download" id="download-graph" href="data/graph.json" download>
+                <span class="download-name">Red completa</span>
+                <span class="download-meta">Nodos y vínculos · JSON</span>
+              </a>
+              <a class="download" id="download-db" href="data/sinc-demo.sqlite" download>
+                <span class="download-name">Base de datos</span>
+                <span class="download-meta">Tablas relacionales · SQLite</span>
+              </a>
+            </div>
+          </section>
         </div>
-      </section>
-
-      <section class="idea section-pad" id="idea" aria-labelledby="idea-title"><div class="shell">
-        <div class="section-heading idea-heading"><span class="section-index">03 / La idea</span><h2 id="idea-title">Hacer visible lo que<br /><em>mantiene viva la red.</em></h2><p>Un ecosistema cultural no es solo una lista de actores. También importan sus relaciones de confianza, implicación, poder y capacidad: quién puede resolver un problema, qué aporta cada institución y dónde quedó ese aprendizaje.</p></div>
-        <div class="principle-grid">
-          <article><span class="principle-symbol">01</span><h3>Actores y capacidades</h3><p>Personas, organizaciones, espacios y equipos, junto con lo que cada uno puede aportar.</p></article>
-          <article><span class="principle-symbol">02</span><h3>Vínculos con contexto</h3><p>Colaboraciones, acuerdos, confianza y responsabilidades ligados a proyectos concretos.</p></article>
-          <article><span class="principle-symbol">03</span><h3>Memoria transferible</h3><p>Guías, decisiones y aprendizajes que puedan servir incluso cuando cambie el equipo.</p></article>
-        </div>
-        <div class="sector-strip"><span>Un mismo proyecto puede cruzar</span><div><span>arte</span><span>comunidad</span><span>empresa</span><span>finanzas</span><span>turismo</span><span>tecnología</span></div></div>
-        <p class="scope-note">SINC es un nombre de trabajo para un sistema modular y replicable, pensado para conectar iniciativas culturales de distintos territorios.</p>
-      </div></section>
-
-      <section class="demo shell section-pad" id="demo" aria-labelledby="demo-title">
-        <div class="section-heading demo-heading"><span class="section-index">04 / Prototipo exploratorio</span><h2 id="demo-title">Cinco proyectos.<br /><em>Una memoria compartida.</em></h2><p>Esta red completamente ficticia conecta proyectos, equipos, capacidades y recursos. Elegí una pregunta para seguir el camino de una experiencia a la siguiente.</p></div>
-        <div class="demo-banner"><span class="demo-pill"><span class="status-dot" aria-hidden="true"></span> Datos ficticios</span><p><strong id="graph-count">Cargando red de prueba…</strong> <span>·</span> Sin personas ni instituciones reales <span>·</span> <a href="data/sinc-demo.sqlite" download>Descargar base SQLite</a></p></div>
-        <div class="demo-layout">
-          <div class="map-panel"><div class="panel-top"><div><span class="panel-kicker">Knowledge graph</span><h3 id="graph-title">La red completa</h3></div><span class="map-hint">Seleccioná un nodo</span></div><div class="graph-scroll"><svg id="network" viewBox="0 0 860 620" role="group" aria-label="Grafo interactivo de proyectos, equipos, capacidades y recursos ficticios"></svg></div><div class="map-legend"><span><i class="legend-dot project"></i> Proyecto</span><span><i class="legend-dot actor"></i> Equipo</span><span><i class="legend-dot capability"></i> Capacidad</span><span><i class="legend-dot resource"></i> Recurso</span></div></div>
-          <aside class="detail-panel" aria-live="polite"><span class="panel-kicker">Ficha seleccionada</span><div id="node-detail"></div></aside>
-        </div>
-        <div class="query-panel"><div><span class="panel-kicker">Probá una pregunta</span><h3>¿Qué podemos reutilizar?</h3></div><div id="query-buttons" class="query-buttons" role="group" aria-label="Preguntas de ejemplo"></div><p id="query-answer" class="query-answer" aria-live="polite">Cargando preguntas…</p></div>
-      </section>
-
-      <section class="takeaway"><div class="shell takeaway-grid"><div><span class="section-index">05 / Qué probar</span><h2>El dibujo es el comienzo.<br /><em>La prueba está en el uso.</em></h2></div><div><p>La pregunta para un piloto real es si alguien que no participó del proyecto puede encontrar a quién llamar, qué aportó cada actor y qué decisiones puede reutilizar.</p><div class="takeaway-steps"><span>01 <strong>Reconstruir un proyecto</strong></span><span>02 <strong>Validar relaciones con sus participantes</strong></span><span>03 <strong>Probar si otra persona puede aprovecharlo</strong></span></div></div></div></section>
+      </div>
     </main>
-    <footer class="site-footer"><div class="shell footer-inner"><a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true">✳</span><span>SINC<span class="brand-period">.</span></span></a><p>Un concepto abierto sobre la memoria de los proyectos culturales.</p><a href="#inicio">Volver arriba ↑</a></div></footer>
+
+    <footer class="site-footer shell">
+      <p><strong>SINC</strong> es un concepto en exploración sobre cómo conservar la memoria de los proyectos culturales.</p>
+      <a href="#inicio">Volver arriba</a>
+    </footer>
   </body>
 </html>
