@@ -47,6 +47,29 @@ export function initMotion() {
 
   initActiveSection();
   initTopbarShadow();
+  initMapShortcut();
+}
+
+function initMapShortcut() {
+  const map=document.getElementById('network');
+  if(!map || !('IntersectionObserver' in window))return;
+  const narrow=window.matchMedia('(max-width:1079px)');
+  const reduced=window.matchMedia('(prefers-reduced-motion:reduce)');
+  const button=document.createElement('button');
+  button.type='button';button.className='map-shortcut';button.textContent='Ver en el mapa';button.setAttribute('aria-controls','network');button.hidden=true;
+  document.body.append(button);
+  let visible=true,pending=false;
+  const update=()=>{const typing=document.activeElement?.matches('input,textarea');button.hidden=!narrow.matches || visible || !pending || typing;};
+  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)pending=false;update();},{threshold:0.1}).observe(map);
+  const observer=new MutationObserver(()=>{pending=true;update();});
+  for(const id of ['graph-title','graph-subtitle']){const element=document.getElementById(id);if(element)observer.observe(element,{childList:true,subtree:true,characterData:true});}
+  button.addEventListener('click',()=>{
+    pending=false;update();
+    map.closest('section').scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
+    map.setAttribute('tabindex','-1');map.focus({preventScroll:true});
+  });
+  narrow.addEventListener?.('change',update);
+  document.addEventListener('focusin',update);document.addEventListener('focusout',()=>requestAnimationFrame(update));
 }
 
 function initActiveSection() {

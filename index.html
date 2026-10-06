@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Instrument+Sans:wght@400..600&display=swap" />
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="app.js"></script>
+    <link rel="stylesheet" href="styles.css?v=20261006" />
+    <script type="module" src="app.js?v=20261006"></script>
   </head>
   <body>
     <a class="skip-link" href="#espacio">Saltar al espacio de trabajo</a>
@@ -89,7 +89,7 @@
               <select id="year-filter"><option value="">Todos los años</option></select>
             </div>
             <div class="type-filters" id="type-filters" role="group" aria-label="Tipo de nodo">
-              <button type="button" class="type-chip is-active" data-type="all" aria-pressed="true">Todos</button>
+              <button type="button" class="type-chip" data-type="all" aria-pressed="true">Todos</button>
               <button type="button" class="type-chip" data-type="project" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><circle class="g-project" cx="8" cy="8" r="6" /></svg>Proyectos</button>
               <button type="button" class="type-chip" data-type="actor" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><circle class="g-actor" cx="8" cy="8" r="5" /></svg>Actores</button>
               <button type="button" class="type-chip" data-type="capability" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect class="g-capability" x="4" y="4" width="8" height="8" rx="1" transform="rotate(45 8 8)" /></svg>Capacidades</button>
@@ -103,11 +103,12 @@
               <button type="button" id="zoom-in" aria-label="Acercar" title="Acercar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" /></svg></button>
               <button type="button" id="zoom-out" aria-label="Alejar" title="Alejar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12" /></svg></button>
               <button type="button" id="fit-view" aria-label="Encuadrar la red" title="Encuadrar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 8V4h4M16 8V4h-4M4 12v4h4M16 12v4h-4" /></svg></button>
-              <button type="button" id="reset-view" class="text-control">Restablecer</button>
+              <button type="button" id="reset-view" class="text-control" aria-label="Restablecer vista">Restablecer</button>
             </div>
             <ul class="graph-legend" aria-label="Cómo leer las líneas">
               <li><span class="swatch swatch-observed" aria-hidden="true"></span>Vínculo registrado</li>
-              <li><span class="swatch swatch-suggested" aria-hidden="true"></span>Sugerencia del modelo</li>
+              <li><span class="swatch swatch-suggested" aria-hidden="true"></span>Comparación del modelo</li>
+              <li><span class="message-dot" aria-hidden="true"></span>Mensaje entre vecinos</li>
             </ul>
           </div>
           <p class="graph-help" id="graph-help">
@@ -116,7 +117,7 @@
             <span class="help-keys">Con teclado: flechas entre nodos, Enter para abrir la ficha.</span>
           </p>
 
-          <aside class="node-detail" id="node-detail" aria-live="polite" aria-label="Ficha del nodo seleccionado">
+          <aside class="node-detail" id="node-detail" aria-label="Ficha del nodo seleccionado">
             <p class="empty-state">Todavía no elegiste ningún nodo. Tocá uno en el mapa o usá el buscador.</p>
           </aside>
         </section>
@@ -140,7 +141,7 @@
             <div class="suggestions" role="group" aria-label="Preguntas de ejemplo">
               <button type="button" class="agent-suggestion" data-prompt="¿Quién puede ayudar con accesibilidad?">¿Quién puede ayudar con accesibilidad?</button>
               <button type="button" class="agent-suggestion" data-prompt="¿Qué recursos podemos reutilizar?">¿Qué recursos podemos reutilizar?</button>
-              <button type="button" class="agent-suggestion" data-prompt="Buscá un equipo para Festival Cauce">Buscá un equipo para Festival Cauce</button>
+              <button type="button" class="agent-suggestion" data-prompt="Armá un equipo y recursos para Mareas Accesibles">Armá un equipo y recursos para Mareas Accesibles</button>
               <button type="button" class="agent-suggestion" data-prompt="¿Cómo se conectan Festival Cauce y Ronda de Oficios?">¿Cómo se conectan Festival Cauce y Ronda de Oficios?</button>
               <button type="button" class="agent-suggestion" data-prompt="¿Dónde falta documentación?">¿Dónde falta documentación?</button>
             </div>
@@ -179,11 +180,15 @@
                 <label for="gnn-project">Proyecto planificado</label>
                 <select id="gnn-project"></select>
               </div>
+              <div class="field">
+                <label for="gnn-ranking">Ordenar candidatos con</label>
+                <select id="gnn-ranking"><option value="gnn">GraphSAGE</option><option value="baseline">Reglas</option></select>
+              </div>
               <div class="gnn-actions">
                 <button type="button" class="button button-primary" id="gnn-run">Ver sugerencias</button>
                 <button type="button" class="button button-outline" id="gnn-animate" aria-describedby="gnn-animate-help">Animar en el mapa</button>
               </div>
-              <p class="field-help" id="gnn-animate-help">La animación muestra cómo cada nodo recibe información de sus vecinos antes de que el modelo compare candidatos.</p>
+              <p class="field-help" id="gnn-animate-help">Para GraphSAGE: dos capas de agregación entre vecinos observados. Después se comparan los embeddings; la línea punteada no registra una colaboración.</p>
             </form>
             <p class="status" id="gnn-status" role="status" aria-live="polite"></p>
 
@@ -193,7 +198,7 @@
             </div>
 
             <h3 class="sub-title" id="gnn-results-title">Candidatos sugeridos</h3>
-            <div class="gnn-results" id="gnn-results" aria-live="polite" aria-labelledby="gnn-results-title" data-empty="Elegí un proyecto y pedí sugerencias para ver los candidatos."></div>
+            <div class="gnn-results" id="gnn-results" aria-labelledby="gnn-results-title" data-empty="Elegí un proyecto y pedí sugerencias para ver los candidatos."></div>
 
             <h3 class="sub-title" id="gnn-metrics-title">Cómo le fue al modelo en la evaluación</h3>
             <div class="gnn-metrics" id="gnn-metrics" aria-labelledby="gnn-metrics-title" data-empty="Las métricas aparecen cuando se cargan los resultados del experimento."></div>
@@ -209,11 +214,11 @@
               <p class="panel-note">El mismo conjunto que usa esta página, para revisarlo o probar tus propias consultas.</p>
             </header>
             <div class="downloads">
-              <a class="download" id="download-graph" href="data/graph.json" download>
+              <a class="download" id="download-graph" href="data/graph.json?v=20261006" download>
                 <span class="download-name">Red completa</span>
                 <span class="download-meta">Nodos y vínculos · JSON</span>
               </a>
-              <a class="download" id="download-db" href="data/sinc-demo.sqlite" download>
+              <a class="download" id="download-db" href="data/sinc-demo.sqlite?v=20261006" download>
                 <span class="download-name">Base de datos</span>
                 <span class="download-meta">Tablas relacionales · SQLite</span>
               </a>

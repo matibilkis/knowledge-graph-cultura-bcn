@@ -1,7 +1,8 @@
-import { GraphStore, GraphAgent, isPlanned } from './graph-engine.js';
-import { GraphView } from './graph-view.js';
-import { initMotion } from './motion.js';
-import { GraphSAGERuntime } from './gnn-runtime.js';
+import { GraphStore, GraphAgent, isPlanned } from './graph-engine.js?v=20261006';
+import { GraphView } from './graph-view.js?v=20261006';
+import { initMotion } from './motion.js?v=20261006';
+import { GraphSAGERuntime } from './gnn-runtime.js?v=20261006';
+const ASSET_VERSION='20261006';
 
 const byId = id => document.getElementById(id);
 const el = (tag, className, text) => {
@@ -10,15 +11,17 @@ const el = (tag, className, text) => {
   if (text !== undefined) node.textContent = text;
   return node;
 };
+const scoreBadge=(name,value)=>{const badge=el('span','score');badge.append(el('small','',`Puntuación ${name}`),el('b','',value.toFixed(3)));return badge;};
 let store, agent, view;
 let filterType = 'all';
 let querying = false;
 let predictionsAvailable = false;
 let gnnRuntime;
+let selectedNodeId = null;
 
 function status(id, text) { if (byId(id)) byId(id).textContent = text; }
 async function fetchJSON(path) {
-  const response = await fetch(path);
+  const response = await fetch(`${path}?v=${ASSET_VERSION}`);
   if (!response.ok) throw new Error(`No se pudo cargar ${path}: HTTP ${response.status}`);
   const text = await response.text();
   const value = JSON.parse(text);
@@ -31,6 +34,7 @@ async function fetchJSON(path) {
 function focusEvidence(nodeIds, edgeIds = []) {
   byId('graph-search').value=''; byId('project-filter').value=''; byId('year-filter').value=''; filterType='all'; setTypeButtons();
   const evidence = store.evidence(nodeIds, edgeIds);
+  selectedNodeId=null;
   view.update({ nodeIds: evidence.nodeIds, edgeIds: evidence.edgeIds.length ? evidence.edgeIds : store.data.edges.filter(edge => evidence.nodeIds.includes(edge.source) && evidence.nodeIds.includes(edge.target)).map(edge => edge.id), selectedId:null, highlightIds: evidence.nodeIds, highlightEdgeIds: evidence.edgeIds });
   byId('node-detail').replaceChildren(el('p','empty-state','Seleccioná un nodo de este contexto para abrir su ficha.'));
   view.fit();
@@ -47,6 +51,7 @@ function evidenceButton(label, nodeIds, edgeIds = [], type = null) {
 function showNode(id) {
   const node = store.nodes.get(id);
   if (!node) return;
+  selectedNodeId=id;
   const panel = byId('node-detail');
   panel.replaceChildren();
   panel.append(el('p', 'detail-type', { project: 'Proyecto', actor: 'Equipo', capability: 'Capacidad', resource: 'Recurso' }[node.type]), el('h3', '', node.name), el('p', '', node.description));
@@ -78,7 +83,11 @@ function showNode(id) {
 }
 function applyFilters() {
   const visible = store.visible({ type: filterType, query: byId('graph-search').value, projectId: byId('project-filter').value, year: byId('year-filter').value });
-  view.update({ ...visible, highlightIds: [], highlightEdgeIds: [] });
+  if(selectedNodeId && !visible.nodeIds.includes(selectedNodeId)) {
+    selectedNodeId=null;
+    byId('node-detail').replaceChildren(el('p','empty-state','Seleccioná un nodo visible para abrir su ficha.'));
+  }
+  view.update({ ...visible, selectedId:selectedNodeId, highlightIds: [], highlightEdgeIds: [] });
   status('graph-title', byId('project-filter').value ? store.nodes.get(byId('project-filter').value).name : 'Explorar la red');
   status('graph-subtitle', `${visible.nodeIds.length} nodos · ${visible.edgeIds.length} vínculos en esta vista`);
   view.fit();
@@ -137,7 +146,7 @@ async function runAgent(query) {
         const card = el('div', 'recommendation-card');
         if(!Number.isFinite(item.score))card.classList.add('is-known');
         card.append(el('strong', '', item.label), el('p', '', item.description));
-        if (Number.isFinite(item.score)) card.append(el('span', 'score', `Puntuación del modelo: ${item.score.toFixed(3)}`));
+        if (Number.isFinite(item.score)) card.append(scoreBadge('GNN',item.score));
         card.append(evidenceButton('Ver vínculos', item.nodeIds, item.edgeIds));
         group.append(card);
       }
@@ -201,7 +210,7 @@ function renderGNN() {
   status('gnn-status', results.length ? `${results.length} candidatos para ${project.name}, ordenados por ${ranking==='baseline'?'reglas':'GraphSAGE'}. Sugerencias pendientes de validación.` : 'No hay resultados del modelo para este proyecto.');
   for (const item of results.slice(0,6)) {
     const card = el('article', 'recommendation-card');
-    card.append(el('h4', '', item.node.name), el('span', 'score', `Puntuación ${ranking==='baseline'?'reglas':'GNN'} ${(ranking==='baseline'?item.baselineScore:item.score).toFixed(3)}`), el('p', '', item.reason || item.node.description));
+    card.append(el('h4', '', item.node.name), scoreBadge(ranking==='baseline'?'reglas':'GNN',ranking==='baseline'?item.baselineScore:item.score), el('p', '', item.reason || item.node.description));
     if (Number.isFinite(item.baselineScore)) card.append(el('p', 'baseline-score', `Puntuación ${ranking==='baseline'?'GNN':'reglas'} ${(ranking==='baseline'?item.score:item.baselineScore).toFixed(3)} · escala propia de cada método`));
     card.append(evidenceButton('Explorar contexto', item.nodeIds, item.edgeIds,item.node.type));
     panel.append(card);
@@ -215,7 +224,7 @@ function renderGNN() {
   const limitations = Array.isArray(meta.limitations) ? meta.limitations : [meta.limitations || 'Los resultados describen el generador ficticio y requieren validación con datos reales.'];
   limitations.forEach(text => details.append(el('p','',text)));
   if (meta.split?.worlds) details.append(el('p','',`${meta.split.worlds.train} mundos de entrenamiento, ${meta.split.worlds.validation} de validación y ${meta.split.worlds.test} de evaluación. Métricas promediadas sobre ${meta.training?.initializations || 3} inicializaciones; NDCG@3 mide el orden de los tres primeros candidatos.`));
-  const download = el('a', '', 'Ver resultados y metodología'); download.href='data/gnn-results.json'; download.setAttribute('download',''); details.append(download);method.append(details);
+  const download = el('a', '', 'Ver resultados y metodología'); download.href=`data/gnn-results.json?v=${ASSET_VERSION}`; download.setAttribute('download',''); details.append(download);method.append(details);
 }
 function runGNN() {
   if (!gnnRuntime) { renderGNN(); if(predictionsAvailable)status('gnn-status','Mostrando resultados almacenados del experimento; la inferencia local no está disponible.'); return; }
@@ -247,7 +256,7 @@ function bind() {
   byId('project-filter').addEventListener('change', ()=>{applyFilters();if(byId('project-filter').value)showNode(byId('project-filter').value);});
   byId('year-filter').addEventListener('change', applyFilters);
   byId('type-filters').addEventListener('click', event => { const button = event.target.closest('[data-type]'); if (!button) return; filterType=button.dataset.type; setTypeButtons(); applyFilters(); });
-  byId('reset-view').addEventListener('click',()=> { byId('graph-search').value=''; byId('project-filter').value=''; byId('year-filter').value=''; filterType='all'; setTypeButtons(); applyFilters(); });
+  byId('reset-view').addEventListener('click',()=> { byId('graph-search').value=''; byId('project-filter').value=''; byId('year-filter').value=''; filterType='all'; selectedNodeId=null; byId('node-detail').replaceChildren(el('p','empty-state','Seleccioná un nodo para abrir su ficha.')); setTypeButtons(); applyFilters(); });
   byId('zoom-in').addEventListener('click',()=>view.zoom(1.25));
   byId('zoom-out').addEventListener('click',()=>view.zoom(0.8));
   byId('fit-view').addEventListener('click',()=>view.fit());

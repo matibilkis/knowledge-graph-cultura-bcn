@@ -9,7 +9,7 @@ const ZOOM_MIN = 0.45;
 const ZOOM_MAX = 6;
 const LABEL_PX = 12.5;
 const MAX_FOCUS_EDGE_LABELS = 6;
-const MAX_PULSE_SOURCES = 7;
+const MAX_PULSE_MESSAGES = 120;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -217,6 +217,9 @@ export class GraphView {
     this.pulseToken = 0;
     this.frames = new Set();
     this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this.layoutCache = new Map();
+    this.comparisons = [];
+    this.pulseRootIds = new Set();
 
     this.svg.querySelector(':scope > .gv-viewport')?.remove();
     this.viewport = svgEl('g', { class: 'gv-viewport' });
@@ -227,6 +230,10 @@ export class GraphView {
     this.edgeLabelLayer = svgEl('g', { class: 'gv-edge-labels', 'aria-hidden': 'true' });
     this.viewport.append(this.edgeLayer, this.suggestLayer, this.pulseLayer, this.nodeLayer, this.edgeLabelLayer);
     this.svg.append(this.viewport);
+    this.emptyState = svgEl('text', { x: VIEW.w / 2, y: VIEW.h / 2, 'text-anchor': 'middle', class: 'graph-empty' });
+    this.emptyState.textContent = 'No hay nodos que coincidan con esta vista';
+    this.emptyState.style.display = 'none';
+    this.svg.append(this.emptyState);
     this.svg.classList.add('gv');
 
     this.tooltip = document.createElement('div');
@@ -237,6 +244,11 @@ export class GraphView {
     this.tooltipMeta = document.createElement('span');
     this.tooltip.append(this.tooltipName, this.tooltipMeta);
     (this.svg.parentElement || document.body).append(this.tooltip);
+    this.caption = document.createElement('p');
+    this.caption.className = 'graph-animation-caption';
+    this.caption.hidden = true;
+    this.caption.setAttribute('role', 'status');
+    (this.svg.parentElement || document.body).append(this.caption);
 
     this.handlers = {
       pointerdown: event => this.onPointerDown(event),
@@ -266,6 +278,7 @@ export class GraphView {
   setData(nodes = [], edges = []) {
     this.stopFrames();
     this.pulseToken += 1;
+    this.clearPulse();this.comparisons=[];this.caption.hidden=true;
     const previous = new Map(this.nodes.map(node => [node.id, { x: node.x, y: node.y }]));
     this.nodeById = new Map();
     this.edgeById = new Map();
@@ -273,6 +286,7 @@ export class GraphView {
     this.nodes = nodes
       .filter(node => node && node.id != null)
       .map(node => ({ id: String(node.id), type: safeToken(node.type) || 'actor', name: String(node.name ?? node.id), x: 0, y: 0, degree: 0, el: null }));
+    this.layoutCache.clear();
     for (const node of this.nodes) {
       this.nodeById.set(node.id, node);
       this.neighbors.set(node.id, new Map());
@@ -299,6 +313,7 @@ export class GraphView {
       this.neighbors.get(target.id).set(source.id, record);
     });
 
+    this.state = { nodeIds: null, edgeIds: null, selectedId: null, highlightIds: [], highlightEdgeIds: [] };
     this.measure();
     const layout = this.layoutFor(this.portrait);
     for (const node of this.nodes) {
@@ -335,7 +350,17 @@ export class GraphView {
 
   layoutFor(portrait) {
     const [w, h] = portrait ? [660, 1000] : [VIEW.w, VIEW.h];
-    return computeLayout(this.nodes, this.edges.map(edge => ({ source: edge.source.id, target: edge.target.id })), w, h);
+    const visible = this.nodes.filter(node=>this.isVisible(node));
+    const compact = visible.length > 0 && visible.length <= 25;
+    const nodes = compact ? visible : this.nodes;
+    const edges = this.edges.filter(edge=>!compact || this.isEdgeVisible(edge));
+    const key = `${portrait}:${compact ? this.visibleKey()+'::'+edges.map(edge=>edge.id).join(',') : 'all'}`;
+    if(!this.layoutCache.has(key)) {
+      const layout=computeLayout(nodes,edges.map(edge=>({source:edge.source.id,target:edge.target.id})),w,h);
+      if(this.layoutCache.size>40)this.layoutCache.delete(this.layoutCache.keys().next().value);
+      this.layoutCache.set(key,layout);
+    }
+    return this.layoutCache.get(key);
   }
 
   buildNode(node) {
@@ -383,6 +408,18 @@ export class GraphView {
     this.pulseToken += 1;
     this.clearPulse();
     this.suggestLayer.replaceChildren();
+    this.comparisons=[];
+    this.pulseRootIds=new Set();
+    this.caption.hidden=true;
+    if(before!==this.visibleKey() && this.nodes.length) {
+      this.cancel('nodes');
+      const layout=this.layoutFor(this.portrait);
+      for(const node of this.nodes) {
+        const point=layout.get(node.id);
+        if(point){node.tx=point.x;node.ty=point.y;}
+      }
+      this.tweenNodes();
+    }
     this.render();
     if (before !== this.visibleKey()) {
       this.userMoved = false;
@@ -445,7 +482,7 @@ export class GraphView {
       el.classList.toggle('is-highlight', visible && highlightNodes.has(node.id));
       el.classList.toggle('is-neighbor', visible && neighborIds.has(node.id));
       el.classList.toggle('is-dim', visible && focused && !focusNodes.has(node.id));
-      el.classList.toggle('show-label', visible && focused && focusNodes.has(node.id));
+      el.classList.remove('show-label');
       el.setAttribute('aria-pressed', String(isSelected));
       if (visible) el.removeAttribute('aria-hidden');
       else el.setAttribute('aria-hidden', 'true');
@@ -461,6 +498,7 @@ export class GraphView {
     for (const edge of focusEdges) this.edgeLayer.append(edge.el);
 
     this.visibleCount = visibleCount;
+    this.emptyState.style.display=visibleCount?'none':'block';
     this.svg.classList.toggle('has-focus', focused);
     this.renderEdgeLabels(focusEdges, highlightEdges);
     this.updateRoving();
@@ -471,7 +509,10 @@ export class GraphView {
     this.edgeLabelLayer.replaceChildren();
     this.labelledEdges = [];
     let chosen = [...focusEdges].filter(edge => edge.label);
-    if (chosen.length > MAX_FOCUS_EDGE_LABELS) chosen = chosen.filter(edge => highlightEdges.has(edge.id)).slice(0, MAX_FOCUS_EDGE_LABELS * 2);
+    if (chosen.length > MAX_FOCUS_EDGE_LABELS) {
+      chosen=chosen.filter(edge=>highlightEdges.has(edge.id) && [edge.source.id,edge.target.id].includes(this.state.selectedId));
+      if(chosen.length>MAX_FOCUS_EDGE_LABELS)chosen=[];
+    }
     for (const edge of chosen) {
       const text = svgEl('text', { class: 'edge-label', 'text-anchor': 'middle' });
       text.textContent = edge.year ? `${edge.label} · ${edge.year}` : edge.label;
@@ -482,9 +523,20 @@ export class GraphView {
   }
 
   positionEdgeLabels() {
+    const scale=this.base*this.transform.k;
+    const occupied=[...(this.labelBoxes || []),...(this.nodeObstacles || [])];
     for (const { edge, text } of this.labelledEdges ?? []) {
-      text.setAttribute('x', ((edge.source.x + edge.target.x) / 2).toFixed(1));
-      text.setAttribute('y', ((edge.source.y + edge.target.y) / 2).toFixed(1));
+      const dx=edge.target.x-edge.source.x,dy=edge.target.y-edge.source.y,distance=Math.hypot(dx,dy)||1;
+      const width=text.textContent.length*6.4/scale,height=15/scale;
+      let box;
+      for(const [ratio,sign] of [[0.5,1],[0.5,-1],[0.35,1],[0.65,-1]]) {
+        const x=edge.source.x+dx*ratio-dy/distance*12/scale*sign;
+        const y=edge.source.y+dy*ratio+dx/distance*12/scale*sign;
+        const candidate={x:x-width/2,y:y-height/2,w:width,h:height};
+        if(!occupied.some(other=>this.boxesOverlap(candidate,other))){box=candidate;break;}
+      }
+      text.style.display=box?'':'none';
+      if(box){text.setAttribute('x',(box.x+box.w/2).toFixed(1));text.setAttribute('y',(box.y+box.h/2).toFixed(1));occupied.push(box);}
     }
   }
 
@@ -497,6 +549,8 @@ export class GraphView {
       edge.el.setAttribute('x2', edge.target.x.toFixed(1));
       edge.el.setAttribute('y2', edge.target.y.toFixed(1));
     }
+    this.positionComparisons();
+    this.layoutLabels();
     this.positionEdgeLabels();
   }
 
@@ -542,6 +596,7 @@ export class GraphView {
       const layout = this.layoutFor(this.portrait);
       for (const node of this.nodes) {
         const point = layout.get(node.id);
+        if(!point)continue;
         node.tx = point.x;
         node.ty = point.y;
       }
@@ -570,6 +625,42 @@ export class GraphView {
     const count = this.visibleCount ?? this.nodes.length;
     const lod = scale >= 0.98 || count <= 16 ? 'near' : scale >= 0.42 ? 'mid' : 'far';
     if (this.svg.dataset.lod !== lod) this.svg.dataset.lod = lod;
+    this.emptyState.style.fontSize=`${16/this.base}px`;
+    this.layoutLabels();
+    this.positionEdgeLabels();
+  }
+
+  boxesOverlap(a,b) { return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y; }
+
+  layoutLabels() {
+    const scale=this.base*this.transform.k;
+    if(!Number.isFinite(scale)||scale<=0)return;
+    const ns=clamp(0.62/scale,1,2.4),ls=LABEL_PX/scale;
+    const selected=this.state.selectedId;
+    const focusedId=this.nodeFromEvent({target:document.activeElement})?.id;
+    const candidates=this.nodes.filter(node=>this.isVisible(node) && (!node.el.classList.contains('is-dim') || [selected,this.hoverId,focusedId].includes(node.id)));
+    const priority=node=>[selected,this.hoverId,focusedId].includes(node.id) || this.pulseRootIds.has(node.id)?10000:(node.type==='project'?1000:node.type==='capability'?500:0)+node.degree;
+    candidates.sort((a,b)=>priority(b)-priority(a)||a.id.localeCompare(b.id));
+    const obstacles=this.nodes.filter(node=>this.isVisible(node)).map(node=>{const r=(RADIUS[node.type]||10)*ns+3/scale;return{x:node.x-r,y:node.y-r,w:r*2,h:r*2};});
+    this.nodeObstacles=obstacles;
+    const camera=this.transform;
+    const bounds={left:(this.region.x-camera.x)/camera.k+12/scale,right:(this.region.x+this.region.w-camera.x)/camera.k-12/scale,top:(this.region.y-camera.y)/camera.k+52/scale,bottom:(this.region.y+this.region.h-camera.y)/camera.k-55/scale};
+    const occupied=[];
+    for(const node of this.nodes)node.el.classList.remove('show-label');
+    for(const node of candidates) {
+      const important=[selected,this.hoverId,focusedId].includes(node.id) || this.pulseRootIds.has(node.id);
+      const name=important || node.name.length<=27?node.name:node.name.slice(0,25)+'…';
+      const text=node.el.querySelector('.node-label');if(text.textContent!==name)text.textContent=name;
+      const width=name.length*ls*0.58+ls*0.4,height=ls*1.25,r=(RADIUS[node.type]||10)*ns+ls*0.65;
+      const options=[{x:node.x-width/2,y:node.y+r},{x:node.x+r,y:node.y-height/2},{x:node.x-r-width,y:node.y-height/2},{x:node.x-width/2,y:node.y-r-height}];
+      let box=options.find(option=>option.x>=bounds.left && option.x+width<=bounds.right && option.y>=bounds.top && option.y+height<=bounds.bottom && !occupied.some(other=>this.boxesOverlap({...option,w:width,h:height},other)) && !obstacles.some(other=>this.boxesOverlap({...option,w:width,h:height},other)));
+      if(!box && important)box=options[0];
+      if(!box)continue;
+      const labelBounds={...box,w:width,h:height};occupied.push(labelBounds);
+      text.setAttribute('text-anchor','start');text.setAttribute('x',(box.x-node.x+ls*0.2).toFixed(2));text.setAttribute('y',(box.y-node.y).toFixed(2));
+      node.el.classList.add('show-label');
+    }
+    this.labelBoxes=occupied;
   }
 
   setTransform(target, animate = true) {
@@ -843,6 +934,7 @@ export class GraphView {
     }
     this.tooltipMeta.textContent = parts.join(' · ');
     this.tooltip.hidden = false;
+    this.layoutLabels();this.positionEdgeLabels();
     if (clientX == null) {
       const box = node.el.getBoundingClientRect();
       this.placeTooltip(box.left + box.width / 2, box.top);
@@ -868,115 +960,121 @@ export class GraphView {
     if (this.hoverId) this.nodeById.get(this.hoverId)?.el.classList.remove('is-hover');
     this.hoverId = null;
     this.tooltip.hidden = true;
+    this.layoutLabels();this.positionEdgeLabels();
   }
 
   // ---------- paso de mensajes ----------
 
-  // ids[0] es el nodo destino (por ejemplo, el proyecto planificado); el resto, candidatos o contexto.
-  // 1) cada nodo recibe mensajes de sus vecinos observados; 2) los candidatos sin vínculo
-  // observado con el destino quedan unidos por una línea punteada: sugerencia, no dato.
+  // La animación representa dos agregaciones sobre vecinos observados y luego
+  // una comparación de embeddings. La comparación nunca se agrega como arista.
   pulseMessagePassing(ids = []) {
-    const token = (this.pulseToken += 1);
+    const token = ++this.pulseToken;
     this.clearPulse();
     this.suggestLayer.replaceChildren();
-    let focus = [...new Set((ids ?? []).map(String))].map(id => this.nodeById.get(id)).filter(node => node && this.isVisible(node));
-    if (!focus.length && this.state.selectedId) {
-      const selected = this.nodeById.get(this.state.selectedId);
-      if (selected && this.isVisible(selected)) focus = [selected];
-    }
-    if (!focus.length) return Promise.resolve();
-
-    const target = focus[0];
-    const focusSet = new Set(focus);
-    const involved = new Set(focus);
-    const messages = [];
-    for (const node of focus) {
-      const sources = [...this.neighbors.get(node.id)]
-        .map(([otherId, edge]) => ({ other: this.nodeById.get(otherId), edge }))
-        .filter(({ other, edge }) => this.isEdgeVisible(edge))
-        .sort((a, b) => focusSet.has(b.other) - focusSet.has(a.other) || b.other.degree - a.other.degree || (a.other.id < b.other.id ? -1 : 1))
-        .slice(0, MAX_PULSE_SOURCES);
-      for (const { other, edge } of sources) {
-        involved.add(other);
-        messages.push({ from: other, to: node, edge });
+    this.comparisons = [];
+    const roots = [...new Set(ids.map(String))].map(id => this.nodeById.get(id)).filter(node => node && this.isVisible(node));
+    if (!roots.length) return Promise.resolve();
+    this.pulseRootIds=new Set(roots.map(node=>node.id));this.layoutLabels();
+    const observedNeighbors = node => [...this.neighbors.get(node.id)].map(([id, edge]) => ({ node: this.nodeById.get(id), edge })).filter(item => this.isEdgeVisible(item.edge));
+    const firstReceivers = [...new Set([...roots, ...roots.flatMap(node => observedNeighbors(node).map(item => item.node))])];
+    const messagesFor = receivers => receivers.flatMap(to => observedNeighbors(to).map(({node: from, edge}) => ({from, to, edge})));
+    const firstMessages = messagesFor(firstReceivers);
+    const secondMessages = messagesFor(roots);
+    const involved = new Set([...firstReceivers, ...firstMessages.flatMap(message => [message.from, message.to])]);
+    const summarize = messages => {
+      const groups = new Map();
+      for (const message of messages) { if (!groups.has(message.to.id)) groups.set(message.to.id, []); groups.get(message.to.id).push(message); }
+      const result = [];
+      for (let i=0; result.length < Math.min(messages.length, MAX_PULSE_MESSAGES); i++) {
+        for (const group of groups.values()) if (group[i] && result.length < MAX_PULSE_MESSAGES) result.push(group[i]);
       }
-    }
-    const candidates = focus.slice(1).filter(node => !this.neighbors.get(target.id).has(node.id));
-
+      return result;
+    };
+    const firstVisual = summarize(firstMessages), secondVisual = summarize(secondMessages);
+    const alive = () => this.pulseToken === token;
+    const caption = text => { this.caption.textContent = text; this.caption.hidden = false; };
     this.svg.classList.add('is-pulsing');
     for (const node of involved) node.el.classList.add('in-pulse');
-    for (const { edge } of messages) edge.el.classList.add('in-pulse');
+    for (const message of [...firstMessages, ...secondMessages]) message.edge.el.classList.add('in-pulse');
     this.pulseCleanup = () => {
       this.svg.classList.remove('is-pulsing');
-      for (const node of this.nodes) node.el.classList.remove('in-pulse', 'is-receiving');
+      for (const node of this.nodes) node.el.classList.remove('in-pulse', 'is-receiving', 'in-layer1', 'in-layer2');
       for (const edge of this.edges) edge.el.classList.remove('in-pulse');
       this.pulseLayer.replaceChildren();
     };
-    const alive = () => token === this.pulseToken;
-    const drawSuggestion = node => {
-      const line = svgEl('line', { class: 'graph-suggestion', x1: node.x, y1: node.y, x2: target.x, y2: target.y });
-      this.suggestLayer.append(line);
-      return line;
+    const compare = progress => {
+      if (!this.comparisons.length) {
+        for (const candidate of roots.slice(1)) {
+          if (this.neighbors.get(roots[0].id).has(candidate.id)) continue;
+          const paths = [svgEl('path', {class:'graph-suggestion graph-comparison'}), svgEl('path', {class:'graph-suggestion graph-comparison'})];
+          const label = svgEl('text', {class:'comparison-label', 'text-anchor':'middle'});
+          label.textContent = 'Comparación';
+          this.suggestLayer.append(...paths, label);
+          this.comparisons.push({source:candidate, target:roots[0], paths, label, progress});
+        }
+      }
+      for (const comparison of this.comparisons) comparison.progress=progress;
+      this.positionComparisons();
     };
-
     if (this.reduced.matches) {
-      candidates.forEach(drawSuggestion);
-      return wait(1100).then(() => { if (alive()) this.clearPulse(); });
+      firstReceivers.forEach(node => node.el.classList.add('in-layer1'));
+      roots.forEach(node => node.el.classList.add('in-layer2'));
+      compare(1);
+      caption('Vista estática: capa 1 en vecinos, capa 2 en los candidatos y el proyecto. La línea punteada compara embeddings; no registra una colaboración.');
+      return Promise.resolve();
     }
-
-    const travel = (list, duration, stagger, className) => new Promise(resolve => {
-      if (!list.length) { resolve(); return; }
-      const dots = list.map(() => {
-        const dot = svgEl('circle', { class: className, r: 4 });
-        dot.style.opacity = '0';
-        this.pulseLayer.append(dot);
-        return dot;
-      });
-      const total = duration + stagger * (list.length - 1);
-      this.animate(total, t => {
-        const elapsed = t * total;
-        list.forEach((message, i) => {
-          const local = clamp((elapsed - i * stagger) / duration, 0, 1);
-          const e = ease(local);
-          dots[i].setAttribute('cx', message.from.x + (message.to.x - message.from.x) * e);
-          dots[i].setAttribute('cy', message.from.y + (message.to.y - message.from.y) * e);
-          dots[i].style.opacity = local <= 0 || local >= 1 ? '0' : '1';
-          if (message.line) {
-            message.line.setAttribute('x2', message.from.x + (message.to.x - message.from.x) * e);
-            message.line.setAttribute('y2', message.from.y + (message.to.y - message.from.y) * e);
-          }
+    const travel = messages => new Promise(resolve => {
+      if (!messages.length) { resolve(); return; }
+      const dots=messages.map(() => { const dot=svgEl('circle',{class:'graph-message',r:4});this.pulseLayer.append(dot);return dot; });
+      this.animate(1100, t => {
+        messages.forEach((message,i) => {
+          const local=clamp((t-0.18*(i/messages.length))/0.82,0,1), progress=ease(local);
+          dots[i].setAttribute('cx',message.from.x+(message.to.x-message.from.x)*progress);
+          dots[i].setAttribute('cy',message.from.y+(message.to.y-message.from.y)*progress);
+          dots[i].style.opacity=local<=0||local>=1?'0':'1';
         });
-      }, `pulse-${className}`, () => { dots.forEach(dot => dot.remove()); resolve(); });
+      },'pulse-aggregate',()=>{dots.forEach(dot=>dot.remove());resolve();});
     });
-    const receive = async nodes => {
-      for (const node of nodes) node.el.classList.add('is-receiving');
-      await wait(520);
-      for (const node of nodes) node.el.classList.remove('is-receiving');
+    const receive = async receivers => {
+      receivers.forEach(node => node.el.classList.add('is-receiving'));
+      await wait(420);
+      receivers.forEach(node => node.el.classList.remove('is-receiving'));
     };
-
     return (async () => {
-      await travel(messages, 760, Math.min(45, 900 / Math.max(messages.length, 1)), 'graph-message');
-      if (!alive()) return;
-      await receive(focus);
-      if (!alive()) return;
-      const links = candidates.map(node => {
-        const line = drawSuggestion(node);
-        line.setAttribute('x2', node.x);
-        line.setAttribute('y2', node.y);
-        return { from: node, to: target, line };
-      });
-      await travel(links, 680, 90, 'graph-message graph-message--suggested');
-      if (!alive()) return;
-      await receive([target]);
-      if (alive()) this.clearPulse();
+      caption(`Capa 1 de 2: cada nodo promedia todos sus vecinos. Se ilustran ${firstVisual.length} de ${firstMessages.length} mensajes.`);
+      await travel(firstVisual); if(!alive())return;
+      await receive(firstReceivers); if(!alive())return;
+      caption(`Capa 2 de 2: el proyecto y los candidatos reciben los vecinos ya actualizados (${secondVisual.length} mensajes ilustrados).`);
+      await travel(secondVisual); if(!alive())return;
+      await receive(roots); if(!alive())return;
+      caption('Comparación de embeddings del modelo: la línea punteada no es un vínculo registrado ni un mensaje de la GNN.');
+      await new Promise(resolve => this.animate(450,t=>compare(ease(t)),'comparison',resolve));
+      if(alive())this.clearPulse();
     })();
   }
 
+  positionComparisons() {
+    for(const comparison of this.comparisons || []) {
+      const a=comparison.source,b=comparison.target;
+      const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;
+      const control={x:(a.x+b.x)/2-dy/d*55,y:(a.y+b.y)/2+dx/d*55};
+      const p=0.5*comparison.progress;
+      const segment=(from,to)=>{
+        const end={x:(1-p)**2*from.x+2*(1-p)*p*control.x+p*p*to.x,y:(1-p)**2*from.y+2*(1-p)*p*control.y+p*p*to.y};
+        const c={x:from.x+(control.x-from.x)*p,y:from.y+(control.y-from.y)*p};
+        return `M ${from.x} ${from.y} Q ${c.x} ${c.y} ${end.x} ${end.y}`;
+      };
+      comparison.paths[0].setAttribute('d',segment(a,b));comparison.paths[1].setAttribute('d',segment(b,a));
+      comparison.label.setAttribute('x',(a.x+b.x)/2-dy/d*27.5);comparison.label.setAttribute('y',(a.y+b.y)/2+dx/d*27.5-10/(this.base*this.transform.k));
+      comparison.label.style.opacity=comparison.progress>0.95?'1':'0';
+    }
+  }
+
   clearPulse() {
-    this.cancel('pulse-graph-message');
-    this.cancel('pulse-graph-message graph-message--suggested');
+    this.cancel('pulse-aggregate');
+    this.cancel('comparison');
     this.pulseCleanup?.();
-    this.pulseCleanup = null;
+    this.pulseCleanup=null;
   }
 
   // ---------- animación ----------
@@ -1022,6 +1120,7 @@ export class GraphView {
     for (const [type, handler] of Object.entries(this.handlers)) this.svg.removeEventListener(type, handler);
     this.viewport.remove();
     this.tooltip.remove();
+    this.emptyState.remove();this.caption.remove();
     this.svg.classList.remove('gv', 'has-focus', 'is-pulsing', 'is-dragging');
     delete this.svg.dataset.lod;
   }
