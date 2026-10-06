@@ -37,9 +37,9 @@ function focusEvidence(nodeIds, edgeIds = []) {
   status('graph-title','Contexto seleccionado');
   status('graph-subtitle', `${evidence.nodeIds.length} nodos vinculados con el resultado seleccionado`);
 }
-function evidenceButton(label, nodeIds, edgeIds = []) {
+function evidenceButton(label, nodeIds, edgeIds = [], type = null) {
   const button = el('button', 'evidence-link', label);
-  if(store.nodes.get(nodeIds[0]))button.dataset.type=store.nodes.get(nodeIds[0]).type;
+  if(type || store.nodes.get(nodeIds[0]))button.dataset.type=type || store.nodes.get(nodeIds[0]).type;
   button.type = 'button';
   button.addEventListener('click', () => { focusEvidence(nodeIds, edgeIds); if (nodeIds[0]) showNode(nodeIds[0]); });
   return button;
@@ -172,37 +172,44 @@ async function runAgent(query) {
 function renderMetrics(task) {
   const panel = byId('gnn-metrics'); panel.replaceChildren();
   const grid=el('div','metric-grid');
+  panel.append(el('p','metrics-note','GNN y MLP: media de tres entrenamientos; dispersión entre inicializaciones. Las reglas se evaluaron sobre las mismas consultas.'));
   const metrics = task.metrics || {};
-  for (const [name, values] of Object.entries(metrics)) {
+  for (const name of ['gnn','baseline','mlp']) {
+    const values=metrics[name];if(!values)continue;
     const cell = el('div', 'metric-cell');
     cell.append(el('strong', '', { gnn: 'GraphSAGE', baseline: 'Reglas', mlp: 'MLP sin grafo' }[name] || name));
-    for (const [metric, value] of Object.entries(values)) if (Number.isFinite(value)) cell.append(el('span', '', `${{ap:'Precisión media',rocAuc:'AUC',ndcgAt3:'NDCG@3',recallAt3:'Cobertura @3',precisionAt3:'Precisión @3'}[metric] || metric}: ${value.toFixed(3)}`));
+    for (const metric of ['ndcgAt3','ap','rocAuc']) {
+      const value=values[metric];if(Number.isFinite(value))cell.append(el('span','',`${{ap:'Precisión media',rocAuc:'AUC',ndcgAt3:'NDCG@3'}[metric]}: ${value.toFixed(3)}${metric==='ndcgAt3' && values.std?.[metric]!==undefined?` ± ${values.std[metric].toFixed(3)}`:''}`));
+    }
     grid.append(cell);
   }
   panel.append(grid);
+  if(task.selectedModel?.test)panel.append(el('p','metrics-note',`Las sugerencias usan la inicialización ${task.selectedModel.seed}, seleccionada por validación. Su NDCG@3 en evaluación es ${task.selectedModel.test.ndcgAt3.toFixed(3)}.`));
 }
 function renderGNN() {
   const panel = byId('gnn-results'); panel.replaceChildren();
   if (!predictionsAvailable) { status('gnn-status', 'El experimento no está disponible. Las consultas al grafo siguen funcionando.'); return; }
   const taskId = byId('gnn-task').value;
+  const ranking=byId('gnn-ranking')?.value || 'gnn';
   const projectId = byId('gnn-project').value;
   const task = store.predictions.tasks[taskId];
   const project = store.nodes.get(projectId);
   const results = store.recommend(projectId, taskId);
-  if(byId('gnn-ranking')?.value==='baseline')results.sort((a,b)=>(b.baselineScore || 0)-(a.baselineScore || 0));
+  if(ranking==='baseline')results.sort((a,b)=>(b.baselineScore || 0)-(a.baselineScore || 0));
+  byId('gnn-animate').disabled=ranking==='baseline' || !gnnRuntime;
   renderMetrics(task);
-  status('gnn-status', results.length ? `${results.length} candidatos para ${project.name}. Sugerencias pendientes de validación.` : 'No hay resultados del modelo para este proyecto.');
+  status('gnn-status', results.length ? `${results.length} candidatos para ${project.name}, ordenados por ${ranking==='baseline'?'reglas':'GraphSAGE'}. Sugerencias pendientes de validación.` : 'No hay resultados del modelo para este proyecto.');
   for (const item of results.slice(0,6)) {
     const card = el('article', 'recommendation-card');
-    card.append(el('h4', '', item.node.name), el('span', 'score', `Puntuación GNN ${item.score.toFixed(3)}`), el('p', '', item.reason || item.node.description));
-    if (Number.isFinite(item.baselineScore)) card.append(el('p', 'baseline-score', `Puntuación de reglas ${item.baselineScore.toFixed(3)} · escala propia de cada método`));
-    card.append(evidenceButton('Explorar contexto', item.nodeIds, item.edgeIds));
+    card.append(el('h4', '', item.node.name), el('span', 'score', `Puntuación ${ranking==='baseline'?'reglas':'GNN'} ${(ranking==='baseline'?item.baselineScore:item.score).toFixed(3)}`), el('p', '', item.reason || item.node.description));
+    if (Number.isFinite(item.baselineScore)) card.append(el('p', 'baseline-score', `Puntuación ${ranking==='baseline'?'GNN':'reglas'} ${(ranking==='baseline'?item.score:item.baselineScore).toFixed(3)} · escala propia de cada método`));
+    card.append(evidenceButton('Explorar contexto', item.nodeIds, item.edgeIds,item.node.type));
     panel.append(card);
   }
   const meta = store.predictions.meta;
   const method = byId('gnn-method'); method.replaceChildren();
   const gnnNdcg = task.metrics?.gnn?.ndcgAt3, baselineNdcg = task.metrics?.baseline?.ndcgAt3;
-  if(Number.isFinite(gnnNdcg) && Number.isFinite(baselineNdcg)) method.append(el('p','benchmark-conclusion',gnnNdcg < baselineNdcg ? 'En este experimento las reglas ordenan mejor los tres primeros candidatos que la GNN. Conviene conservarlas como referencia.' : `La GNN mejora NDCG@3 en ${(gnnNdcg-baselineNdcg).toFixed(3)} frente a las reglas. Esa diferencia describe este experimento sintético; no demuestra una mejora en redes reales.`));
+  if(Number.isFinite(gnnNdcg) && Number.isFinite(baselineNdcg)) method.append(el('p','benchmark-conclusion',gnnNdcg < baselineNdcg ? 'En este experimento las reglas obtuvieron mayor NDCG@3 que la GNN. Podés comparar ambos ordenamientos; estos resultados describen el generador ficticio.' : `NDCG@3: GNN ${gnnNdcg.toFixed(3)}, reglas ${baselineNdcg.toFixed(3)} y MLP ${task.metrics.mlp.ndcgAt3.toFixed(3)}. Estos resultados describen el generador ficticio y no establecen una ventaja en redes reales.`));
   const details=el('details');details.append(el('summary','','Cómo se entrenó y evaluó'));
   details.append(el('p', '', `${meta.model || 'GraphSAGE'} entrenado en CPU sobre grafos sintéticos. Los mundos de evaluación son distintos de los de entrenamiento; los vínculos a predecir se excluyen de la entrada del modelo.`));
   const limitations = Array.isArray(meta.limitations) ? meta.limitations : [meta.limitations || 'Los resultados describen el generador ficticio y requieren validación con datos reales.'];
@@ -211,7 +218,7 @@ function renderGNN() {
   const download = el('a', '', 'Ver resultados y metodología'); download.href='data/gnn-results.json'; download.setAttribute('download',''); details.append(download);method.append(details);
 }
 function runGNN() {
-  if (!gnnRuntime) { renderGNN(); return; }
+  if (!gnnRuntime) { renderGNN(); if(predictionsAvailable)status('gnn-status','Mostrando resultados almacenados del experimento; la inferencia local no está disponible.'); return; }
   const task = byId('gnn-task').value;
   const projectId = byId('gnn-project').value;
   if (!projectId) return;
@@ -248,9 +255,10 @@ function bind() {
   document.querySelectorAll('.agent-suggestion[data-prompt]').forEach(button=>button.addEventListener('click',()=>runAgent(button.dataset.prompt)));
   byId('agent-reset').addEventListener('click',()=> { if(querying)return; agent.reset(); byId('agent-chat').replaceChildren(); addAgentMessage('assistant','¿Qué necesitás encontrar? Puedo consultar capacidades, recursos, caminos y pendientes de los proyectos de esta red.'); status('agent-status','Listo para consultar'); });
   byId('gnn-run').addEventListener('click', runGNN);
-  byId('gnn-project').addEventListener('change', renderGNN);
-  byId('gnn-task').addEventListener('change', renderGNN);
-  byId('gnn-ranking')?.addEventListener('change',renderGNN);
+  const changeExperiment=()=>{view.update({});renderGNN();};
+  byId('gnn-project').addEventListener('change', changeExperiment);
+  byId('gnn-task').addEventListener('change', changeExperiment);
+  byId('gnn-ranking')?.addEventListener('change',changeExperiment);
   byId('gnn-animate').addEventListener('click',()=> {
     const projectId = byId('gnn-project').value;
     const top = store.recommend(projectId,byId('gnn-task').value)[0];
