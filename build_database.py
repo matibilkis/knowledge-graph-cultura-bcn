@@ -33,13 +33,14 @@ def main():
                 description TEXT NOT NULL,
                 facts_json TEXT NOT NULL,
                 x INTEGER NOT NULL,
-                y INTEGER NOT NULL
+                y INTEGER NOT NULL,
+                attributes_json TEXT NOT NULL
             );
             CREATE TABLE edges (
                 id TEXT PRIMARY KEY,
                 source TEXT NOT NULL REFERENCES nodes(id),
                 target TEXT NOT NULL REFERENCES nodes(id),
-                type TEXT NOT NULL CHECK(type IN ('participated','has_capability','produced','reused','documents')),
+                type TEXT NOT NULL CHECK(type IN ('participated','has_capability','produced','reused','documents','requires')),
                 label TEXT NOT NULL,
                 year INTEGER NOT NULL CHECK(year BETWEEN 2020 AND 2030)
             );
@@ -59,8 +60,9 @@ def main():
         """)
         db.executemany("INSERT INTO metadata VALUES (?, ?)", [(key, json.dumps(value, ensure_ascii=False)) for key, value in graph["meta"].items()])
         db.executemany(
-            "INSERT INTO nodes VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [(n["id"], n["type"], n["name"], n["description"], json.dumps(n["facts"], ensure_ascii=False), n["x"], n["y"]) for n in graph["nodes"]],
+            "INSERT INTO nodes VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            [(n["id"], n["type"], n["name"], n["description"], json.dumps(n["facts"], ensure_ascii=False), n.get("x", 0), n.get("y", 0),
+              json.dumps({key: value for key, value in n.items() if key not in {'id', 'type', 'name', 'description', 'facts', 'x', 'y'}}, ensure_ascii=False)) for n in graph["nodes"]],
         )
         db.executemany(
             "INSERT INTO edges VALUES (?, ?, ?, ?, ?, ?)",

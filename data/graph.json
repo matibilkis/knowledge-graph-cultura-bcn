@@ -2,75 +2,3771 @@
   "meta": {
     "title": "Red cultural ficticia SINC",
     "fictional": true,
-    "description": "Todos los proyectos, equipos, vínculos y resultados son inventados para esta demostración."
+    "seed": 20261005,
+    "version": "2.0",
+    "territories": [
+      "Puerto Claro",
+      "Ribera Norte",
+      "Centro Abierto",
+      "Ladera Verde"
+    ],
+    "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "description": "Todos los proyectos, equipos, vínculos, métricas y territorios son inventados para esta demostración.",
+    "counts": {
+      "projects": 16,
+      "actors": 28,
+      "capabilities": 8,
+      "resources": 18
+    }
   },
   "nodes": [
-    {"id":"p_cauce","type":"project","name":"Festival Cauce","description":"Festival barrial de artes escénicas realizado en espacios abiertos en 2024.","facts":["Edición ficticia: 2024","Reto: accesibilidad en sedes temporales","Resultado: un kit de accesibilidad reutilizable"],"x":405,"y":270},
-    {"id":"p_patio","type":"project","name":"Cine al Patio","description":"Ciclo de cine comunitario en patios y plazas durante 2023.","facts":["Edición ficticia: 2023","Reto: permisos para proyecciones al aire libre","Resultado: un mapa de trámites y plazos"],"x":238,"y":203},
-    {"id":"p_mapa","type":"project","name":"Mapa Sonoro","description":"Proyecto de escucha y archivo de relatos de barrio en 2024.","facts":["Edición ficticia: 2024","Reto: documentar acuerdos con participantes","Resultado: una bitácora de entrevistas"],"x":572,"y":204},
-    {"id":"p_ronda","type":"project","name":"Ronda de Oficios","description":"Encuentro itinerante de talleres y saberes locales en 2025.","facts":["Edición ficticia: 2025","Reutilizó el mapa de permisos y la bitácora","Sumó mediación para públicos nuevos"],"x":290,"y":420},
-    {"id":"p_umbrales","type":"project","name":"Umbrales en Movimiento","description":"Programación escénica en sedes móviles durante 2025.","facts":["Edición ficticia: 2025","Reutilizó el kit de accesibilidad y el rider técnico","Adaptó recursos de dos proyectos previos"],"x":548,"y":420},
-    {"id":"a_mesa","type":"actor","name":"Mesa de Producción","description":"Equipo ficticio que coordina espacios, proveedores y autorizaciones.","facts":["Participó en Cine al Patio y Ronda de Oficios","Capacidades: permisos y logística","Contacto simulado: sin datos personales"],"x":68,"y":242},
-    {"id":"a_trama","type":"actor","name":"Colectivo Trama","description":"Colectivo ficticio que articula actividades con organizaciones barriales.","facts":["Participó en Festival Cauce y Ronda de Oficios","Capacidad: mediación comunitaria"],"x":140,"y":367},
-    {"id":"a_estacion","type":"actor","name":"Espacio Estación","description":"Sede cultural ficticia con salas y equipamiento compartible.","facts":["Fue sede de Cine al Patio y Mapa Sonoro"],"x":288,"y":65},
-    {"id":"a_horizonte","type":"actor","name":"Taller Horizonte","description":"Equipo ficticio dedicado a accesibilidad de actividades culturales.","facts":["Participó en Festival Cauce y Umbrales en Movimiento","Capacidad: accesibilidad"],"x":478,"y":65},
-    {"id":"a_archivo","type":"actor","name":"Archivo Vivo","description":"Laboratorio ficticio de documentación colaborativa.","facts":["Participó en Mapa Sonoro y Ronda de Oficios","Capacidad: documentación"],"x":710,"y":145},
-    {"id":"a_movil","type":"actor","name":"Red Móvil","description":"Equipo ficticio de montaje para escenarios temporales.","facts":["Participó en Festival Cauce y Umbrales en Movimiento","Capacidad: logística itinerante"],"x":765,"y":365},
-    {"id":"a_escuela","type":"actor","name":"Escuela de Mediación","description":"Grupo ficticio que prepara actividades para públicos diversos.","facts":["Participó en Mapa Sonoro y Ronda de Oficios","Capacidad: mediación comunitaria"],"x":672,"y":548},
-    {"id":"c_permisos","type":"capability","name":"Gestión de permisos","description":"Planificación de autorizaciones, responsables y plazos para uso cultural de espacios.","facts":["Capacidad ficticia vinculada a equipos y recursos","La experiencia depende del contexto local"],"x":65,"y":95},
-    {"id":"c_acceso","type":"capability","name":"Accesibilidad","description":"Diseño de recorridos, comunicación y atención accesible.","facts":["Capacidad ficticia presente en dos proyectos","Documentada en un kit de prueba"],"x":535,"y":148},
-    {"id":"c_logistica","type":"capability","name":"Logística itinerante","description":"Montaje, transporte y coordinación técnica en sedes temporales.","facts":["Capacidad ficticia compartida por dos equipos","Documentada en un rider de prueba"],"x":775,"y":475},
-    {"id":"c_documenta","type":"capability","name":"Documentación","description":"Registro de decisiones, consentimientos y aprendizajes de proyecto.","facts":["Capacidad ficticia de Archivo Vivo","Documentada en una bitácora de prueba"],"x":785,"y":70},
-    {"id":"c_mediacion","type":"capability","name":"Mediación comunitaria","description":"Vinculación con públicos y organizaciones del territorio.","facts":["Capacidad ficticia compartida por dos equipos","Documentada en una guía de prueba"],"x":88,"y":520},
-    {"id":"r_permisos","type":"resource","name":"Mapa de permisos","description":"Checklist ficticio de trámites, plazos y responsables creado en Cine al Patio.","facts":["Producido en Cine al Patio","Reutilizado en Ronda de Oficios","No es asesoramiento legal ni contiene trámites reales"],"x":184,"y":115},
-    {"id":"r_acceso","type":"resource","name":"Kit de accesibilidad","description":"Guía ficticia de recorridos, señalética y comunicación accesible.","facts":["Producido en Festival Cauce","Reutilizado en Umbrales en Movimiento"],"x":621,"y":92},
-    {"id":"r_rider","type":"resource","name":"Rider de sedes móviles","description":"Lista ficticia de equipamiento y montaje para programación itinerante.","facts":["Producido en Festival Cauce","Reutilizado en Umbrales en Movimiento"],"x":704,"y":300},
-    {"id":"r_bitacora","type":"resource","name":"Bitácora de entrevistas","description":"Plantilla ficticia para registrar entrevistas y decisiones de archivo.","facts":["Producida en Mapa Sonoro","Reutilizada en Ronda de Oficios"],"x":648,"y":468},
-    {"id":"r_mediacion","type":"resource","name":"Guía de mediación","description":"Secuencia ficticia para abrir conversaciones con públicos diversos.","facts":["Producida en Ronda de Oficios","Todavía no fue reutilizada en otro proyecto"],"x":206,"y":548}
+    {
+      "id": "c_permisos",
+      "type": "capability",
+      "name": "Gestión de permisos",
+      "description": "Planificar autorizaciones, responsables y plazos para el uso cultural de espacios.",
+      "aliases": [
+        "permisos",
+        "autorizaciones",
+        "trámites"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "c_acceso",
+      "type": "capability",
+      "name": "Accesibilidad",
+      "description": "Diseñar recorridos, comunicación y atención para públicos diversos.",
+      "aliases": [
+        "accesibilidad",
+        "acceso",
+        "inclusión"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "c_logistica",
+      "type": "capability",
+      "name": "Logística itinerante",
+      "description": "Coordinar transporte, montaje y operación en sedes temporales.",
+      "aliases": [
+        "logística",
+        "montaje",
+        "sedes móviles"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "c_documenta",
+      "type": "capability",
+      "name": "Documentación",
+      "description": "Registrar acuerdos, consentimientos y aprendizajes reutilizables.",
+      "aliases": [
+        "documentación",
+        "archivo",
+        "memoria"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "c_mediacion",
+      "type": "capability",
+      "name": "Mediación comunitaria",
+      "description": "Construir actividades y acuerdos con colectivos del territorio.",
+      "aliases": [
+        "mediación",
+        "públicos",
+        "comunidad"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "c_sonido",
+      "type": "capability",
+      "name": "Sonido y producción técnica",
+      "description": "Preparar escucha, proyección y sonorización de actividades.",
+      "aliases": [
+        "sonido",
+        "audio",
+        "técnica"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "c_comunica",
+      "type": "capability",
+      "name": "Comunicación cultural",
+      "description": "Diseñar convocatorias comprensibles y circuitos de comunicación.",
+      "aliases": [
+        "comunicación",
+        "difusión",
+        "convocatoria"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "c_sostenible",
+      "type": "capability",
+      "name": "Producción sostenible",
+      "description": "Reducir residuos, reparar materiales y organizar compras compartidas.",
+      "aliases": [
+        "sostenibilidad",
+        "cuidados ambientales",
+        "reparación"
+      ],
+      "facts": [
+        "Capacidad definida para esta red ficticia",
+        "Conecta necesidades, equipos y recursos"
+      ]
+    },
+    {
+      "id": "p_patio",
+      "type": "project",
+      "name": "Cine al Patio",
+      "year": 2023,
+      "status": "completed",
+      "territory": "Puerto Claro",
+      "format": "cine",
+      "aliases": [
+        "cine al patio",
+        "cine"
+      ],
+      "requiredCapabilities": [
+        "c_permisos",
+        "c_logistica",
+        "c_mediacion"
+      ],
+      "description": "Proyecto realizado de cine en Puerto Claro. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2023",
+        "Territorio: Puerto Claro",
+        "Formato: cine",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.75,
+      "outcome": 0.81
+    },
+    {
+      "id": "p_cauce",
+      "type": "project",
+      "name": "Festival Cauce",
+      "year": 2024,
+      "status": "completed",
+      "territory": "Ribera Norte",
+      "format": "escénicas",
+      "aliases": [
+        "festival cauce",
+        "escénicas"
+      ],
+      "requiredCapabilities": [
+        "c_acceso",
+        "c_logistica",
+        "c_mediacion"
+      ],
+      "description": "Proyecto realizado de escénicas en Ribera Norte. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2024",
+        "Territorio: Ribera Norte",
+        "Formato: escénicas",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.95,
+      "outcome": 0.67
+    },
+    {
+      "id": "p_mapa",
+      "type": "project",
+      "name": "Mapa Sonoro",
+      "year": 2024,
+      "status": "completed",
+      "territory": "Centro Abierto",
+      "format": "archivo sonoro",
+      "aliases": [
+        "mapa sonoro",
+        "archivo sonoro"
+      ],
+      "requiredCapabilities": [
+        "c_documenta",
+        "c_mediacion",
+        "c_sonido"
+      ],
+      "description": "Proyecto realizado de archivo sonoro en Centro Abierto. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2024",
+        "Territorio: Centro Abierto",
+        "Formato: archivo sonoro",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.35,
+      "outcome": 0.65
+    },
+    {
+      "id": "p_ronda",
+      "type": "project",
+      "name": "Ronda de Oficios",
+      "year": 2025,
+      "status": "completed",
+      "territory": "Ladera Verde",
+      "format": "talleres",
+      "aliases": [
+        "ronda de oficios",
+        "talleres"
+      ],
+      "requiredCapabilities": [
+        "c_permisos",
+        "c_mediacion",
+        "c_sostenible"
+      ],
+      "description": "Proyecto realizado de talleres en Ladera Verde. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2025",
+        "Territorio: Ladera Verde",
+        "Formato: talleres",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.75,
+      "outcome": 0.81
+    },
+    {
+      "id": "p_umbrales",
+      "type": "project",
+      "name": "Umbrales en Movimiento",
+      "year": 2025,
+      "status": "completed",
+      "territory": "Ribera Norte",
+      "format": "escénicas",
+      "aliases": [
+        "umbrales en movimiento",
+        "escénicas"
+      ],
+      "requiredCapabilities": [
+        "c_acceso",
+        "c_logistica",
+        "c_sonido"
+      ],
+      "description": "Proyecto realizado de escénicas en Ribera Norte. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2025",
+        "Territorio: Ribera Norte",
+        "Formato: escénicas",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.95,
+      "outcome": 0.84
+    },
+    {
+      "id": "p_semilla",
+      "type": "project",
+      "name": "Semilla de Barrio",
+      "year": 2022,
+      "status": "completed",
+      "territory": "Ladera Verde",
+      "format": "talleres",
+      "aliases": [
+        "semilla de barrio",
+        "talleres"
+      ],
+      "requiredCapabilities": [
+        "c_mediacion",
+        "c_sostenible"
+      ],
+      "description": "Proyecto realizado de talleres en Ladera Verde. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2022",
+        "Territorio: Ladera Verde",
+        "Formato: talleres",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.95,
+      "outcome": 0.7
+    },
+    {
+      "id": "p_linternas",
+      "type": "project",
+      "name": "Linternas del Puerto",
+      "year": 2022,
+      "status": "completed",
+      "territory": "Puerto Claro",
+      "format": "cine",
+      "aliases": [
+        "linternas del puerto",
+        "cine"
+      ],
+      "requiredCapabilities": [
+        "c_permisos",
+        "c_logistica",
+        "c_sonido"
+      ],
+      "description": "Proyecto realizado de cine en Puerto Claro. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2022",
+        "Territorio: Puerto Claro",
+        "Formato: cine",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.35,
+      "outcome": 0.93
+    },
+    {
+      "id": "p_hilos",
+      "type": "project",
+      "name": "Hilos de Memoria",
+      "year": 2023,
+      "status": "completed",
+      "territory": "Centro Abierto",
+      "format": "archivo",
+      "aliases": [
+        "hilos de memoria",
+        "archivo"
+      ],
+      "requiredCapabilities": [
+        "c_documenta",
+        "c_mediacion"
+      ],
+      "description": "Proyecto realizado de archivo en Centro Abierto. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2023",
+        "Territorio: Centro Abierto",
+        "Formato: archivo",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.75,
+      "outcome": 0.76
+    },
+    {
+      "id": "p_huerta",
+      "type": "project",
+      "name": "Huerta de Escenas",
+      "year": 2023,
+      "status": "completed",
+      "territory": "Ladera Verde",
+      "format": "escénicas",
+      "aliases": [
+        "huerta de escenas",
+        "escénicas"
+      ],
+      "requiredCapabilities": [
+        "c_mediacion",
+        "c_sostenible"
+      ],
+      "description": "Proyecto realizado de escénicas en Ladera Verde. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2023",
+        "Territorio: Ladera Verde",
+        "Formato: escénicas",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.75,
+      "outcome": 0.75
+    },
+    {
+      "id": "p_orillas",
+      "type": "project",
+      "name": "Orillas Abiertas",
+      "year": 2024,
+      "status": "completed",
+      "territory": "Ribera Norte",
+      "format": "encuentro",
+      "aliases": [
+        "orillas abiertas",
+        "encuentro"
+      ],
+      "requiredCapabilities": [
+        "c_permisos",
+        "c_mediacion",
+        "c_comunica"
+      ],
+      "description": "Proyecto realizado de encuentro en Ribera Norte. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2024",
+        "Territorio: Ribera Norte",
+        "Formato: encuentro",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.75,
+      "outcome": 0.67
+    },
+    {
+      "id": "p_talleres",
+      "type": "project",
+      "name": "Talleres en Red",
+      "year": 2025,
+      "status": "completed",
+      "territory": "Centro Abierto",
+      "format": "talleres",
+      "aliases": [
+        "talleres en red",
+        "talleres"
+      ],
+      "requiredCapabilities": [
+        "c_documenta",
+        "c_comunica",
+        "c_sostenible"
+      ],
+      "description": "Proyecto realizado de talleres en Centro Abierto. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2025",
+        "Territorio: Centro Abierto",
+        "Formato: talleres",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.55,
+      "outcome": 0.96
+    },
+    {
+      "id": "p_nocturno",
+      "type": "project",
+      "name": "Laboratorio Nocturno",
+      "year": 2025,
+      "status": "completed",
+      "territory": "Puerto Claro",
+      "format": "sonido",
+      "aliases": [
+        "laboratorio nocturno",
+        "sonido"
+      ],
+      "requiredCapabilities": [
+        "c_logistica",
+        "c_sonido",
+        "c_comunica"
+      ],
+      "description": "Proyecto realizado de sonido en Puerto Claro. Datos completamente ficticios.",
+      "facts": [
+        "Realizado: 2025",
+        "Territorio: Puerto Claro",
+        "Formato: sonido",
+        "Memoria de proyecto disponible para reutilización"
+      ],
+      "scale": 0.55,
+      "outcome": 0.96
+    },
+    {
+      "id": "p_mareas",
+      "type": "project",
+      "name": "Mareas Accesibles",
+      "year": 2026,
+      "status": "planned",
+      "territory": "Puerto Claro",
+      "format": "cine",
+      "aliases": [
+        "mareas accesibles",
+        "cine"
+      ],
+      "requiredCapabilities": [
+        "c_permisos",
+        "c_acceso",
+        "c_logistica",
+        "c_sonido"
+      ],
+      "description": "Proyecto en preparación de cine en Puerto Claro. Datos completamente ficticios.",
+      "facts": [
+        "Planificado: 2026",
+        "Territorio: Puerto Claro",
+        "Necesita: gestión de permisos, accesibilidad, logística itinerante, sonido y producción técnica",
+        "Vínculos propuestos sujetos a acuerdos entre equipos"
+      ],
+      "scale": 0.75,
+      "outcome": null
+    },
+    {
+      "id": "p_tejido",
+      "type": "project",
+      "name": "Tejido de Memorias",
+      "year": 2026,
+      "status": "planned",
+      "territory": "Centro Abierto",
+      "format": "archivo",
+      "aliases": [
+        "tejido de memorias",
+        "archivo"
+      ],
+      "requiredCapabilities": [
+        "c_documenta",
+        "c_mediacion",
+        "c_comunica"
+      ],
+      "description": "Proyecto en preparación de archivo en Centro Abierto. Datos completamente ficticios.",
+      "facts": [
+        "Planificado: 2026",
+        "Territorio: Centro Abierto",
+        "Necesita: documentación, mediación comunitaria, comunicación cultural",
+        "Vínculos propuestos sujetos a acuerdos entre equipos"
+      ],
+      "scale": 0.95,
+      "outcome": null
+    },
+    {
+      "id": "p_senderos",
+      "type": "project",
+      "name": "Senderos Compartidos",
+      "year": 2026,
+      "status": "planned",
+      "territory": "Ladera Verde",
+      "format": "talleres",
+      "aliases": [
+        "senderos compartidos",
+        "talleres"
+      ],
+      "requiredCapabilities": [
+        "c_acceso",
+        "c_mediacion",
+        "c_sostenible"
+      ],
+      "description": "Proyecto en preparación de talleres en Ladera Verde. Datos completamente ficticios.",
+      "facts": [
+        "Planificado: 2026",
+        "Territorio: Ladera Verde",
+        "Necesita: accesibilidad, mediación comunitaria, producción sostenible",
+        "Vínculos propuestos sujetos a acuerdos entre equipos"
+      ],
+      "scale": 0.55,
+      "outcome": null
+    },
+    {
+      "id": "p_puente",
+      "type": "project",
+      "name": "Puente de Orillas",
+      "year": 2026,
+      "status": "planned",
+      "territory": "Ribera Norte",
+      "format": "encuentro",
+      "aliases": [
+        "puente de orillas",
+        "encuentro"
+      ],
+      "requiredCapabilities": [
+        "c_permisos",
+        "c_comunica",
+        "c_sostenible"
+      ],
+      "description": "Proyecto en preparación de encuentro en Ribera Norte. Datos completamente ficticios.",
+      "facts": [
+        "Planificado: 2026",
+        "Territorio: Ribera Norte",
+        "Necesita: gestión de permisos, comunicación cultural, producción sostenible",
+        "Vínculos propuestos sujetos a acuerdos entre equipos"
+      ],
+      "scale": 0.35,
+      "outcome": null
+    },
+    {
+      "id": "a_mesa",
+      "type": "actor",
+      "name": "Mesa de Producción",
+      "territory": "Puerto Claro",
+      "status": "active",
+      "availability": 0.78,
+      "reach": "local",
+      "aliases": [
+        "mesa de producción",
+        "producción"
+      ],
+      "description": "Equipo ficticio de Puerto Claro con experiencia en gestión de permisos, logística itinerante.",
+      "facts": [
+        "Base territorial: Puerto Claro",
+        "Capacidades: Gestión de permisos, Logística itinerante",
+        "Colaboraciones registradas: Cine al Patio, Ronda de Oficios, Linternas del Puerto",
+        "Disponibilidad simulada para 2026: 78 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_trama",
+      "type": "actor",
+      "name": "Colectivo Trama",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.61,
+      "reach": "local",
+      "aliases": [
+        "colectivo trama",
+        "trama"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en mediación comunitaria, comunicación cultural.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Mediación comunitaria, Comunicación cultural",
+        "Colaboraciones registradas: Festival Cauce, Ronda de Oficios, Semilla de Barrio, Huerta de Escenas, Orillas Abiertas",
+        "Disponibilidad simulada para 2026: 61 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_estacion",
+      "type": "actor",
+      "name": "Espacio Estación",
+      "territory": "Centro Abierto",
+      "status": "active",
+      "availability": 0.55,
+      "reach": "regional",
+      "aliases": [
+        "espacio estación",
+        "estación"
+      ],
+      "description": "Equipo ficticio de Centro Abierto con experiencia en logística itinerante, sonido y producción técnica.",
+      "facts": [
+        "Base territorial: Centro Abierto",
+        "Capacidades: Logística itinerante, Sonido y producción técnica",
+        "Colaboraciones registradas: Cine al Patio, Mapa Sonoro, Umbrales en Movimiento, Linternas del Puerto, Laboratorio Nocturno",
+        "Disponibilidad simulada para 2026: 55 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_horizonte",
+      "type": "actor",
+      "name": "Taller Horizonte",
+      "territory": "Ribera Norte",
+      "status": "active",
+      "availability": 0.5,
+      "reach": "regional",
+      "aliases": [
+        "taller horizonte",
+        "horizonte"
+      ],
+      "description": "Equipo ficticio de Ribera Norte con experiencia en accesibilidad, mediación comunitaria.",
+      "facts": [
+        "Base territorial: Ribera Norte",
+        "Capacidades: Accesibilidad, Mediación comunitaria",
+        "Colaboraciones registradas: Festival Cauce, Umbrales en Movimiento, Orillas Abiertas",
+        "Disponibilidad simulada para 2026: 50 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_archivo",
+      "type": "actor",
+      "name": "Archivo Vivo",
+      "territory": "Centro Abierto",
+      "status": "active",
+      "availability": 0.3,
+      "reach": "local",
+      "aliases": [
+        "archivo vivo",
+        "vivo"
+      ],
+      "description": "Equipo ficticio de Centro Abierto con experiencia en documentación, comunicación cultural.",
+      "facts": [
+        "Base territorial: Centro Abierto",
+        "Capacidades: Documentación, Comunicación cultural",
+        "Colaboraciones registradas: Mapa Sonoro, Ronda de Oficios, Hilos de Memoria, Talleres en Red",
+        "Disponibilidad simulada para 2026: 30 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_movil",
+      "type": "actor",
+      "name": "Red Móvil",
+      "territory": "Ribera Norte",
+      "status": "active",
+      "availability": 0.7,
+      "reach": "regional",
+      "aliases": [
+        "red móvil",
+        "móvil"
+      ],
+      "description": "Equipo ficticio de Ribera Norte con experiencia en logística itinerante, sonido y producción técnica.",
+      "facts": [
+        "Base territorial: Ribera Norte",
+        "Capacidades: Logística itinerante, Sonido y producción técnica",
+        "Colaboraciones registradas: Festival Cauce, Umbrales en Movimiento, Laboratorio Nocturno",
+        "Disponibilidad simulada para 2026: 70 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_escuela",
+      "type": "actor",
+      "name": "Escuela de Mediación",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.3,
+      "reach": "regional",
+      "aliases": [
+        "escuela de mediación",
+        "mediación"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en mediación comunitaria.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Mediación comunitaria",
+        "Colaboraciones registradas: Mapa Sonoro, Ronda de Oficios, Semilla de Barrio",
+        "Disponibilidad simulada para 2026: 30 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_faro",
+      "type": "actor",
+      "name": "Equipo Faro",
+      "territory": "Puerto Claro",
+      "status": "active",
+      "availability": 0.9,
+      "reach": "local",
+      "aliases": [
+        "equipo faro",
+        "faro"
+      ],
+      "description": "Equipo ficticio de Puerto Claro con experiencia en gestión de permisos, comunicación cultural.",
+      "facts": [
+        "Base territorial: Puerto Claro",
+        "Capacidades: Gestión de permisos, Comunicación cultural",
+        "Colaboraciones registradas: Cine al Patio, Orillas Abiertas, Laboratorio Nocturno",
+        "Disponibilidad simulada para 2026: 90 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_papel",
+      "type": "actor",
+      "name": "Taller Papel",
+      "territory": "Centro Abierto",
+      "status": "active",
+      "availability": 0.66,
+      "reach": "regional",
+      "aliases": [
+        "taller papel",
+        "papel"
+      ],
+      "description": "Equipo ficticio de Centro Abierto con experiencia en documentación, mediación comunitaria.",
+      "facts": [
+        "Base territorial: Centro Abierto",
+        "Capacidades: Documentación, Mediación comunitaria",
+        "Colaboraciones registradas: Mapa Sonoro, Hilos de Memoria, Talleres en Red",
+        "Disponibilidad simulada para 2026: 66 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_brote",
+      "type": "actor",
+      "name": "Colectivo Brote",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.78,
+      "reach": "local",
+      "aliases": [
+        "colectivo brote",
+        "brote"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en mediación comunitaria, producción sostenible.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Mediación comunitaria, Producción sostenible",
+        "Colaboraciones registradas: Ronda de Oficios, Semilla de Barrio, Huerta de Escenas",
+        "Disponibilidad simulada para 2026: 78 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_sonora",
+      "type": "actor",
+      "name": "Cooperativa Sonora",
+      "territory": "Puerto Claro",
+      "status": "active",
+      "availability": 0.37,
+      "reach": "local",
+      "aliases": [
+        "cooperativa sonora",
+        "sonora"
+      ],
+      "description": "Equipo ficticio de Puerto Claro con experiencia en logística itinerante, sonido y producción técnica.",
+      "facts": [
+        "Base territorial: Puerto Claro",
+        "Capacidades: Logística itinerante, Sonido y producción técnica",
+        "Colaboraciones registradas: Festival Cauce, Umbrales en Movimiento, Linternas del Puerto, Laboratorio Nocturno",
+        "Disponibilidad simulada para 2026: 37 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_pasos",
+      "type": "actor",
+      "name": "Pasos Abiertos",
+      "territory": "Ribera Norte",
+      "status": "active",
+      "availability": 0.82,
+      "reach": "regional",
+      "aliases": [
+        "pasos abiertos",
+        "abiertos"
+      ],
+      "description": "Equipo ficticio de Ribera Norte con experiencia en accesibilidad, logística itinerante.",
+      "facts": [
+        "Base territorial: Ribera Norte",
+        "Capacidades: Accesibilidad, Logística itinerante",
+        "Colaboraciones registradas: Festival Cauce, Umbrales en Movimiento",
+        "Disponibilidad simulada para 2026: 82 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_nido",
+      "type": "actor",
+      "name": "Casa Nido",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.47,
+      "reach": "regional",
+      "aliases": [
+        "casa nido",
+        "nido"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en accesibilidad, mediación comunitaria.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Accesibilidad, Mediación comunitaria",
+        "Colaboraciones registradas: Festival Cauce, Ronda de Oficios, Semilla de Barrio, Huerta de Escenas",
+        "Disponibilidad simulada para 2026: 47 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_lente",
+      "type": "actor",
+      "name": "Laboratorio Lente",
+      "territory": "Centro Abierto",
+      "status": "active",
+      "availability": 0.44,
+      "reach": "regional",
+      "aliases": [
+        "laboratorio lente",
+        "lente"
+      ],
+      "description": "Equipo ficticio de Centro Abierto con experiencia en documentación, sonido y producción técnica.",
+      "facts": [
+        "Base territorial: Centro Abierto",
+        "Capacidades: Documentación, Sonido y producción técnica",
+        "Colaboraciones registradas: Mapa Sonoro, Hilos de Memoria, Talleres en Red",
+        "Disponibilidad simulada para 2026: 44 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_enlace",
+      "type": "actor",
+      "name": "Mesa Enlace",
+      "territory": "Ribera Norte",
+      "status": "active",
+      "availability": 0.37,
+      "reach": "local",
+      "aliases": [
+        "mesa enlace",
+        "enlace"
+      ],
+      "description": "Equipo ficticio de Ribera Norte con experiencia en gestión de permisos, mediación comunitaria, comunicación cultural.",
+      "facts": [
+        "Base territorial: Ribera Norte",
+        "Capacidades: Gestión de permisos, Mediación comunitaria, Comunicación cultural",
+        "Colaboraciones registradas: Cine al Patio, Festival Cauce, Ronda de Oficios, Orillas Abiertas",
+        "Disponibilidad simulada para 2026: 37 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_circular",
+      "type": "actor",
+      "name": "Brigada Circular",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.78,
+      "reach": "regional",
+      "aliases": [
+        "brigada circular",
+        "circular"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en logística itinerante, producción sostenible.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Logística itinerante, Producción sostenible",
+        "Colaboraciones registradas: Semilla de Barrio, Huerta de Escenas",
+        "Disponibilidad simulada para 2026: 78 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_ola",
+      "type": "actor",
+      "name": "Taller Ola",
+      "territory": "Puerto Claro",
+      "status": "active",
+      "availability": 0.26,
+      "reach": "local",
+      "aliases": [
+        "taller ola",
+        "ola"
+      ],
+      "description": "Equipo ficticio de Puerto Claro con experiencia en accesibilidad, sonido y producción técnica.",
+      "facts": [
+        "Base territorial: Puerto Claro",
+        "Capacidades: Accesibilidad, Sonido y producción técnica",
+        "Colaboraciones registradas: Mapa Sonoro, Umbrales en Movimiento",
+        "Disponibilidad simulada para 2026: 26 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_huella",
+      "type": "actor",
+      "name": "Archivo Huella",
+      "territory": "Ribera Norte",
+      "status": "active",
+      "availability": 0.9,
+      "reach": "local",
+      "aliases": [
+        "archivo huella",
+        "huella"
+      ],
+      "description": "Equipo ficticio de Ribera Norte con experiencia en documentación, producción sostenible.",
+      "facts": [
+        "Base territorial: Ribera Norte",
+        "Capacidades: Documentación, Producción sostenible",
+        "Colaboraciones registradas: Talleres en Red",
+        "Disponibilidad simulada para 2026: 90 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_pixel",
+      "type": "actor",
+      "name": "Estudio Píxel",
+      "territory": "Centro Abierto",
+      "status": "active",
+      "availability": 0.42,
+      "reach": "regional",
+      "aliases": [
+        "estudio píxel",
+        "píxel"
+      ],
+      "description": "Equipo ficticio de Centro Abierto con experiencia en accesibilidad, comunicación cultural.",
+      "facts": [
+        "Base territorial: Centro Abierto",
+        "Capacidades: Accesibilidad, Comunicación cultural",
+        "Colaboraciones registradas: aún sin proyecto registrado",
+        "Disponibilidad simulada para 2026: 42 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_ruta",
+      "type": "actor",
+      "name": "Colectivo Ruta",
+      "territory": "Puerto Claro",
+      "status": "active",
+      "availability": 0.42,
+      "reach": "local",
+      "aliases": [
+        "colectivo ruta",
+        "ruta"
+      ],
+      "description": "Equipo ficticio de Puerto Claro con experiencia en gestión de permisos, logística itinerante, producción sostenible.",
+      "facts": [
+        "Base territorial: Puerto Claro",
+        "Capacidades: Gestión de permisos, Logística itinerante, Producción sostenible",
+        "Colaboraciones registradas: Cine al Patio, Ronda de Oficios, Linternas del Puerto",
+        "Disponibilidad simulada para 2026: 42 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_puerta",
+      "type": "actor",
+      "name": "Puerta Común",
+      "territory": "Centro Abierto",
+      "status": "active",
+      "availability": 0.43,
+      "reach": "regional",
+      "aliases": [
+        "puerta común",
+        "común"
+      ],
+      "description": "Equipo ficticio de Centro Abierto con experiencia en gestión de permisos, mediación comunitaria.",
+      "facts": [
+        "Base territorial: Centro Abierto",
+        "Capacidades: Gestión de permisos, Mediación comunitaria",
+        "Colaboraciones registradas: Cine al Patio, Festival Cauce, Mapa Sonoro, Ronda de Oficios, Hilos de Memoria, Orillas Abiertas",
+        "Disponibilidad simulada para 2026: 43 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_telara",
+      "type": "actor",
+      "name": "Red Telar",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.71,
+      "reach": "regional",
+      "aliases": [
+        "red telar",
+        "telar"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en documentación, comunicación cultural.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Documentación, Comunicación cultural",
+        "Colaboraciones registradas: Talleres en Red",
+        "Disponibilidad simulada para 2026: 71 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_marco",
+      "type": "actor",
+      "name": "Escena Marco",
+      "territory": "Ribera Norte",
+      "status": "active",
+      "availability": 0.74,
+      "reach": "local",
+      "aliases": [
+        "escena marco",
+        "marco"
+      ],
+      "description": "Equipo ficticio de Ribera Norte con experiencia en logística itinerante, sonido y producción técnica, comunicación cultural.",
+      "facts": [
+        "Base territorial: Ribera Norte",
+        "Capacidades: Logística itinerante, Sonido y producción técnica, Comunicación cultural",
+        "Colaboraciones registradas: Festival Cauce, Umbrales en Movimiento, Linternas del Puerto, Orillas Abiertas, Laboratorio Nocturno",
+        "Disponibilidad simulada para 2026: 74 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_tierra",
+      "type": "actor",
+      "name": "Tierra Taller",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.68,
+      "reach": "regional",
+      "aliases": [
+        "tierra taller",
+        "taller"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en gestión de permisos, producción sostenible.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Gestión de permisos, Producción sostenible",
+        "Colaboraciones registradas: Ronda de Oficios, Semilla de Barrio, Huerta de Escenas",
+        "Disponibilidad simulada para 2026: 68 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_voz",
+      "type": "actor",
+      "name": "Laboratorio Voz",
+      "territory": "Puerto Claro",
+      "status": "active",
+      "availability": 0.35,
+      "reach": "regional",
+      "aliases": [
+        "laboratorio voz",
+        "voz"
+      ],
+      "description": "Equipo ficticio de Puerto Claro con experiencia en mediación comunitaria, sonido y producción técnica.",
+      "facts": [
+        "Base territorial: Puerto Claro",
+        "Capacidades: Mediación comunitaria, Sonido y producción técnica",
+        "Colaboraciones registradas: Cine al Patio, Mapa Sonoro",
+        "Disponibilidad simulada para 2026: 35 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_puerto",
+      "type": "actor",
+      "name": "Punto Puerto",
+      "territory": "Puerto Claro",
+      "status": "active",
+      "availability": 0.45,
+      "reach": "local",
+      "aliases": [
+        "punto puerto",
+        "puerto"
+      ],
+      "description": "Equipo ficticio de Puerto Claro con experiencia en gestión de permisos, accesibilidad.",
+      "facts": [
+        "Base territorial: Puerto Claro",
+        "Capacidades: Gestión de permisos, Accesibilidad",
+        "Colaboraciones registradas: aún sin proyecto registrado",
+        "Disponibilidad simulada para 2026: 45 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_mimbre",
+      "type": "actor",
+      "name": "Taller Mimbre",
+      "territory": "Ladera Verde",
+      "status": "active",
+      "availability": 0.35,
+      "reach": "regional",
+      "aliases": [
+        "taller mimbre",
+        "mimbre"
+      ],
+      "description": "Equipo ficticio de Ladera Verde con experiencia en accesibilidad, producción sostenible.",
+      "facts": [
+        "Base territorial: Ladera Verde",
+        "Capacidades: Accesibilidad, Producción sostenible",
+        "Colaboraciones registradas: Semilla de Barrio, Huerta de Escenas",
+        "Disponibilidad simulada para 2026: 35 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "a_constela",
+      "type": "actor",
+      "name": "Equipo Constela",
+      "territory": "Centro Abierto",
+      "status": "active",
+      "availability": 0.69,
+      "reach": "local",
+      "aliases": [
+        "equipo constela",
+        "constela"
+      ],
+      "description": "Equipo ficticio de Centro Abierto con experiencia en documentación, comunicación cultural, producción sostenible.",
+      "facts": [
+        "Base territorial: Centro Abierto",
+        "Capacidades: Documentación, Comunicación cultural, Producción sostenible",
+        "Colaboraciones registradas: Hilos de Memoria, Talleres en Red",
+        "Disponibilidad simulada para 2026: 69 / 100",
+        "Contacto simulado: sin datos personales"
+      ]
+    },
+    {
+      "id": "r_permisos",
+      "type": "resource",
+      "name": "Mapa de permisos",
+      "year": 2023,
+      "territory": "Puerto Claro",
+      "status": "available",
+      "quality": 0.96,
+      "version": "1.0",
+      "aliases": [
+        "mapa de permisos",
+        "mapa"
+      ],
+      "description": "Recurso ficticio producido en Cine al Patio; documenta gestión de permisos.",
+      "facts": [
+        "Producido en: Cine al Patio (2023)",
+        "Documenta: Gestión de permisos",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 96 / 100",
+        "Reutilizado en: Ronda de Oficios, Orillas Abiertas"
+      ]
+    },
+    {
+      "id": "r_acceso",
+      "type": "resource",
+      "name": "Kit de accesibilidad",
+      "year": 2024,
+      "territory": "Ribera Norte",
+      "status": "available",
+      "quality": 0.87,
+      "version": "1.0",
+      "aliases": [
+        "kit de accesibilidad",
+        "kit"
+      ],
+      "description": "Recurso ficticio producido en Festival Cauce; documenta accesibilidad.",
+      "facts": [
+        "Producido en: Festival Cauce (2024)",
+        "Documenta: Accesibilidad",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 87 / 100",
+        "Reutilizado en: Umbrales en Movimiento"
+      ]
+    },
+    {
+      "id": "r_rider",
+      "type": "resource",
+      "name": "Rider de sedes móviles",
+      "year": 2024,
+      "territory": "Ribera Norte",
+      "status": "available",
+      "quality": 0.8,
+      "version": "1.0",
+      "aliases": [
+        "rider de sedes móviles",
+        "rider"
+      ],
+      "description": "Recurso ficticio producido en Festival Cauce; documenta logística itinerante, sonido y producción técnica.",
+      "facts": [
+        "Producido en: Festival Cauce (2024)",
+        "Documenta: Logística itinerante, Sonido y producción técnica",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 80 / 100",
+        "Reutilizado en: Laboratorio Nocturno, Umbrales en Movimiento"
+      ]
+    },
+    {
+      "id": "r_bitacora",
+      "type": "resource",
+      "name": "Bitácora de entrevistas",
+      "year": 2024,
+      "territory": "Centro Abierto",
+      "status": "available",
+      "quality": 0.78,
+      "version": "1.0",
+      "aliases": [
+        "bitácora de entrevistas",
+        "bitácora"
+      ],
+      "description": "Recurso ficticio producido en Mapa Sonoro; documenta documentación.",
+      "facts": [
+        "Producido en: Mapa Sonoro (2024)",
+        "Documenta: Documentación",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 78 / 100",
+        "Reutilizado en: Ronda de Oficios"
+      ]
+    },
+    {
+      "id": "r_mediacion",
+      "type": "resource",
+      "name": "Guía de mediación",
+      "year": 2025,
+      "territory": "Ladera Verde",
+      "status": "available",
+      "quality": 0.92,
+      "version": "1.0",
+      "aliases": [
+        "guía de mediación",
+        "guía"
+      ],
+      "description": "Recurso ficticio producido en Ronda de Oficios; documenta mediación comunitaria.",
+      "facts": [
+        "Producido en: Ronda de Oficios (2025)",
+        "Documenta: Mediación comunitaria",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 92 / 100",
+        "Reutilizado en: aún sin reutilización registrada"
+      ]
+    },
+    {
+      "id": "r_senal",
+      "type": "resource",
+      "name": "Señalética que acompaña",
+      "year": 2024,
+      "territory": "Ribera Norte",
+      "status": "available",
+      "quality": 0.86,
+      "version": "1.0",
+      "aliases": [
+        "señalética que acompaña",
+        "señalética"
+      ],
+      "description": "Recurso ficticio producido en Festival Cauce; documenta accesibilidad, comunicación cultural.",
+      "facts": [
+        "Producido en: Festival Cauce (2024)",
+        "Documenta: Accesibilidad, Comunicación cultural",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 86 / 100",
+        "Reutilizado en: Talleres en Red, Laboratorio Nocturno"
+      ]
+    },
+    {
+      "id": "r_rutas",
+      "type": "resource",
+      "name": "Plan de rutas compartidas",
+      "year": 2022,
+      "territory": "Ladera Verde",
+      "status": "available",
+      "quality": 0.75,
+      "version": "1.0",
+      "aliases": [
+        "plan de rutas compartidas",
+        "plan"
+      ],
+      "description": "Recurso ficticio producido en Semilla de Barrio; documenta logística itinerante, producción sostenible.",
+      "facts": [
+        "Producido en: Semilla de Barrio (2022)",
+        "Documenta: Logística itinerante, Producción sostenible",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 75 / 100",
+        "Reutilizado en: Huerta de Escenas"
+      ]
+    },
+    {
+      "id": "r_luces",
+      "type": "resource",
+      "name": "Inventario de montaje ligero",
+      "year": 2022,
+      "territory": "Puerto Claro",
+      "status": "available",
+      "quality": 0.67,
+      "version": "1.0",
+      "aliases": [
+        "inventario de montaje ligero",
+        "inventario"
+      ],
+      "description": "Recurso ficticio producido en Linternas del Puerto; documenta logística itinerante.",
+      "facts": [
+        "Producido en: Linternas del Puerto (2022)",
+        "Documenta: Logística itinerante",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 67 / 100",
+        "Reutilizado en: Cine al Patio, Festival Cauce, Umbrales en Movimiento, Laboratorio Nocturno"
+      ]
+    },
+    {
+      "id": "r_cuidados",
+      "type": "resource",
+      "name": "Protocolo de bienvenida",
+      "year": 2023,
+      "territory": "Ladera Verde",
+      "status": "available",
+      "quality": 0.91,
+      "version": "1.0",
+      "aliases": [
+        "protocolo de bienvenida",
+        "protocolo"
+      ],
+      "description": "Recurso ficticio producido en Huerta de Escenas; documenta accesibilidad, mediación comunitaria.",
+      "facts": [
+        "Producido en: Huerta de Escenas (2023)",
+        "Documenta: Accesibilidad, Mediación comunitaria",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 91 / 100",
+        "Reutilizado en: Mapa Sonoro, Ronda de Oficios, Umbrales en Movimiento, Orillas Abiertas"
+      ]
+    },
+    {
+      "id": "r_presupuesto",
+      "type": "resource",
+      "name": "Tablero de producción",
+      "year": 2023,
+      "territory": "Puerto Claro",
+      "status": "available",
+      "quality": 0.67,
+      "version": "1.0",
+      "aliases": [
+        "tablero de producción",
+        "tablero"
+      ],
+      "description": "Recurso ficticio producido en Cine al Patio; documenta gestión de permisos, logística itinerante.",
+      "facts": [
+        "Producido en: Cine al Patio (2023)",
+        "Documenta: Gestión de permisos, Logística itinerante",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 67 / 100",
+        "Reutilizado en: Ronda de Oficios, Orillas Abiertas"
+      ]
+    },
+    {
+      "id": "r_audio",
+      "type": "resource",
+      "name": "Prueba de escucha en exterior",
+      "year": 2022,
+      "territory": "Puerto Claro",
+      "status": "available",
+      "quality": 0.7,
+      "version": "1.0",
+      "aliases": [
+        "prueba de escucha en exterior",
+        "prueba"
+      ],
+      "description": "Recurso ficticio producido en Linternas del Puerto; documenta sonido y producción técnica.",
+      "facts": [
+        "Producido en: Linternas del Puerto (2022)",
+        "Documenta: Sonido y producción técnica",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 70 / 100",
+        "Reutilizado en: Umbrales en Movimiento, Laboratorio Nocturno"
+      ]
+    },
+    {
+      "id": "r_archivo",
+      "type": "resource",
+      "name": "Manual de archivo compartido",
+      "year": 2023,
+      "territory": "Centro Abierto",
+      "status": "available",
+      "quality": 0.77,
+      "version": "1.0",
+      "aliases": [
+        "manual de archivo compartido",
+        "manual"
+      ],
+      "description": "Recurso ficticio producido en Hilos de Memoria; documenta documentación, comunicación cultural.",
+      "facts": [
+        "Producido en: Hilos de Memoria (2023)",
+        "Documenta: Documentación, Comunicación cultural",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 77 / 100",
+        "Reutilizado en: Orillas Abiertas"
+      ]
+    },
+    {
+      "id": "r_convoca",
+      "type": "resource",
+      "name": "Cuaderno de convocatorias",
+      "year": 2024,
+      "territory": "Ribera Norte",
+      "status": "available",
+      "quality": 0.84,
+      "version": "1.0",
+      "aliases": [
+        "cuaderno de convocatorias",
+        "cuaderno"
+      ],
+      "description": "Recurso ficticio producido en Orillas Abiertas; documenta mediación comunitaria, comunicación cultural.",
+      "facts": [
+        "Producido en: Orillas Abiertas (2024)",
+        "Documenta: Mediación comunitaria, Comunicación cultural",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 84 / 100",
+        "Reutilizado en: Ronda de Oficios, Laboratorio Nocturno"
+      ]
+    },
+    {
+      "id": "r_voluntarios",
+      "type": "resource",
+      "name": "Mapa de turnos y cuidados",
+      "year": 2024,
+      "territory": "Ribera Norte",
+      "status": "available",
+      "quality": 0.74,
+      "version": "1.0",
+      "aliases": [
+        "mapa de turnos y cuidados",
+        "mapa"
+      ],
+      "description": "Recurso ficticio producido en Orillas Abiertas; documenta logística itinerante, mediación comunitaria.",
+      "facts": [
+        "Producido en: Orillas Abiertas (2024)",
+        "Documenta: Logística itinerante, Mediación comunitaria",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 74 / 100",
+        "Reutilizado en: Ronda de Oficios, Umbrales en Movimiento"
+      ]
+    },
+    {
+      "id": "r_evalua",
+      "type": "resource",
+      "name": "Matriz de aprendizajes",
+      "year": 2025,
+      "territory": "Centro Abierto",
+      "status": "available",
+      "quality": 0.65,
+      "version": "1.0",
+      "aliases": [
+        "matriz de aprendizajes",
+        "matriz"
+      ],
+      "description": "Recurso ficticio producido en Talleres en Red; documenta documentación, producción sostenible.",
+      "facts": [
+        "Producido en: Talleres en Red (2025)",
+        "Documenta: Documentación, Producción sostenible",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 65 / 100",
+        "Reutilizado en: aún sin reutilización registrada"
+      ]
+    },
+    {
+      "id": "r_repara",
+      "type": "resource",
+      "name": "Banco de materiales reparables",
+      "year": 2022,
+      "territory": "Ladera Verde",
+      "status": "available",
+      "quality": 0.65,
+      "version": "1.0",
+      "aliases": [
+        "banco de materiales reparables",
+        "banco"
+      ],
+      "description": "Recurso ficticio producido en Semilla de Barrio; documenta logística itinerante, producción sostenible.",
+      "facts": [
+        "Producido en: Semilla de Barrio (2022)",
+        "Documenta: Logística itinerante, Producción sostenible",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 65 / 100",
+        "Reutilizado en: Cine al Patio, Festival Cauce, Ronda de Oficios, Laboratorio Nocturno"
+      ]
+    },
+    {
+      "id": "r_proyecta",
+      "type": "resource",
+      "name": "Guía de proyección accesible",
+      "year": 2025,
+      "territory": "Ribera Norte",
+      "status": "available",
+      "quality": 0.93,
+      "version": "1.0",
+      "aliases": [
+        "guía de proyección accesible",
+        "guía"
+      ],
+      "description": "Recurso ficticio producido en Umbrales en Movimiento; documenta accesibilidad, sonido y producción técnica.",
+      "facts": [
+        "Producido en: Umbrales en Movimiento (2025)",
+        "Documenta: Accesibilidad, Sonido y producción técnica",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 93 / 100",
+        "Reutilizado en: aún sin reutilización registrada"
+      ]
+    },
+    {
+      "id": "r_licencias",
+      "type": "resource",
+      "name": "Plantilla de acuerdos de archivo",
+      "year": 2023,
+      "territory": "Centro Abierto",
+      "status": "available",
+      "quality": 0.95,
+      "version": "1.0",
+      "aliases": [
+        "plantilla de acuerdos de archivo",
+        "plantilla"
+      ],
+      "description": "Recurso ficticio producido en Hilos de Memoria; documenta gestión de permisos, documentación.",
+      "facts": [
+        "Producido en: Hilos de Memoria (2023)",
+        "Documenta: Gestión de permisos, Documentación",
+        "Licencia de demostración: reutilización simulada",
+        "Completitud simulada: 95 / 100",
+        "Reutilizado en: Mapa Sonoro, Ronda de Oficios, Orillas Abiertas, Talleres en Red"
+      ]
+    }
   ],
   "edges": [
-    {"id":"e01","source":"a_mesa","target":"p_patio","type":"participated","label":"produjo","year":2023},
-    {"id":"e02","source":"a_mesa","target":"p_ronda","type":"participated","label":"coordinó","year":2025},
-    {"id":"e03","source":"a_trama","target":"p_cauce","type":"participated","label":"convocó","year":2024},
-    {"id":"e04","source":"a_trama","target":"p_ronda","type":"participated","label":"articuló","year":2025},
-    {"id":"e05","source":"a_estacion","target":"p_patio","type":"participated","label":"alojó","year":2023},
-    {"id":"e06","source":"a_estacion","target":"p_mapa","type":"participated","label":"alojó","year":2024},
-    {"id":"e07","source":"a_horizonte","target":"p_cauce","type":"participated","label":"asesoró","year":2024},
-    {"id":"e08","source":"a_horizonte","target":"p_umbrales","type":"participated","label":"adaptó","year":2025},
-    {"id":"e09","source":"a_archivo","target":"p_mapa","type":"participated","label":"documentó","year":2024},
-    {"id":"e10","source":"a_archivo","target":"p_ronda","type":"participated","label":"registró","year":2025},
-    {"id":"e11","source":"a_movil","target":"p_cauce","type":"participated","label":"montó","year":2024},
-    {"id":"e12","source":"a_movil","target":"p_umbrales","type":"participated","label":"montó","year":2025},
-    {"id":"e13","source":"a_escuela","target":"p_mapa","type":"participated","label":"medió","year":2024},
-    {"id":"e14","source":"a_escuela","target":"p_ronda","type":"participated","label":"medió","year":2025},
-    {"id":"e15","source":"a_mesa","target":"c_permisos","type":"has_capability","label":"aporta","year":2023},
-    {"id":"e16","source":"a_mesa","target":"c_logistica","type":"has_capability","label":"aporta","year":2023},
-    {"id":"e17","source":"a_trama","target":"c_mediacion","type":"has_capability","label":"aporta","year":2024},
-    {"id":"e18","source":"a_estacion","target":"c_logistica","type":"has_capability","label":"aporta","year":2023},
-    {"id":"e19","source":"a_horizonte","target":"c_acceso","type":"has_capability","label":"aporta","year":2024},
-    {"id":"e20","source":"a_archivo","target":"c_documenta","type":"has_capability","label":"aporta","year":2024},
-    {"id":"e21","source":"a_movil","target":"c_logistica","type":"has_capability","label":"aporta","year":2024},
-    {"id":"e22","source":"a_escuela","target":"c_mediacion","type":"has_capability","label":"aporta","year":2024},
-    {"id":"e23","source":"p_patio","target":"r_permisos","type":"produced","label":"produjo","year":2023},
-    {"id":"e24","source":"p_cauce","target":"r_acceso","type":"produced","label":"produjo","year":2024},
-    {"id":"e25","source":"p_cauce","target":"r_rider","type":"produced","label":"produjo","year":2024},
-    {"id":"e26","source":"p_mapa","target":"r_bitacora","type":"produced","label":"produjo","year":2024},
-    {"id":"e27","source":"p_ronda","target":"r_mediacion","type":"produced","label":"produjo","year":2025},
-    {"id":"e28","source":"p_ronda","target":"r_permisos","type":"reused","label":"reutilizó","year":2025},
-    {"id":"e29","source":"p_ronda","target":"r_bitacora","type":"reused","label":"reutilizó","year":2025},
-    {"id":"e30","source":"p_umbrales","target":"r_acceso","type":"reused","label":"reutilizó","year":2025},
-    {"id":"e31","source":"p_umbrales","target":"r_rider","type":"reused","label":"reutilizó","year":2025},
-    {"id":"e32","source":"r_permisos","target":"c_permisos","type":"documents","label":"documenta","year":2023},
-    {"id":"e33","source":"r_acceso","target":"c_acceso","type":"documents","label":"documenta","year":2024},
-    {"id":"e34","source":"r_rider","target":"c_logistica","type":"documents","label":"documenta","year":2024},
-    {"id":"e35","source":"r_bitacora","target":"c_documenta","type":"documents","label":"documenta","year":2024},
-    {"id":"e36","source":"r_mediacion","target":"c_mediacion","type":"documents","label":"documenta","year":2025}
+    {
+      "id": "e001",
+      "source": "p_patio",
+      "target": "c_permisos",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2023
+    },
+    {
+      "id": "e002",
+      "source": "p_patio",
+      "target": "c_logistica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2023
+    },
+    {
+      "id": "e003",
+      "source": "p_patio",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2023
+    },
+    {
+      "id": "e004",
+      "source": "p_cauce",
+      "target": "c_acceso",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e005",
+      "source": "p_cauce",
+      "target": "c_logistica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e006",
+      "source": "p_cauce",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e007",
+      "source": "p_mapa",
+      "target": "c_documenta",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e008",
+      "source": "p_mapa",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e009",
+      "source": "p_mapa",
+      "target": "c_sonido",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e010",
+      "source": "p_ronda",
+      "target": "c_permisos",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e011",
+      "source": "p_ronda",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e012",
+      "source": "p_ronda",
+      "target": "c_sostenible",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e013",
+      "source": "p_umbrales",
+      "target": "c_acceso",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e014",
+      "source": "p_umbrales",
+      "target": "c_logistica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e015",
+      "source": "p_umbrales",
+      "target": "c_sonido",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e016",
+      "source": "p_semilla",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2022
+    },
+    {
+      "id": "e017",
+      "source": "p_semilla",
+      "target": "c_sostenible",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2022
+    },
+    {
+      "id": "e018",
+      "source": "p_linternas",
+      "target": "c_permisos",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2022
+    },
+    {
+      "id": "e019",
+      "source": "p_linternas",
+      "target": "c_logistica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2022
+    },
+    {
+      "id": "e020",
+      "source": "p_linternas",
+      "target": "c_sonido",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2022
+    },
+    {
+      "id": "e021",
+      "source": "p_hilos",
+      "target": "c_documenta",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2023
+    },
+    {
+      "id": "e022",
+      "source": "p_hilos",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2023
+    },
+    {
+      "id": "e023",
+      "source": "p_huerta",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2023
+    },
+    {
+      "id": "e024",
+      "source": "p_huerta",
+      "target": "c_sostenible",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2023
+    },
+    {
+      "id": "e025",
+      "source": "p_orillas",
+      "target": "c_permisos",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e026",
+      "source": "p_orillas",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e027",
+      "source": "p_orillas",
+      "target": "c_comunica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2024
+    },
+    {
+      "id": "e028",
+      "source": "p_talleres",
+      "target": "c_documenta",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e029",
+      "source": "p_talleres",
+      "target": "c_comunica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e030",
+      "source": "p_talleres",
+      "target": "c_sostenible",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e031",
+      "source": "p_nocturno",
+      "target": "c_logistica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e032",
+      "source": "p_nocturno",
+      "target": "c_sonido",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e033",
+      "source": "p_nocturno",
+      "target": "c_comunica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2025
+    },
+    {
+      "id": "e034",
+      "source": "p_mareas",
+      "target": "c_permisos",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e035",
+      "source": "p_mareas",
+      "target": "c_acceso",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e036",
+      "source": "p_mareas",
+      "target": "c_logistica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e037",
+      "source": "p_mareas",
+      "target": "c_sonido",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e038",
+      "source": "p_tejido",
+      "target": "c_documenta",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e039",
+      "source": "p_tejido",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e040",
+      "source": "p_tejido",
+      "target": "c_comunica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e041",
+      "source": "p_senderos",
+      "target": "c_acceso",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e042",
+      "source": "p_senderos",
+      "target": "c_mediacion",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e043",
+      "source": "p_senderos",
+      "target": "c_sostenible",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e044",
+      "source": "p_puente",
+      "target": "c_permisos",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e045",
+      "source": "p_puente",
+      "target": "c_comunica",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e046",
+      "source": "p_puente",
+      "target": "c_sostenible",
+      "type": "requires",
+      "label": "requiere",
+      "year": 2026
+    },
+    {
+      "id": "e047",
+      "source": "a_mesa",
+      "target": "c_permisos",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e048",
+      "source": "a_mesa",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e049",
+      "source": "a_trama",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e050",
+      "source": "a_trama",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e051",
+      "source": "a_estacion",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e052",
+      "source": "a_estacion",
+      "target": "c_sonido",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e053",
+      "source": "a_horizonte",
+      "target": "c_acceso",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e054",
+      "source": "a_horizonte",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e055",
+      "source": "a_archivo",
+      "target": "c_documenta",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e056",
+      "source": "a_archivo",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e057",
+      "source": "a_movil",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e058",
+      "source": "a_movil",
+      "target": "c_sonido",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e059",
+      "source": "a_escuela",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e060",
+      "source": "a_faro",
+      "target": "c_permisos",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e061",
+      "source": "a_faro",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e062",
+      "source": "a_papel",
+      "target": "c_documenta",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e063",
+      "source": "a_papel",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e064",
+      "source": "a_brote",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e065",
+      "source": "a_brote",
+      "target": "c_sostenible",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e066",
+      "source": "a_sonora",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e067",
+      "source": "a_sonora",
+      "target": "c_sonido",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e068",
+      "source": "a_pasos",
+      "target": "c_acceso",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e069",
+      "source": "a_pasos",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e070",
+      "source": "a_nido",
+      "target": "c_acceso",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e071",
+      "source": "a_nido",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e072",
+      "source": "a_lente",
+      "target": "c_documenta",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e073",
+      "source": "a_lente",
+      "target": "c_sonido",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e074",
+      "source": "a_enlace",
+      "target": "c_permisos",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e075",
+      "source": "a_enlace",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e076",
+      "source": "a_enlace",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e077",
+      "source": "a_circular",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e078",
+      "source": "a_circular",
+      "target": "c_sostenible",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e079",
+      "source": "a_ola",
+      "target": "c_acceso",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e080",
+      "source": "a_ola",
+      "target": "c_sonido",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e081",
+      "source": "a_huella",
+      "target": "c_documenta",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e082",
+      "source": "a_huella",
+      "target": "c_sostenible",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e083",
+      "source": "a_pixel",
+      "target": "c_acceso",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e084",
+      "source": "a_pixel",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e085",
+      "source": "a_ruta",
+      "target": "c_permisos",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e086",
+      "source": "a_ruta",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e087",
+      "source": "a_ruta",
+      "target": "c_sostenible",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e088",
+      "source": "a_puerta",
+      "target": "c_permisos",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e089",
+      "source": "a_puerta",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e090",
+      "source": "a_telara",
+      "target": "c_documenta",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e091",
+      "source": "a_telara",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e092",
+      "source": "a_marco",
+      "target": "c_logistica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e093",
+      "source": "a_marco",
+      "target": "c_sonido",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e094",
+      "source": "a_marco",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e095",
+      "source": "a_tierra",
+      "target": "c_permisos",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e096",
+      "source": "a_tierra",
+      "target": "c_sostenible",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e097",
+      "source": "a_voz",
+      "target": "c_mediacion",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e098",
+      "source": "a_voz",
+      "target": "c_sonido",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e099",
+      "source": "a_puerto",
+      "target": "c_permisos",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e100",
+      "source": "a_puerto",
+      "target": "c_acceso",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e101",
+      "source": "a_mimbre",
+      "target": "c_acceso",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e102",
+      "source": "a_mimbre",
+      "target": "c_sostenible",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e103",
+      "source": "a_constela",
+      "target": "c_documenta",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e104",
+      "source": "a_constela",
+      "target": "c_comunica",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e105",
+      "source": "a_constela",
+      "target": "c_sostenible",
+      "type": "has_capability",
+      "label": "aporta",
+      "year": 2022
+    },
+    {
+      "id": "e106",
+      "source": "a_mesa",
+      "target": "p_patio",
+      "type": "participated",
+      "label": "participó",
+      "year": 2023
+    },
+    {
+      "id": "e107",
+      "source": "a_mesa",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "participó",
+      "year": 2025
+    },
+    {
+      "id": "e108",
+      "source": "a_trama",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "participó",
+      "year": 2024
+    },
+    {
+      "id": "e109",
+      "source": "a_trama",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "participó",
+      "year": 2025
+    },
+    {
+      "id": "e110",
+      "source": "a_estacion",
+      "target": "p_patio",
+      "type": "participated",
+      "label": "participó",
+      "year": 2023
+    },
+    {
+      "id": "e111",
+      "source": "a_estacion",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "participó",
+      "year": 2024
+    },
+    {
+      "id": "e112",
+      "source": "a_horizonte",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "participó",
+      "year": 2024
+    },
+    {
+      "id": "e113",
+      "source": "a_horizonte",
+      "target": "p_umbrales",
+      "type": "participated",
+      "label": "participó",
+      "year": 2025
+    },
+    {
+      "id": "e114",
+      "source": "a_archivo",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "participó",
+      "year": 2024
+    },
+    {
+      "id": "e115",
+      "source": "a_archivo",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "participó",
+      "year": 2025
+    },
+    {
+      "id": "e116",
+      "source": "a_movil",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "participó",
+      "year": 2024
+    },
+    {
+      "id": "e117",
+      "source": "a_movil",
+      "target": "p_umbrales",
+      "type": "participated",
+      "label": "participó",
+      "year": 2025
+    },
+    {
+      "id": "e118",
+      "source": "a_escuela",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "participó",
+      "year": 2024
+    },
+    {
+      "id": "e119",
+      "source": "a_escuela",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "participó",
+      "year": 2025
+    },
+    {
+      "id": "e120",
+      "source": "a_puerta",
+      "target": "p_patio",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e121",
+      "source": "a_ruta",
+      "target": "p_patio",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e122",
+      "source": "a_enlace",
+      "target": "p_patio",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e123",
+      "source": "a_voz",
+      "target": "p_patio",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e124",
+      "source": "a_faro",
+      "target": "p_patio",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e125",
+      "source": "a_pasos",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e126",
+      "source": "a_nido",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e127",
+      "source": "a_enlace",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e128",
+      "source": "a_marco",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e129",
+      "source": "a_puerta",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e130",
+      "source": "a_sonora",
+      "target": "p_cauce",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e131",
+      "source": "a_papel",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e132",
+      "source": "a_lente",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e133",
+      "source": "a_puerta",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e134",
+      "source": "a_voz",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e135",
+      "source": "a_ola",
+      "target": "p_mapa",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e136",
+      "source": "a_tierra",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e137",
+      "source": "a_brote",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e138",
+      "source": "a_ruta",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e139",
+      "source": "a_puerta",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e140",
+      "source": "a_nido",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e141",
+      "source": "a_enlace",
+      "target": "p_ronda",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e142",
+      "source": "a_marco",
+      "target": "p_umbrales",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e143",
+      "source": "a_pasos",
+      "target": "p_umbrales",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e144",
+      "source": "a_estacion",
+      "target": "p_umbrales",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e145",
+      "source": "a_ola",
+      "target": "p_umbrales",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e146",
+      "source": "a_sonora",
+      "target": "p_umbrales",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e147",
+      "source": "a_brote",
+      "target": "p_semilla",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e148",
+      "source": "a_nido",
+      "target": "p_semilla",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e149",
+      "source": "a_escuela",
+      "target": "p_semilla",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e150",
+      "source": "a_trama",
+      "target": "p_semilla",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e151",
+      "source": "a_circular",
+      "target": "p_semilla",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e152",
+      "source": "a_tierra",
+      "target": "p_semilla",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e153",
+      "source": "a_mimbre",
+      "target": "p_semilla",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e154",
+      "source": "a_mesa",
+      "target": "p_linternas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e155",
+      "source": "a_ruta",
+      "target": "p_linternas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e156",
+      "source": "a_estacion",
+      "target": "p_linternas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e157",
+      "source": "a_sonora",
+      "target": "p_linternas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e158",
+      "source": "a_marco",
+      "target": "p_linternas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2022
+    },
+    {
+      "id": "e159",
+      "source": "a_papel",
+      "target": "p_hilos",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e160",
+      "source": "a_archivo",
+      "target": "p_hilos",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e161",
+      "source": "a_lente",
+      "target": "p_hilos",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e162",
+      "source": "a_constela",
+      "target": "p_hilos",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e163",
+      "source": "a_puerta",
+      "target": "p_hilos",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e164",
+      "source": "a_brote",
+      "target": "p_huerta",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e165",
+      "source": "a_nido",
+      "target": "p_huerta",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e166",
+      "source": "a_circular",
+      "target": "p_huerta",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e167",
+      "source": "a_mimbre",
+      "target": "p_huerta",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e168",
+      "source": "a_trama",
+      "target": "p_huerta",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e169",
+      "source": "a_tierra",
+      "target": "p_huerta",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2023
+    },
+    {
+      "id": "e170",
+      "source": "a_enlace",
+      "target": "p_orillas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e171",
+      "source": "a_trama",
+      "target": "p_orillas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e172",
+      "source": "a_horizonte",
+      "target": "p_orillas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e173",
+      "source": "a_faro",
+      "target": "p_orillas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e174",
+      "source": "a_puerta",
+      "target": "p_orillas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e175",
+      "source": "a_marco",
+      "target": "p_orillas",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2024
+    },
+    {
+      "id": "e176",
+      "source": "a_constela",
+      "target": "p_talleres",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e177",
+      "source": "a_archivo",
+      "target": "p_talleres",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e178",
+      "source": "a_huella",
+      "target": "p_talleres",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e179",
+      "source": "a_telara",
+      "target": "p_talleres",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e180",
+      "source": "a_lente",
+      "target": "p_talleres",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e181",
+      "source": "a_papel",
+      "target": "p_talleres",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e182",
+      "source": "a_marco",
+      "target": "p_nocturno",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e183",
+      "source": "a_sonora",
+      "target": "p_nocturno",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e184",
+      "source": "a_estacion",
+      "target": "p_nocturno",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e185",
+      "source": "a_movil",
+      "target": "p_nocturno",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e186",
+      "source": "a_faro",
+      "target": "p_nocturno",
+      "type": "participated",
+      "label": "colaboró",
+      "year": 2025
+    },
+    {
+      "id": "e187",
+      "source": "p_patio",
+      "target": "r_permisos",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2023
+    },
+    {
+      "id": "e188",
+      "source": "r_permisos",
+      "target": "c_permisos",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e189",
+      "source": "p_ronda",
+      "target": "r_permisos",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e190",
+      "source": "p_orillas",
+      "target": "r_permisos",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e191",
+      "source": "p_cauce",
+      "target": "r_acceso",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2024
+    },
+    {
+      "id": "e192",
+      "source": "r_acceso",
+      "target": "c_acceso",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e193",
+      "source": "p_umbrales",
+      "target": "r_acceso",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e194",
+      "source": "p_cauce",
+      "target": "r_rider",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2024
+    },
+    {
+      "id": "e195",
+      "source": "r_rider",
+      "target": "c_logistica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e196",
+      "source": "r_rider",
+      "target": "c_sonido",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e197",
+      "source": "p_nocturno",
+      "target": "r_rider",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e198",
+      "source": "p_mapa",
+      "target": "r_bitacora",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2024
+    },
+    {
+      "id": "e199",
+      "source": "r_bitacora",
+      "target": "c_documenta",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e200",
+      "source": "p_ronda",
+      "target": "r_mediacion",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2025
+    },
+    {
+      "id": "e201",
+      "source": "r_mediacion",
+      "target": "c_mediacion",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2025
+    },
+    {
+      "id": "e202",
+      "source": "p_cauce",
+      "target": "r_senal",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2024
+    },
+    {
+      "id": "e203",
+      "source": "r_senal",
+      "target": "c_acceso",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e204",
+      "source": "r_senal",
+      "target": "c_comunica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e205",
+      "source": "p_talleres",
+      "target": "r_senal",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e206",
+      "source": "p_nocturno",
+      "target": "r_senal",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e207",
+      "source": "p_semilla",
+      "target": "r_rutas",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2022
+    },
+    {
+      "id": "e208",
+      "source": "r_rutas",
+      "target": "c_logistica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2022
+    },
+    {
+      "id": "e209",
+      "source": "r_rutas",
+      "target": "c_sostenible",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2022
+    },
+    {
+      "id": "e210",
+      "source": "p_huerta",
+      "target": "r_rutas",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2023
+    },
+    {
+      "id": "e211",
+      "source": "p_linternas",
+      "target": "r_luces",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2022
+    },
+    {
+      "id": "e212",
+      "source": "r_luces",
+      "target": "c_logistica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2022
+    },
+    {
+      "id": "e213",
+      "source": "p_patio",
+      "target": "r_luces",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2023
+    },
+    {
+      "id": "e214",
+      "source": "p_cauce",
+      "target": "r_luces",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e215",
+      "source": "p_umbrales",
+      "target": "r_luces",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e216",
+      "source": "p_nocturno",
+      "target": "r_luces",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e217",
+      "source": "p_huerta",
+      "target": "r_cuidados",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2023
+    },
+    {
+      "id": "e218",
+      "source": "r_cuidados",
+      "target": "c_acceso",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e219",
+      "source": "r_cuidados",
+      "target": "c_mediacion",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e220",
+      "source": "p_mapa",
+      "target": "r_cuidados",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e221",
+      "source": "p_ronda",
+      "target": "r_cuidados",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e222",
+      "source": "p_umbrales",
+      "target": "r_cuidados",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e223",
+      "source": "p_orillas",
+      "target": "r_cuidados",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e224",
+      "source": "p_patio",
+      "target": "r_presupuesto",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2023
+    },
+    {
+      "id": "e225",
+      "source": "r_presupuesto",
+      "target": "c_permisos",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e226",
+      "source": "r_presupuesto",
+      "target": "c_logistica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e227",
+      "source": "p_ronda",
+      "target": "r_presupuesto",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e228",
+      "source": "p_orillas",
+      "target": "r_presupuesto",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e229",
+      "source": "p_linternas",
+      "target": "r_audio",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2022
+    },
+    {
+      "id": "e230",
+      "source": "r_audio",
+      "target": "c_sonido",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2022
+    },
+    {
+      "id": "e231",
+      "source": "p_umbrales",
+      "target": "r_audio",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e232",
+      "source": "p_nocturno",
+      "target": "r_audio",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e233",
+      "source": "p_hilos",
+      "target": "r_archivo",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2023
+    },
+    {
+      "id": "e234",
+      "source": "r_archivo",
+      "target": "c_documenta",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e235",
+      "source": "r_archivo",
+      "target": "c_comunica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e236",
+      "source": "p_orillas",
+      "target": "r_archivo",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e237",
+      "source": "p_orillas",
+      "target": "r_convoca",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2024
+    },
+    {
+      "id": "e238",
+      "source": "r_convoca",
+      "target": "c_mediacion",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e239",
+      "source": "r_convoca",
+      "target": "c_comunica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e240",
+      "source": "p_ronda",
+      "target": "r_convoca",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e241",
+      "source": "p_nocturno",
+      "target": "r_convoca",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e242",
+      "source": "p_orillas",
+      "target": "r_voluntarios",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2024
+    },
+    {
+      "id": "e243",
+      "source": "r_voluntarios",
+      "target": "c_logistica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e244",
+      "source": "r_voluntarios",
+      "target": "c_mediacion",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2024
+    },
+    {
+      "id": "e245",
+      "source": "p_ronda",
+      "target": "r_voluntarios",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e246",
+      "source": "p_umbrales",
+      "target": "r_voluntarios",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e247",
+      "source": "p_talleres",
+      "target": "r_evalua",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2025
+    },
+    {
+      "id": "e248",
+      "source": "r_evalua",
+      "target": "c_documenta",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2025
+    },
+    {
+      "id": "e249",
+      "source": "r_evalua",
+      "target": "c_sostenible",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2025
+    },
+    {
+      "id": "e250",
+      "source": "p_semilla",
+      "target": "r_repara",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2022
+    },
+    {
+      "id": "e251",
+      "source": "r_repara",
+      "target": "c_logistica",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2022
+    },
+    {
+      "id": "e252",
+      "source": "r_repara",
+      "target": "c_sostenible",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2022
+    },
+    {
+      "id": "e253",
+      "source": "p_patio",
+      "target": "r_repara",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2023
+    },
+    {
+      "id": "e254",
+      "source": "p_cauce",
+      "target": "r_repara",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e255",
+      "source": "p_ronda",
+      "target": "r_repara",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e256",
+      "source": "p_nocturno",
+      "target": "r_repara",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e257",
+      "source": "p_umbrales",
+      "target": "r_proyecta",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2025
+    },
+    {
+      "id": "e258",
+      "source": "r_proyecta",
+      "target": "c_acceso",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2025
+    },
+    {
+      "id": "e259",
+      "source": "r_proyecta",
+      "target": "c_sonido",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2025
+    },
+    {
+      "id": "e260",
+      "source": "p_hilos",
+      "target": "r_licencias",
+      "type": "produced",
+      "label": "produjo",
+      "year": 2023
+    },
+    {
+      "id": "e261",
+      "source": "r_licencias",
+      "target": "c_permisos",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e262",
+      "source": "r_licencias",
+      "target": "c_documenta",
+      "type": "documents",
+      "label": "documenta",
+      "year": 2023
+    },
+    {
+      "id": "e263",
+      "source": "p_mapa",
+      "target": "r_licencias",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e264",
+      "source": "p_ronda",
+      "target": "r_licencias",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e265",
+      "source": "p_orillas",
+      "target": "r_licencias",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2024
+    },
+    {
+      "id": "e266",
+      "source": "p_talleres",
+      "target": "r_licencias",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e267",
+      "source": "p_ronda",
+      "target": "r_bitacora",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    },
+    {
+      "id": "e268",
+      "source": "p_umbrales",
+      "target": "r_rider",
+      "type": "reused",
+      "label": "reutilizó",
+      "year": 2025
+    }
   ],
   "scenarios": [
-    {"id":"all","label":"Toda la red","question":"¿Cómo se conectan los cinco proyectos?","answer":"Explorá los nodos o elegí una pregunta para ver una ruta concreta entre capacidades y proyectos.","edge_ids":[]},
-    {"id":"access","label":"Accesibilidad","question":"¿Quién puede ayudar con accesibilidad en una sede nueva?","answer":"Taller Horizonte aportó accesibilidad a Festival Cauce. Ese proyecto produjo un kit que después reutilizó Umbrales en Movimiento.","edge_ids":["e07","e19","e24","e30","e33"]},
-    {"id":"permits","label":"Permisos","question":"¿Cómo resolvemos permisos para otro encuentro?","answer":"Mesa de Producción trabajó en Cine al Patio y aporta gestión de permisos. El mapa creado allí se reutilizó en Ronda de Oficios.","edge_ids":["e01","e15","e23","e28","e32"]},
-    {"id":"memory","label":"Memoria transferible","question":"¿Qué aprendizaje pasó de un proyecto a otro?","answer":"Archivo Vivo documentó Mapa Sonoro. Su bitácora de entrevistas se reutilizó en Ronda de Oficios para registrar decisiones.","edge_ids":["e09","e20","e26","e29","e35"]},
-    {"id":"mobile","label":"Montaje móvil","question":"¿Qué sirve para montar programación itinerante?","answer":"Red Móvil participó en Festival Cauce y Umbrales en Movimiento. El rider técnico producido en el primero se reutilizó en el segundo.","edge_ids":["e11","e12","e21","e25","e31","e34"]}
+    {
+      "id": "all",
+      "label": "Toda la red",
+      "question": "¿Cómo circulan capacidades y aprendizajes entre proyectos?",
+      "answer": "La red reúne proyectos realizados entre 2022 y 2025 y cuatro propuestas para 2026. Explorá sus necesidades y la experiencia registrada.",
+      "edge_ids": []
+    },
+    {
+      "id": "access",
+      "label": "Accesibilidad",
+      "question": "¿Quién puede ayudar con accesibilidad en una sede nueva?",
+      "answer": "Taller Horizonte aportó accesibilidad a Festival Cauce. Ese proyecto produjo un kit que después reutilizó Umbrales en Movimiento.",
+      "edge_ids": [
+        "e053",
+        "e112",
+        "e191",
+        "e192",
+        "e193"
+      ]
+    },
+    {
+      "id": "permits",
+      "label": "Permisos",
+      "question": "¿Cómo resolvemos permisos para otro encuentro?",
+      "answer": "Mesa de Producción trabajó en Cine al Patio y aporta gestión de permisos. El mapa creado allí se reutilizó en Ronda de Oficios.",
+      "edge_ids": [
+        "e047",
+        "e106",
+        "e187",
+        "e188",
+        "e189"
+      ]
+    },
+    {
+      "id": "memory",
+      "label": "Memoria transferible",
+      "question": "¿Qué aprendizaje pasó de un proyecto a otro?",
+      "answer": "Archivo Vivo documentó Mapa Sonoro. Su bitácora de entrevistas se reutilizó en Ronda de Oficios para registrar decisiones.",
+      "edge_ids": [
+        "e055",
+        "e114",
+        "e198",
+        "e199",
+        "e267"
+      ]
+    },
+    {
+      "id": "mobile",
+      "label": "Montaje móvil",
+      "question": "¿Qué sirve para montar programación itinerante?",
+      "answer": "Red Móvil participó en Festival Cauce y Umbrales en Movimiento. El rider técnico producido en el primero se reutilizó en el segundo.",
+      "edge_ids": [
+        "e057",
+        "e116",
+        "e117",
+        "e194",
+        "e195",
+        "e268"
+      ]
+    }
   ]
 }

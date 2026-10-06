@@ -1,0 +1,4056 @@
+{
+  "meta": {
+    "model": "GraphSAGE de dos capas con agregación media",
+    "synthetic": true,
+    "seed": [
+      7,
+      19,
+      31
+    ],
+    "split": {
+      "unit": "independent synthetic world",
+      "worlds": {
+        "train": 120,
+        "validation": 24,
+        "test": 40
+      },
+      "seeds": {
+        "train": [
+          10000,
+          10001,
+          10002,
+          10003,
+          10004,
+          10005,
+          10006,
+          10007,
+          10008,
+          10009,
+          10010,
+          10011,
+          10012,
+          10013,
+          10014,
+          10015,
+          10016,
+          10017,
+          10018,
+          10019,
+          10020,
+          10021,
+          10022,
+          10023,
+          10024,
+          10025,
+          10026,
+          10027,
+          10028,
+          10029,
+          10030,
+          10031,
+          10032,
+          10033,
+          10034,
+          10035,
+          10036,
+          10037,
+          10038,
+          10039,
+          10040,
+          10041,
+          10042,
+          10043,
+          10044,
+          10045,
+          10046,
+          10047,
+          10048,
+          10049,
+          10050,
+          10051,
+          10052,
+          10053,
+          10054,
+          10055,
+          10056,
+          10057,
+          10058,
+          10059,
+          10060,
+          10061,
+          10062,
+          10063,
+          10064,
+          10065,
+          10066,
+          10067,
+          10068,
+          10069,
+          10070,
+          10071,
+          10072,
+          10073,
+          10074,
+          10075,
+          10076,
+          10077,
+          10078,
+          10079,
+          10080,
+          10081,
+          10082,
+          10083,
+          10084,
+          10085,
+          10086,
+          10087,
+          10088,
+          10089,
+          10090,
+          10091,
+          10092,
+          10093,
+          10094,
+          10095,
+          10096,
+          10097,
+          10098,
+          10099,
+          10100,
+          10101,
+          10102,
+          10103,
+          10104,
+          10105,
+          10106,
+          10107,
+          10108,
+          10109,
+          10110,
+          10111,
+          10112,
+          10113,
+          10114,
+          10115,
+          10116,
+          10117,
+          10118,
+          10119
+        ],
+        "validation": [
+          20000,
+          20001,
+          20002,
+          20003,
+          20004,
+          20005,
+          20006,
+          20007,
+          20008,
+          20009,
+          20010,
+          20011,
+          20012,
+          20013,
+          20014,
+          20015,
+          20016,
+          20017,
+          20018,
+          20019,
+          20020,
+          20021,
+          20022,
+          20023
+        ],
+        "test": [
+          30000,
+          30001,
+          30002,
+          30003,
+          30004,
+          30005,
+          30006,
+          30007,
+          30008,
+          30009,
+          30010,
+          30011,
+          30012,
+          30013,
+          30014,
+          30015,
+          30016,
+          30017,
+          30018,
+          30019,
+          30020,
+          30021,
+          30022,
+          30023,
+          30024,
+          30025,
+          30026,
+          30027,
+          30028,
+          30029,
+          30030,
+          30031,
+          30032,
+          30033,
+          30034,
+          30035,
+          30036,
+          30037,
+          30038,
+          30039
+        ]
+      },
+      "noFutureTargetEdges": true,
+      "identityFeatures": false,
+      "selection": "early stopping on validation NDCG@3; test worlds are only evaluated after model selection"
+    },
+    "limitations": [
+      "Las etiquetas representan supuestos del generador; no resultados de comunidades reales.",
+      "El test mide transferencia a mundos nuevos del mismo generador; no a redes culturales reales.",
+      "El score es una salida del modelo entrenado, no una probabilidad calibrada ni un hecho del grafo.",
+      "La disponibilidad y la calidad son atributos ficticios; cualquier propuesta requiere acuerdo entre participantes.",
+      "Las rutas de evidencia son hechos que apoyan la propuesta; no una explicación causal de las activaciones de la GNN.",
+      "No se imponen mejoras sobre reglas o MLP; se informan las métricas observadas."
+    ],
+    "labelAssumptions": {
+      "actor": "Top 4 por proyecto según 46% coincidencia de capacidades + 12% territorio + 16% disponibilidad + 20% experiencia histórica similar ponderada por resultado + 6% experiencia del mismo formato.",
+      "resource": "Top 3 por proyecto según 44% capacidades + 8% territorio + 16% completitud + 6% recencia + 20% contexto histórico similar ponderado por resultado + 6% mismo formato."
+    },
+    "baseline": {
+      "actor": "72% coincidencia de capacidades + 18% territorio + 10% disponibilidad",
+      "resource": "72% coincidencia de capacidades + 12% territorio + 12% completitud + 4% recencia"
+    },
+    "references": [
+      {
+        "title": "GraphSAGE: Inductive Representation Learning on Large Graphs",
+        "url": "https://arxiv.org/abs/1706.02216"
+      }
+    ],
+    "training": {
+      "device": "cpu",
+      "python": "3.11.15",
+      "torch": "2.8.0+cpu",
+      "numpy": "2.2.6",
+      "threads": 3,
+      "maxEpochs": 300,
+      "hidden": 32,
+      "layers": 2,
+      "optimizer": "AdamW",
+      "learningRate": 0.006,
+      "loss": "binary cross entropy with positive-class weighting",
+      "initializations": 3,
+      "graphSha256": "b3d5a7bafcd44ab8f90a442fb277a7e05e08ada6f9d18a93d21c07ae3fe33c0f",
+      "reproduce": "python generate_dataset.py && python build_database.py && python train_gnn.py",
+      "elapsedSeconds": 171.99
+    }
+  },
+  "tasks": {
+    "actor": {
+      "title": "Equipos para una nueva propuesta",
+      "description": "Ordena equipos candidatos según necesidades y experiencia conectada.",
+      "metrics": {
+        "gnn": {
+          "ap": 0.8033,
+          "rocAuc": 0.957,
+          "ndcgAt3": 0.8651,
+          "recallAt3": 0.6281,
+          "precisionAt3": 0.8375,
+          "std": {
+            "ap": 0.001,
+            "rocAuc": 0.0013,
+            "ndcgAt3": 0.0019,
+            "recallAt3": 0.0022,
+            "precisionAt3": 0.003
+          }
+        },
+        "mlp": {
+          "ap": 0.7744,
+          "rocAuc": 0.9474,
+          "ndcgAt3": 0.8425,
+          "recallAt3": 0.6115,
+          "precisionAt3": 0.8153,
+          "std": {
+            "ap": 0.0107,
+            "rocAuc": 0.0012,
+            "ndcgAt3": 0.0131,
+            "recallAt3": 0.0126,
+            "precisionAt3": 0.0168
+          }
+        },
+        "baseline": {
+          "ap": 0.7863,
+          "rocAuc": 0.9548,
+          "ndcgAt3": 0.8622,
+          "recallAt3": 0.6281,
+          "precisionAt3": 0.8375
+        }
+      },
+      "runs": [
+        {
+          "model": "gnn",
+          "seed": 7,
+          "bestEpoch": 250,
+          "epochsRun": 300,
+          "validationNdcgAt3": 0.8909,
+          "finalTrainLoss": 0.17259,
+          "test": {
+            "ap": 0.804,
+            "rocAuc": 0.9559,
+            "ndcgAt3": 0.8663,
+            "recallAt3": 0.6297,
+            "precisionAt3": 0.8396
+          }
+        },
+        {
+          "model": "gnn",
+          "seed": 19,
+          "bestEpoch": 275,
+          "epochsRun": 300,
+          "validationNdcgAt3": 0.8914,
+          "finalTrainLoss": 0.1631,
+          "test": {
+            "ap": 0.8019,
+            "rocAuc": 0.9564,
+            "ndcgAt3": 0.8625,
+            "recallAt3": 0.625,
+            "precisionAt3": 0.8333
+          }
+        },
+        {
+          "model": "gnn",
+          "seed": 31,
+          "bestEpoch": 105,
+          "epochsRun": 205,
+          "validationNdcgAt3": 0.8957,
+          "finalTrainLoss": 0.19492,
+          "test": {
+            "ap": 0.8039,
+            "rocAuc": 0.9588,
+            "ndcgAt3": 0.8666,
+            "recallAt3": 0.6297,
+            "precisionAt3": 0.8396
+          }
+        },
+        {
+          "model": "mlp",
+          "seed": 7,
+          "bestEpoch": 200,
+          "epochsRun": 300,
+          "validationNdcgAt3": 0.8474,
+          "finalTrainLoss": 0.25912,
+          "test": {
+            "ap": 0.7825,
+            "rocAuc": 0.9487,
+            "ndcgAt3": 0.8486,
+            "recallAt3": 0.6187,
+            "precisionAt3": 0.825
+          }
+        },
+        {
+          "model": "mlp",
+          "seed": 19,
+          "bestEpoch": 100,
+          "epochsRun": 200,
+          "validationNdcgAt3": 0.8541,
+          "finalTrainLoss": 0.27092,
+          "test": {
+            "ap": 0.7593,
+            "rocAuc": 0.9459,
+            "ndcgAt3": 0.8243,
+            "recallAt3": 0.5938,
+            "precisionAt3": 0.7917
+          }
+        },
+        {
+          "model": "mlp",
+          "seed": 31,
+          "bestEpoch": 150,
+          "epochsRun": 250,
+          "validationNdcgAt3": 0.862,
+          "finalTrainLoss": 0.2325,
+          "test": {
+            "ap": 0.7814,
+            "rocAuc": 0.9476,
+            "ndcgAt3": 0.8545,
+            "recallAt3": 0.6219,
+            "precisionAt3": 0.8292
+          }
+        }
+      ],
+      "predictions": [
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_mesa",
+          "score": 0.99925,
+          "baselineScore": 0.618,
+          "evidenceNodeIds": [
+            "a_mesa",
+            "c_logistica",
+            "c_permisos",
+            "p_linternas",
+            "p_mareas",
+            "p_patio"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e036",
+            "e047",
+            "e048",
+            "e106",
+            "e154"
+          ],
+          "reason": "Aporta logística itinerante, gestión de permisos. Comparte territorio con la propuesta. Experiencia registrada en Linternas del Puerto, Cine al Patio."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_ruta",
+          "score": 0.99827,
+          "baselineScore": 0.582,
+          "evidenceNodeIds": [
+            "a_ruta",
+            "c_logistica",
+            "c_permisos",
+            "p_linternas",
+            "p_mareas",
+            "p_patio"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e036",
+            "e085",
+            "e086",
+            "e121",
+            "e155"
+          ],
+          "reason": "Aporta logística itinerante, gestión de permisos. Comparte territorio con la propuesta. Experiencia registrada en Linternas del Puerto, Cine al Patio."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_sonora",
+          "score": 0.99052,
+          "baselineScore": 0.577,
+          "evidenceNodeIds": [
+            "a_sonora",
+            "c_logistica",
+            "c_sonido",
+            "p_linternas",
+            "p_mareas",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e037",
+            "e066",
+            "e067",
+            "e146",
+            "e157"
+          ],
+          "reason": "Aporta logística itinerante, sonido y producción técnica. Comparte territorio con la propuesta. Experiencia registrada en Umbrales en Movimiento, Linternas del Puerto."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_faro",
+          "score": 0.97691,
+          "baselineScore": 0.45,
+          "evidenceNodeIds": [
+            "a_faro",
+            "c_permisos",
+            "p_mareas",
+            "p_nocturno",
+            "p_patio"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e060",
+            "e124",
+            "e186"
+          ],
+          "reason": "Aporta gestión de permisos. Comparte territorio con la propuesta. Experiencia registrada en Cine al Patio, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_marco",
+          "score": 0.90419,
+          "baselineScore": 0.434,
+          "evidenceNodeIds": [
+            "a_marco",
+            "c_logistica",
+            "c_sonido",
+            "p_linternas",
+            "p_mareas",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e037",
+            "e092",
+            "e093",
+            "e142",
+            "e158"
+          ],
+          "reason": "Aporta logística itinerante, sonido y producción técnica. Experiencia registrada en Linternas del Puerto, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_ola",
+          "score": 0.86346,
+          "baselineScore": 0.566,
+          "evidenceNodeIds": [
+            "a_ola",
+            "c_acceso",
+            "c_sonido",
+            "p_mapa",
+            "p_mareas",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e037",
+            "e079",
+            "e080",
+            "e135",
+            "e145"
+          ],
+          "reason": "Aporta accesibilidad, sonido y producción técnica. Comparte territorio con la propuesta. Experiencia registrada en Umbrales en Movimiento, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_estacion",
+          "score": 0.81874,
+          "baselineScore": 0.415,
+          "evidenceNodeIds": [
+            "a_estacion",
+            "c_logistica",
+            "c_sonido",
+            "p_linternas",
+            "p_mareas",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e037",
+            "e051",
+            "e052",
+            "e144",
+            "e156"
+          ],
+          "reason": "Aporta logística itinerante, sonido y producción técnica. Experiencia registrada en Linternas del Puerto, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_movil",
+          "score": 0.73421,
+          "baselineScore": 0.43,
+          "evidenceNodeIds": [
+            "a_movil",
+            "c_logistica",
+            "c_sonido",
+            "p_cauce",
+            "p_mareas",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e037",
+            "e057",
+            "e058",
+            "e116",
+            "e117"
+          ],
+          "reason": "Aporta logística itinerante, sonido y producción técnica. Experiencia registrada en Umbrales en Movimiento, Festival Cauce."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_voz",
+          "score": 0.65918,
+          "baselineScore": 0.395,
+          "evidenceNodeIds": [
+            "a_voz",
+            "c_sonido",
+            "p_mapa",
+            "p_mareas",
+            "p_patio"
+          ],
+          "evidenceEdgeIds": [
+            "e037",
+            "e098",
+            "e123",
+            "e134"
+          ],
+          "reason": "Aporta sonido y producción técnica. Comparte territorio con la propuesta. Experiencia registrada en Cine al Patio, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_pasos",
+          "score": 0.49894,
+          "baselineScore": 0.442,
+          "evidenceNodeIds": [
+            "a_pasos",
+            "c_acceso",
+            "c_logistica",
+            "p_cauce",
+            "p_mareas",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e036",
+            "e068",
+            "e069",
+            "e125",
+            "e143"
+          ],
+          "reason": "Aporta accesibilidad, logística itinerante. Experiencia registrada en Umbrales en Movimiento, Festival Cauce."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_puerto",
+          "score": 0.16883,
+          "baselineScore": 0.585,
+          "evidenceNodeIds": [
+            "a_puerto",
+            "c_acceso",
+            "c_permisos",
+            "p_mareas"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e035",
+            "e099",
+            "e100"
+          ],
+          "reason": "Aporta accesibilidad, gestión de permisos. Comparte territorio con la propuesta."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_enlace",
+          "score": 0.0513,
+          "baselineScore": 0.217,
+          "evidenceNodeIds": [
+            "a_enlace",
+            "c_permisos",
+            "p_cauce",
+            "p_mareas",
+            "p_patio"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e074",
+            "e122",
+            "e127"
+          ],
+          "reason": "Aporta gestión de permisos. Experiencia registrada en Festival Cauce, Cine al Patio."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_puerta",
+          "score": 0.02938,
+          "baselineScore": 0.223,
+          "evidenceNodeIds": [
+            "a_puerta",
+            "c_permisos",
+            "p_cauce",
+            "p_mareas",
+            "p_patio"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e088",
+            "e120",
+            "e129"
+          ],
+          "reason": "Aporta gestión de permisos. Experiencia registrada en Cine al Patio, Festival Cauce."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_horizonte",
+          "score": 0.00831,
+          "baselineScore": 0.23,
+          "evidenceNodeIds": [
+            "a_horizonte",
+            "c_acceso",
+            "p_cauce",
+            "p_mareas",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e053",
+            "e112",
+            "e113"
+          ],
+          "reason": "Aporta accesibilidad. Experiencia registrada en Umbrales en Movimiento, Festival Cauce."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_tierra",
+          "score": 0.00648,
+          "baselineScore": 0.248,
+          "evidenceNodeIds": [
+            "a_tierra",
+            "c_permisos",
+            "p_mareas",
+            "p_ronda",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e095",
+            "e136",
+            "e152"
+          ],
+          "reason": "Aporta gestión de permisos. Experiencia registrada en Ronda de Oficios, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_nido",
+          "score": 0.00527,
+          "baselineScore": 0.227,
+          "evidenceNodeIds": [
+            "a_nido",
+            "c_acceso",
+            "p_cauce",
+            "p_mareas",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e070",
+            "e126",
+            "e140"
+          ],
+          "reason": "Aporta accesibilidad. Experiencia registrada en Festival Cauce, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_trama",
+          "score": 0.00264,
+          "baselineScore": 0.061,
+          "evidenceNodeIds": [
+            "a_trama",
+            "p_cauce",
+            "p_mareas",
+            "p_orillas"
+          ],
+          "evidenceEdgeIds": [
+            "e108",
+            "e171"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_lente",
+          "score": 0.00096,
+          "baselineScore": 0.224,
+          "evidenceNodeIds": [
+            "a_lente",
+            "c_sonido",
+            "p_mapa",
+            "p_mareas",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e037",
+            "e073",
+            "e132",
+            "e180"
+          ],
+          "reason": "Aporta sonido y producción técnica. Experiencia registrada en Mapa Sonoro, Talleres en Red."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_circular",
+          "score": 0.00094,
+          "baselineScore": 0.258,
+          "evidenceNodeIds": [
+            "a_circular",
+            "c_logistica",
+            "p_huerta",
+            "p_mareas",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e077",
+            "e151",
+            "e166"
+          ],
+          "reason": "Aporta logística itinerante. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_brote",
+          "score": 0.00031,
+          "baselineScore": 0.078,
+          "evidenceNodeIds": [
+            "a_brote",
+            "p_mareas",
+            "p_ronda",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e137",
+            "e147"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_mimbre",
+          "score": 0.00018,
+          "baselineScore": 0.215,
+          "evidenceNodeIds": [
+            "a_mimbre",
+            "c_acceso",
+            "p_huerta",
+            "p_mareas",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e101",
+            "e153",
+            "e167"
+          ],
+          "reason": "Aporta accesibilidad. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_constela",
+          "score": 0.00014,
+          "baselineScore": 0.069,
+          "evidenceNodeIds": [
+            "a_constela",
+            "p_hilos",
+            "p_mareas",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e162",
+            "e176"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Talleres en Red, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_papel",
+          "score": 0.00013,
+          "baselineScore": 0.066,
+          "evidenceNodeIds": [
+            "a_papel",
+            "p_mapa",
+            "p_mareas",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e131",
+            "e181"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Mapa Sonoro, Talleres en Red."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_pixel",
+          "score": 0.0001,
+          "baselineScore": 0.222,
+          "evidenceNodeIds": [
+            "a_pixel",
+            "c_acceso",
+            "p_mareas"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e083"
+          ],
+          "reason": "Aporta accesibilidad."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_telara",
+          "score": 6e-05,
+          "baselineScore": 0.071,
+          "evidenceNodeIds": [
+            "a_telara",
+            "p_mareas",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e179"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_archivo",
+          "score": 5e-05,
+          "baselineScore": 0.03,
+          "evidenceNodeIds": [
+            "a_archivo",
+            "p_mapa",
+            "p_mareas",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e114",
+            "e115"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_escuela",
+          "score": 4e-05,
+          "baselineScore": 0.03,
+          "evidenceNodeIds": [
+            "a_escuela",
+            "p_mapa",
+            "p_mareas",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e118",
+            "e119"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "a_huella",
+          "score": 0.0,
+          "baselineScore": 0.09,
+          "evidenceNodeIds": [
+            "a_huella",
+            "p_mareas",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e178"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_enlace",
+          "score": 0.99584,
+          "baselineScore": 0.697,
+          "evidenceNodeIds": [
+            "a_enlace",
+            "c_comunica",
+            "c_permisos",
+            "p_orillas",
+            "p_puente",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e045",
+            "e074",
+            "e076",
+            "e141",
+            "e170"
+          ],
+          "reason": "Aporta comunicación cultural, gestión de permisos. Comparte territorio con la propuesta. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_faro",
+          "score": 0.96184,
+          "baselineScore": 0.57,
+          "evidenceNodeIds": [
+            "a_faro",
+            "c_comunica",
+            "c_permisos",
+            "p_orillas",
+            "p_patio",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e045",
+            "e060",
+            "e061",
+            "e124",
+            "e173"
+          ],
+          "reason": "Aporta comunicación cultural, gestión de permisos. Experiencia registrada en Orillas Abiertas, Cine al Patio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_ruta",
+          "score": 0.92769,
+          "baselineScore": 0.522,
+          "evidenceNodeIds": [
+            "a_ruta",
+            "c_permisos",
+            "c_sostenible",
+            "p_patio",
+            "p_puente",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e046",
+            "e085",
+            "e087",
+            "e121",
+            "e138"
+          ],
+          "reason": "Aporta gestión de permisos, producción sostenible. Experiencia registrada en Ronda de Oficios, Cine al Patio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_marco",
+          "score": 0.92419,
+          "baselineScore": 0.494,
+          "evidenceNodeIds": [
+            "a_marco",
+            "c_comunica",
+            "p_linternas",
+            "p_orillas",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e094",
+            "e158",
+            "e175"
+          ],
+          "reason": "Aporta comunicación cultural. Comparte territorio con la propuesta. Experiencia registrada en Orillas Abiertas, Linternas del Puerto."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_tierra",
+          "score": 0.89627,
+          "baselineScore": 0.548,
+          "evidenceNodeIds": [
+            "a_tierra",
+            "c_permisos",
+            "c_sostenible",
+            "p_puente",
+            "p_ronda",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e046",
+            "e095",
+            "e096",
+            "e136",
+            "e152"
+          ],
+          "reason": "Aporta gestión de permisos, producción sostenible. Experiencia registrada en Ronda de Oficios, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_constela",
+          "score": 0.81965,
+          "baselineScore": 0.549,
+          "evidenceNodeIds": [
+            "a_constela",
+            "c_comunica",
+            "c_sostenible",
+            "p_hilos",
+            "p_puente",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e046",
+            "e104",
+            "e105",
+            "e162",
+            "e176"
+          ],
+          "reason": "Aporta comunicación cultural, producción sostenible. Experiencia registrada en Talleres en Red, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_huella",
+          "score": 0.77087,
+          "baselineScore": 0.51,
+          "evidenceNodeIds": [
+            "a_huella",
+            "c_sostenible",
+            "p_puente",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e046",
+            "e082",
+            "e178"
+          ],
+          "reason": "Aporta producción sostenible. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_brote",
+          "score": 0.28672,
+          "baselineScore": 0.318,
+          "evidenceNodeIds": [
+            "a_brote",
+            "c_sostenible",
+            "p_puente",
+            "p_ronda",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e046",
+            "e065",
+            "e137",
+            "e147"
+          ],
+          "reason": "Aporta producción sostenible. Experiencia registrada en Ronda de Oficios, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_trama",
+          "score": 0.23472,
+          "baselineScore": 0.301,
+          "evidenceNodeIds": [
+            "a_trama",
+            "c_comunica",
+            "p_orillas",
+            "p_puente",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e050",
+            "e109",
+            "e171"
+          ],
+          "reason": "Aporta comunicación cultural. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_mesa",
+          "score": 0.23192,
+          "baselineScore": 0.318,
+          "evidenceNodeIds": [
+            "a_mesa",
+            "c_permisos",
+            "p_patio",
+            "p_puente",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e047",
+            "e106",
+            "e107"
+          ],
+          "reason": "Aporta gestión de permisos. Experiencia registrada en Ronda de Oficios, Cine al Patio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_circular",
+          "score": 0.12366,
+          "baselineScore": 0.318,
+          "evidenceNodeIds": [
+            "a_circular",
+            "c_sostenible",
+            "p_huerta",
+            "p_puente",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e046",
+            "e078",
+            "e151",
+            "e166"
+          ],
+          "reason": "Aporta producción sostenible. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_puerta",
+          "score": 0.0815,
+          "baselineScore": 0.283,
+          "evidenceNodeIds": [
+            "a_puerta",
+            "c_permisos",
+            "p_orillas",
+            "p_puente",
+            "p_ronda"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e088",
+            "e139",
+            "e174"
+          ],
+          "reason": "Aporta gestión de permisos. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_movil",
+          "score": 0.04625,
+          "baselineScore": 0.25,
+          "evidenceNodeIds": [
+            "a_movil",
+            "p_cauce",
+            "p_nocturno",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e116",
+            "e185"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Laboratorio Nocturno, Festival Cauce."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_papel",
+          "score": 0.015,
+          "baselineScore": 0.066,
+          "evidenceNodeIds": [
+            "a_papel",
+            "p_mapa",
+            "p_puente",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e131",
+            "e181"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Talleres en Red, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_telara",
+          "score": 0.0082,
+          "baselineScore": 0.311,
+          "evidenceNodeIds": [
+            "a_telara",
+            "c_comunica",
+            "p_puente",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e091",
+            "e179"
+          ],
+          "reason": "Aporta comunicación cultural. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_pasos",
+          "score": 0.00777,
+          "baselineScore": 0.262,
+          "evidenceNodeIds": [
+            "a_pasos",
+            "p_cauce",
+            "p_puente",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e125",
+            "e143"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_archivo",
+          "score": 0.00703,
+          "baselineScore": 0.27,
+          "evidenceNodeIds": [
+            "a_archivo",
+            "c_comunica",
+            "p_puente",
+            "p_ronda",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e056",
+            "e115",
+            "e177"
+          ],
+          "reason": "Aporta comunicación cultural. Experiencia registrada en Ronda de Oficios, Talleres en Red."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_mimbre",
+          "score": 0.00701,
+          "baselineScore": 0.275,
+          "evidenceNodeIds": [
+            "a_mimbre",
+            "c_sostenible",
+            "p_huerta",
+            "p_puente",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e046",
+            "e102",
+            "e153",
+            "e167"
+          ],
+          "reason": "Aporta producción sostenible. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_horizonte",
+          "score": 0.00351,
+          "baselineScore": 0.23,
+          "evidenceNodeIds": [
+            "a_horizonte",
+            "p_cauce",
+            "p_orillas",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e112",
+            "e172"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Orillas Abiertas, Festival Cauce."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_nido",
+          "score": 0.00101,
+          "baselineScore": 0.047,
+          "evidenceNodeIds": [
+            "a_nido",
+            "p_puente",
+            "p_ronda",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e140",
+            "e148"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_lente",
+          "score": 0.0006,
+          "baselineScore": 0.044,
+          "evidenceNodeIds": [
+            "a_lente",
+            "p_mapa",
+            "p_puente",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e132",
+            "e180"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Talleres en Red, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_estacion",
+          "score": 0.00038,
+          "baselineScore": 0.055,
+          "evidenceNodeIds": [
+            "a_estacion",
+            "p_linternas",
+            "p_patio",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e110",
+            "e156"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Linternas del Puerto."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_escuela",
+          "score": 0.00033,
+          "baselineScore": 0.03,
+          "evidenceNodeIds": [
+            "a_escuela",
+            "p_puente",
+            "p_ronda",
+            "p_semilla"
+          ],
+          "evidenceEdgeIds": [
+            "e119",
+            "e149"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_puerto",
+          "score": 0.00018,
+          "baselineScore": 0.285,
+          "evidenceNodeIds": [
+            "a_puerto",
+            "c_permisos",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e099"
+          ],
+          "reason": "Aporta gestión de permisos."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_pixel",
+          "score": 5e-05,
+          "baselineScore": 0.282,
+          "evidenceNodeIds": [
+            "a_pixel",
+            "c_comunica",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e084"
+          ],
+          "reason": "Aporta comunicación cultural."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_voz",
+          "score": 3e-05,
+          "baselineScore": 0.035,
+          "evidenceNodeIds": [
+            "a_voz",
+            "p_mapa",
+            "p_patio",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e123",
+            "e134"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_sonora",
+          "score": 2e-05,
+          "baselineScore": 0.037,
+          "evidenceNodeIds": [
+            "a_sonora",
+            "p_linternas",
+            "p_nocturno",
+            "p_puente"
+          ],
+          "evidenceEdgeIds": [
+            "e157",
+            "e183"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Laboratorio Nocturno, Linternas del Puerto."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "a_ola",
+          "score": 1e-05,
+          "baselineScore": 0.026,
+          "evidenceNodeIds": [
+            "a_ola",
+            "p_mapa",
+            "p_puente",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e135",
+            "e145"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Umbrales en Movimiento, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_brote",
+          "score": 0.99694,
+          "baselineScore": 0.738,
+          "evidenceNodeIds": [
+            "a_brote",
+            "c_mediacion",
+            "c_sostenible",
+            "p_huerta",
+            "p_semilla",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e043",
+            "e064",
+            "e065",
+            "e147",
+            "e164"
+          ],
+          "reason": "Aporta mediación comunitaria, producción sostenible. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_nido",
+          "score": 0.99646,
+          "baselineScore": 0.707,
+          "evidenceNodeIds": [
+            "a_nido",
+            "c_acceso",
+            "c_mediacion",
+            "p_cauce",
+            "p_semilla",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e042",
+            "e070",
+            "e071",
+            "e126",
+            "e148"
+          ],
+          "reason": "Aporta accesibilidad, mediación comunitaria. Comparte territorio con la propuesta. Experiencia registrada en Festival Cauce, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_mimbre",
+          "score": 0.98978,
+          "baselineScore": 0.695,
+          "evidenceNodeIds": [
+            "a_mimbre",
+            "c_acceso",
+            "c_sostenible",
+            "p_huerta",
+            "p_semilla",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e043",
+            "e101",
+            "e102",
+            "e153",
+            "e167"
+          ],
+          "reason": "Aporta accesibilidad, producción sostenible. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_tierra",
+          "score": 0.98478,
+          "baselineScore": 0.488,
+          "evidenceNodeIds": [
+            "a_tierra",
+            "c_sostenible",
+            "p_huerta",
+            "p_semilla",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e096",
+            "e152",
+            "e169"
+          ],
+          "reason": "Aporta producción sostenible. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_circular",
+          "score": 0.93704,
+          "baselineScore": 0.498,
+          "evidenceNodeIds": [
+            "a_circular",
+            "c_sostenible",
+            "p_huerta",
+            "p_semilla",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e078",
+            "e151",
+            "e166"
+          ],
+          "reason": "Aporta producción sostenible. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_trama",
+          "score": 0.92435,
+          "baselineScore": 0.481,
+          "evidenceNodeIds": [
+            "a_trama",
+            "c_mediacion",
+            "p_huerta",
+            "p_semilla",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e049",
+            "e150",
+            "e168"
+          ],
+          "reason": "Aporta mediación comunitaria. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_escuela",
+          "score": 0.80032,
+          "baselineScore": 0.45,
+          "evidenceNodeIds": [
+            "a_escuela",
+            "c_mediacion",
+            "p_ronda",
+            "p_semilla",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e059",
+            "e119",
+            "e149"
+          ],
+          "reason": "Aporta mediación comunitaria. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_horizonte",
+          "score": 0.54918,
+          "baselineScore": 0.53,
+          "evidenceNodeIds": [
+            "a_horizonte",
+            "c_acceso",
+            "c_mediacion",
+            "p_cauce",
+            "p_orillas",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e042",
+            "e053",
+            "e054",
+            "e112",
+            "e172"
+          ],
+          "reason": "Aporta accesibilidad, mediación comunitaria. Experiencia registrada en Festival Cauce, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_puerta",
+          "score": 0.45056,
+          "baselineScore": 0.283,
+          "evidenceNodeIds": [
+            "a_puerta",
+            "c_mediacion",
+            "p_cauce",
+            "p_ronda",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e089",
+            "e129",
+            "e139"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Festival Cauce, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_enlace",
+          "score": 0.06267,
+          "baselineScore": 0.277,
+          "evidenceNodeIds": [
+            "a_enlace",
+            "c_mediacion",
+            "p_cauce",
+            "p_ronda",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e075",
+            "e127",
+            "e141"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Festival Cauce, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_ruta",
+          "score": 0.02197,
+          "baselineScore": 0.282,
+          "evidenceNodeIds": [
+            "a_ruta",
+            "c_sostenible",
+            "p_patio",
+            "p_ronda",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e087",
+            "e121",
+            "e138"
+          ],
+          "reason": "Aporta producción sostenible. Experiencia registrada en Ronda de Oficios, Cine al Patio."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_constela",
+          "score": 0.02017,
+          "baselineScore": 0.309,
+          "evidenceNodeIds": [
+            "a_constela",
+            "c_sostenible",
+            "p_hilos",
+            "p_senderos",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e105",
+            "e162",
+            "e176"
+          ],
+          "reason": "Aporta producción sostenible. Experiencia registrada en Talleres en Red, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_papel",
+          "score": 0.01624,
+          "baselineScore": 0.306,
+          "evidenceNodeIds": [
+            "a_papel",
+            "c_mediacion",
+            "p_mapa",
+            "p_senderos",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e063",
+            "e131",
+            "e181"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Talleres en Red, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_pasos",
+          "score": 0.01408,
+          "baselineScore": 0.322,
+          "evidenceNodeIds": [
+            "a_pasos",
+            "c_acceso",
+            "p_cauce",
+            "p_senderos",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e068",
+            "e125",
+            "e143"
+          ],
+          "reason": "Aporta accesibilidad. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_telara",
+          "score": 0.00812,
+          "baselineScore": 0.251,
+          "evidenceNodeIds": [
+            "a_telara",
+            "p_senderos",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e179"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_voz",
+          "score": 0.00769,
+          "baselineScore": 0.275,
+          "evidenceNodeIds": [
+            "a_voz",
+            "c_mediacion",
+            "p_mapa",
+            "p_patio",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e097",
+            "e123",
+            "e134"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Cine al Patio, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_puerto",
+          "score": 0.00712,
+          "baselineScore": 0.285,
+          "evidenceNodeIds": [
+            "a_puerto",
+            "c_acceso",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e100"
+          ],
+          "reason": "Aporta accesibilidad."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_mesa",
+          "score": 0.0037,
+          "baselineScore": 0.078,
+          "evidenceNodeIds": [
+            "a_mesa",
+            "p_patio",
+            "p_ronda",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e106",
+            "e107"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Cine al Patio."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_huella",
+          "score": 0.00325,
+          "baselineScore": 0.33,
+          "evidenceNodeIds": [
+            "a_huella",
+            "c_sostenible",
+            "p_senderos",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e082",
+            "e178"
+          ],
+          "reason": "Aporta producción sostenible. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_faro",
+          "score": 0.00281,
+          "baselineScore": 0.09,
+          "evidenceNodeIds": [
+            "a_faro",
+            "p_orillas",
+            "p_patio",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e124",
+            "e173"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Orillas Abiertas, Cine al Patio."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_movil",
+          "score": 0.00255,
+          "baselineScore": 0.07,
+          "evidenceNodeIds": [
+            "a_movil",
+            "p_cauce",
+            "p_senderos",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e116",
+            "e117"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_pixel",
+          "score": 0.00215,
+          "baselineScore": 0.282,
+          "evidenceNodeIds": [
+            "a_pixel",
+            "c_acceso",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e083"
+          ],
+          "reason": "Aporta accesibilidad."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_marco",
+          "score": 0.00215,
+          "baselineScore": 0.074,
+          "evidenceNodeIds": [
+            "a_marco",
+            "p_cauce",
+            "p_orillas",
+            "p_senderos"
+          ],
+          "evidenceEdgeIds": [
+            "e128",
+            "e175"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_estacion",
+          "score": 0.00094,
+          "baselineScore": 0.055,
+          "evidenceNodeIds": [
+            "a_estacion",
+            "p_patio",
+            "p_senderos",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e110",
+            "e144"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_ola",
+          "score": 0.00038,
+          "baselineScore": 0.266,
+          "evidenceNodeIds": [
+            "a_ola",
+            "c_acceso",
+            "p_mapa",
+            "p_senderos",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e079",
+            "e135",
+            "e145"
+          ],
+          "reason": "Aporta accesibilidad. Experiencia registrada en Umbrales en Movimiento, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_sonora",
+          "score": 0.00028,
+          "baselineScore": 0.037,
+          "evidenceNodeIds": [
+            "a_sonora",
+            "p_cauce",
+            "p_senderos",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e130",
+            "e146"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_lente",
+          "score": 0.00019,
+          "baselineScore": 0.044,
+          "evidenceNodeIds": [
+            "a_lente",
+            "p_mapa",
+            "p_senderos",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e132",
+            "e180"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Talleres en Red, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "a_archivo",
+          "score": 0.00013,
+          "baselineScore": 0.03,
+          "evidenceNodeIds": [
+            "a_archivo",
+            "p_ronda",
+            "p_senderos",
+            "p_talleres"
+          ],
+          "evidenceEdgeIds": [
+            "e115",
+            "e177"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Talleres en Red."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_papel",
+          "score": 0.99766,
+          "baselineScore": 0.726,
+          "evidenceNodeIds": [
+            "a_papel",
+            "c_documenta",
+            "c_mediacion",
+            "p_mapa",
+            "p_talleres",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e039",
+            "e062",
+            "e063",
+            "e131",
+            "e181"
+          ],
+          "reason": "Aporta documentación, mediación comunitaria. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_archivo",
+          "score": 0.99217,
+          "baselineScore": 0.69,
+          "evidenceNodeIds": [
+            "a_archivo",
+            "c_comunica",
+            "c_documenta",
+            "p_mapa",
+            "p_talleres",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e040",
+            "e055",
+            "e056",
+            "e114",
+            "e177"
+          ],
+          "reason": "Aporta comunicación cultural, documentación. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_constela",
+          "score": 0.98977,
+          "baselineScore": 0.729,
+          "evidenceNodeIds": [
+            "a_constela",
+            "c_comunica",
+            "c_documenta",
+            "p_hilos",
+            "p_talleres",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e040",
+            "e103",
+            "e104",
+            "e162",
+            "e176"
+          ],
+          "reason": "Aporta comunicación cultural, documentación. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_puerta",
+          "score": 0.97221,
+          "baselineScore": 0.463,
+          "evidenceNodeIds": [
+            "a_puerta",
+            "c_mediacion",
+            "p_hilos",
+            "p_mapa",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e089",
+            "e133",
+            "e163"
+          ],
+          "reason": "Aporta mediación comunitaria. Comparte territorio con la propuesta. Experiencia registrada en Mapa Sonoro, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_trama",
+          "score": 0.94565,
+          "baselineScore": 0.541,
+          "evidenceNodeIds": [
+            "a_trama",
+            "c_comunica",
+            "c_mediacion",
+            "p_orillas",
+            "p_semilla",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e040",
+            "e049",
+            "e050",
+            "e150",
+            "e171"
+          ],
+          "reason": "Aporta comunicación cultural, mediación comunitaria. Experiencia registrada en Orillas Abiertas, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_enlace",
+          "score": 0.92359,
+          "baselineScore": 0.517,
+          "evidenceNodeIds": [
+            "a_enlace",
+            "c_comunica",
+            "c_mediacion",
+            "p_cauce",
+            "p_orillas",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e040",
+            "e075",
+            "e076",
+            "e127",
+            "e170"
+          ],
+          "reason": "Aporta comunicación cultural, mediación comunitaria. Experiencia registrada en Orillas Abiertas, Festival Cauce."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_telara",
+          "score": 0.82474,
+          "baselineScore": 0.551,
+          "evidenceNodeIds": [
+            "a_telara",
+            "c_comunica",
+            "c_documenta",
+            "p_talleres",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e040",
+            "e090",
+            "e091",
+            "e179"
+          ],
+          "reason": "Aporta comunicación cultural, documentación. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_lente",
+          "score": 0.71012,
+          "baselineScore": 0.464,
+          "evidenceNodeIds": [
+            "a_lente",
+            "c_documenta",
+            "p_mapa",
+            "p_talleres",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e072",
+            "e132",
+            "e180"
+          ],
+          "reason": "Aporta documentación. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_faro",
+          "score": 0.3482,
+          "baselineScore": 0.33,
+          "evidenceNodeIds": [
+            "a_faro",
+            "c_comunica",
+            "p_orillas",
+            "p_patio",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e040",
+            "e061",
+            "e124",
+            "e173"
+          ],
+          "reason": "Aporta comunicación cultural. Experiencia registrada en Orillas Abiertas, Cine al Patio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_marco",
+          "score": 0.20455,
+          "baselineScore": 0.314,
+          "evidenceNodeIds": [
+            "a_marco",
+            "c_comunica",
+            "p_nocturno",
+            "p_orillas",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e040",
+            "e094",
+            "e175",
+            "e182"
+          ],
+          "reason": "Aporta comunicación cultural. Experiencia registrada en Orillas Abiertas, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_horizonte",
+          "score": 0.13069,
+          "baselineScore": 0.29,
+          "evidenceNodeIds": [
+            "a_horizonte",
+            "c_mediacion",
+            "p_cauce",
+            "p_orillas",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e054",
+            "e112",
+            "e172"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Orillas Abiertas, Festival Cauce."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_voz",
+          "score": 0.05714,
+          "baselineScore": 0.275,
+          "evidenceNodeIds": [
+            "a_voz",
+            "c_mediacion",
+            "p_mapa",
+            "p_patio",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e097",
+            "e123",
+            "e134"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Mapa Sonoro, Cine al Patio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_escuela",
+          "score": 0.04187,
+          "baselineScore": 0.27,
+          "evidenceNodeIds": [
+            "a_escuela",
+            "c_mediacion",
+            "p_mapa",
+            "p_semilla",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e059",
+            "e118",
+            "e149"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Mapa Sonoro, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_nido",
+          "score": 0.04163,
+          "baselineScore": 0.287,
+          "evidenceNodeIds": [
+            "a_nido",
+            "c_mediacion",
+            "p_cauce",
+            "p_semilla",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e071",
+            "e126",
+            "e148"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Festival Cauce, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_brote",
+          "score": 0.01641,
+          "baselineScore": 0.318,
+          "evidenceNodeIds": [
+            "a_brote",
+            "c_mediacion",
+            "p_huerta",
+            "p_semilla",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e064",
+            "e147",
+            "e164"
+          ],
+          "reason": "Aporta mediación comunitaria. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_huella",
+          "score": 0.00473,
+          "baselineScore": 0.33,
+          "evidenceNodeIds": [
+            "a_huella",
+            "c_documenta",
+            "p_talleres",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e081",
+            "e178"
+          ],
+          "reason": "Aporta documentación. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_pixel",
+          "score": 0.00396,
+          "baselineScore": 0.462,
+          "evidenceNodeIds": [
+            "a_pixel",
+            "c_comunica",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e040",
+            "e084"
+          ],
+          "reason": "Aporta comunicación cultural. Comparte territorio con la propuesta."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_mesa",
+          "score": 0.00306,
+          "baselineScore": 0.078,
+          "evidenceNodeIds": [
+            "a_mesa",
+            "p_patio",
+            "p_ronda",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e106",
+            "e107"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_estacion",
+          "score": 0.00137,
+          "baselineScore": 0.235,
+          "evidenceNodeIds": [
+            "a_estacion",
+            "p_mapa",
+            "p_patio",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e110",
+            "e111"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Mapa Sonoro, Cine al Patio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_pasos",
+          "score": 0.00117,
+          "baselineScore": 0.082,
+          "evidenceNodeIds": [
+            "a_pasos",
+            "p_cauce",
+            "p_tejido",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e125",
+            "e143"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_tierra",
+          "score": 0.00116,
+          "baselineScore": 0.068,
+          "evidenceNodeIds": [
+            "a_tierra",
+            "p_huerta",
+            "p_semilla",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e152",
+            "e169"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_movil",
+          "score": 0.0006,
+          "baselineScore": 0.07,
+          "evidenceNodeIds": [
+            "a_movil",
+            "p_cauce",
+            "p_nocturno",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e116",
+            "e185"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_ruta",
+          "score": 0.00047,
+          "baselineScore": 0.042,
+          "evidenceNodeIds": [
+            "a_ruta",
+            "p_patio",
+            "p_ronda",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e121",
+            "e138"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_circular",
+          "score": 0.00026,
+          "baselineScore": 0.078,
+          "evidenceNodeIds": [
+            "a_circular",
+            "p_huerta",
+            "p_semilla",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e151",
+            "e166"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_mimbre",
+          "score": 6e-05,
+          "baselineScore": 0.035,
+          "evidenceNodeIds": [
+            "a_mimbre",
+            "p_huerta",
+            "p_semilla",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e153",
+            "e167"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_ola",
+          "score": 4e-05,
+          "baselineScore": 0.026,
+          "evidenceNodeIds": [
+            "a_ola",
+            "p_mapa",
+            "p_tejido",
+            "p_umbrales"
+          ],
+          "evidenceEdgeIds": [
+            "e135",
+            "e145"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Mapa Sonoro, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_sonora",
+          "score": 3e-05,
+          "baselineScore": 0.037,
+          "evidenceNodeIds": [
+            "a_sonora",
+            "p_cauce",
+            "p_nocturno",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [
+            "e130",
+            "e183"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "a_puerto",
+          "score": 2e-05,
+          "baselineScore": 0.045,
+          "evidenceNodeIds": [
+            "a_puerto",
+            "p_tejido"
+          ],
+          "evidenceEdgeIds": [],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas."
+        }
+      ],
+      "evaluation": {
+        "queries": 160,
+        "candidatesPerQuery": 28,
+        "positivesPerQuery": 4,
+        "pairs": 4480,
+        "metricAggregation": "AP y AUC sobre todos los pares; NDCG, Recall y Precision@3 promediados por consulta. GNN/MLP: media de tres inicializaciones."
+      },
+      "selectedModel": {
+        "model": "gnn",
+        "seed": 31,
+        "bestEpoch": 105,
+        "epochsRun": 205,
+        "validationNdcgAt3": 0.8957,
+        "finalTrainLoss": 0.19492,
+        "test": {
+          "ap": 0.8039,
+          "rocAuc": 0.9588,
+          "ndcgAt3": 0.8666,
+          "recallAt3": 0.6297,
+          "precisionAt3": 0.8396
+        }
+      }
+    },
+    "resource": {
+      "title": "Recursos para reutilizar",
+      "description": "Ordena recursos candidatos según necesidades y sus contextos de producción y reutilización.",
+      "metrics": {
+        "gnn": {
+          "ap": 0.6669,
+          "rocAuc": 0.9055,
+          "ndcgAt3": 0.7154,
+          "recallAt3": 0.6701,
+          "precisionAt3": 0.6701,
+          "std": {
+            "ap": 0.011,
+            "rocAuc": 0.0038,
+            "ndcgAt3": 0.026,
+            "recallAt3": 0.0245,
+            "precisionAt3": 0.0245
+          }
+        },
+        "mlp": {
+          "ap": 0.6764,
+          "rocAuc": 0.9059,
+          "ndcgAt3": 0.7221,
+          "recallAt3": 0.6785,
+          "precisionAt3": 0.6785,
+          "std": {
+            "ap": 0.0133,
+            "rocAuc": 0.0044,
+            "ndcgAt3": 0.0077,
+            "recallAt3": 0.0094,
+            "precisionAt3": 0.0094
+          }
+        },
+        "baseline": {
+          "ap": 0.7132,
+          "rocAuc": 0.9263,
+          "ndcgAt3": 0.7789,
+          "recallAt3": 0.7333,
+          "precisionAt3": 0.7333
+        }
+      },
+      "runs": [
+        {
+          "model": "gnn",
+          "seed": 7,
+          "bestEpoch": 135,
+          "epochsRun": 235,
+          "validationNdcgAt3": 0.6888,
+          "finalTrainLoss": 0.28619,
+          "test": {
+            "ap": 0.6641,
+            "rocAuc": 0.9046,
+            "ndcgAt3": 0.7057,
+            "recallAt3": 0.6583,
+            "precisionAt3": 0.6583
+          }
+        },
+        {
+          "model": "gnn",
+          "seed": 19,
+          "bestEpoch": 75,
+          "epochsRun": 175,
+          "validationNdcgAt3": 0.688,
+          "finalTrainLoss": 0.27824,
+          "test": {
+            "ap": 0.655,
+            "rocAuc": 0.9013,
+            "ndcgAt3": 0.6895,
+            "recallAt3": 0.6479,
+            "precisionAt3": 0.6479
+          }
+        },
+        {
+          "model": "gnn",
+          "seed": 31,
+          "bestEpoch": 230,
+          "epochsRun": 300,
+          "validationNdcgAt3": 0.6869,
+          "finalTrainLoss": 0.1952,
+          "test": {
+            "ap": 0.6816,
+            "rocAuc": 0.9106,
+            "ndcgAt3": 0.7509,
+            "recallAt3": 0.7042,
+            "precisionAt3": 0.7042
+          }
+        },
+        {
+          "model": "mlp",
+          "seed": 7,
+          "bestEpoch": 125,
+          "epochsRun": 225,
+          "validationNdcgAt3": 0.751,
+          "finalTrainLoss": 0.37812,
+          "test": {
+            "ap": 0.686,
+            "rocAuc": 0.9103,
+            "ndcgAt3": 0.7252,
+            "recallAt3": 0.6792,
+            "precisionAt3": 0.6792
+          }
+        },
+        {
+          "model": "mlp",
+          "seed": 19,
+          "bestEpoch": 155,
+          "epochsRun": 255,
+          "validationNdcgAt3": 0.7291,
+          "finalTrainLoss": 0.30522,
+          "test": {
+            "ap": 0.6576,
+            "rocAuc": 0.8999,
+            "ndcgAt3": 0.7116,
+            "recallAt3": 0.6667,
+            "precisionAt3": 0.6667
+          }
+        },
+        {
+          "model": "mlp",
+          "seed": 31,
+          "bestEpoch": 140,
+          "epochsRun": 240,
+          "validationNdcgAt3": 0.7351,
+          "finalTrainLoss": 0.28843,
+          "test": {
+            "ap": 0.6855,
+            "rocAuc": 0.9074,
+            "ndcgAt3": 0.7296,
+            "recallAt3": 0.6896,
+            "precisionAt3": 0.6896
+          }
+        }
+      ],
+      "predictions": [
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_presupuesto",
+          "score": 0.99199,
+          "baselineScore": 0.5704,
+          "evidenceNodeIds": [
+            "c_logistica",
+            "c_permisos",
+            "p_mareas",
+            "p_orillas",
+            "p_patio",
+            "r_presupuesto"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e036",
+            "e225",
+            "e226",
+            "e224",
+            "e228"
+          ],
+          "reason": "Documenta logística itinerante, gestión de permisos. Comparte territorio con la propuesta. Experiencia registrada en Cine al Patio, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_rider",
+          "score": 0.99127,
+          "baselineScore": 0.476,
+          "evidenceNodeIds": [
+            "c_logistica",
+            "c_sonido",
+            "p_cauce",
+            "p_mareas",
+            "p_umbrales",
+            "r_rider"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e037",
+            "e195",
+            "e196",
+            "e194",
+            "e268"
+          ],
+          "reason": "Documenta logística itinerante, sonido y producción técnica. Experiencia registrada en Umbrales en Movimiento, Festival Cauce."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_luces",
+          "score": 0.91273,
+          "baselineScore": 0.3804,
+          "evidenceNodeIds": [
+            "c_logistica",
+            "p_linternas",
+            "p_mareas",
+            "p_umbrales",
+            "r_luces"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e212",
+            "e211",
+            "e215"
+          ],
+          "reason": "Documenta logística itinerante. Comparte territorio con la propuesta. Experiencia registrada en Linternas del Puerto, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_audio",
+          "score": 0.89339,
+          "baselineScore": 0.384,
+          "evidenceNodeIds": [
+            "c_sonido",
+            "p_linternas",
+            "p_mareas",
+            "p_umbrales",
+            "r_audio"
+          ],
+          "evidenceEdgeIds": [
+            "e037",
+            "e230",
+            "e229",
+            "e231"
+          ],
+          "reason": "Documenta sonido y producción técnica. Comparte territorio con la propuesta. Experiencia registrada en Umbrales en Movimiento, Linternas del Puerto."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_proyecta",
+          "score": 0.86934,
+          "baselineScore": 0.5016,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "c_sonido",
+            "p_mareas",
+            "p_umbrales",
+            "r_proyecta"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e037",
+            "e258",
+            "e259",
+            "e257"
+          ],
+          "reason": "Documenta accesibilidad, sonido y producción técnica. Experiencia registrada en Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_permisos",
+          "score": 0.62878,
+          "baselineScore": 0.4252,
+          "evidenceNodeIds": [
+            "c_permisos",
+            "p_mareas",
+            "p_orillas",
+            "p_patio",
+            "r_permisos"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e188",
+            "e187",
+            "e190"
+          ],
+          "reason": "Documenta gestión de permisos. Comparte territorio con la propuesta. Experiencia registrada en Cine al Patio, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_voluntarios",
+          "score": 0.61848,
+          "baselineScore": 0.2888,
+          "evidenceNodeIds": [
+            "c_logistica",
+            "p_mareas",
+            "p_orillas",
+            "p_umbrales",
+            "r_voluntarios"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e243",
+            "e242",
+            "e246"
+          ],
+          "reason": "Documenta logística itinerante. Experiencia registrada en Umbrales en Movimiento, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_senal",
+          "score": 0.59396,
+          "baselineScore": 0.3032,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "p_cauce",
+            "p_mareas",
+            "p_nocturno",
+            "r_senal"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e203",
+            "e202",
+            "e206"
+          ],
+          "reason": "Documenta accesibilidad. Experiencia registrada en Festival Cauce, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_repara",
+          "score": 0.47717,
+          "baselineScore": 0.258,
+          "evidenceNodeIds": [
+            "c_logistica",
+            "p_mareas",
+            "p_nocturno",
+            "p_patio",
+            "r_repara"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e251",
+            "e253",
+            "e256"
+          ],
+          "reason": "Documenta logística itinerante. Experiencia registrada en Cine al Patio, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_cuidados",
+          "score": 0.21074,
+          "baselineScore": 0.2992,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "p_mapa",
+            "p_mareas",
+            "p_umbrales",
+            "r_cuidados"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e218",
+            "e220",
+            "e222"
+          ],
+          "reason": "Documenta accesibilidad. Experiencia registrada en Umbrales en Movimiento, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_acceso",
+          "score": 0.18823,
+          "baselineScore": 0.3044,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "p_cauce",
+            "p_mareas",
+            "p_umbrales",
+            "r_acceso"
+          ],
+          "evidenceEdgeIds": [
+            "e035",
+            "e192",
+            "e191",
+            "e193"
+          ],
+          "reason": "Documenta accesibilidad. Experiencia registrada en Umbrales en Movimiento, Festival Cauce."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_licencias",
+          "score": 0.09726,
+          "baselineScore": 0.304,
+          "evidenceNodeIds": [
+            "c_permisos",
+            "p_mareas",
+            "p_orillas",
+            "p_ronda",
+            "r_licencias"
+          ],
+          "evidenceEdgeIds": [
+            "e034",
+            "e261",
+            "e264",
+            "e265"
+          ],
+          "reason": "Documenta gestión de permisos. Experiencia registrada en Ronda de Oficios, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_convoca",
+          "score": 0.02509,
+          "baselineScore": 0.1208,
+          "evidenceNodeIds": [
+            "p_mareas",
+            "p_nocturno",
+            "p_orillas",
+            "r_convoca"
+          ],
+          "evidenceEdgeIds": [
+            "e237",
+            "e241"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Laboratorio Nocturno, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_rutas",
+          "score": 0.01765,
+          "baselineScore": 0.27,
+          "evidenceNodeIds": [
+            "c_logistica",
+            "p_huerta",
+            "p_mareas",
+            "p_semilla",
+            "r_rutas"
+          ],
+          "evidenceEdgeIds": [
+            "e036",
+            "e208",
+            "e207",
+            "e210"
+          ],
+          "reason": "Documenta logística itinerante. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_evalua",
+          "score": 0.00077,
+          "baselineScore": 0.108,
+          "evidenceNodeIds": [
+            "p_mareas",
+            "p_talleres",
+            "r_evalua"
+          ],
+          "evidenceEdgeIds": [
+            "e247"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_mediacion",
+          "score": 0.00073,
+          "baselineScore": 0.1404,
+          "evidenceNodeIds": [
+            "p_mareas",
+            "p_ronda",
+            "r_mediacion"
+          ],
+          "evidenceEdgeIds": [
+            "e200"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_archivo",
+          "score": 0.00059,
+          "baselineScore": 0.1024,
+          "evidenceNodeIds": [
+            "p_hilos",
+            "p_mareas",
+            "p_orillas",
+            "r_archivo"
+          ],
+          "evidenceEdgeIds": [
+            "e233",
+            "e236"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Orillas Abiertas, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_mareas",
+          "candidateId": "r_bitacora",
+          "score": 0.00016,
+          "baselineScore": 0.1136,
+          "evidenceNodeIds": [
+            "p_mapa",
+            "p_mareas",
+            "p_ronda",
+            "r_bitacora"
+          ],
+          "evidenceEdgeIds": [
+            "e198",
+            "e267"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_senal",
+          "score": 0.96196,
+          "baselineScore": 0.4832,
+          "evidenceNodeIds": [
+            "c_comunica",
+            "p_nocturno",
+            "p_puente",
+            "p_talleres",
+            "r_senal"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e204",
+            "e205",
+            "e206"
+          ],
+          "reason": "Documenta comunicación cultural. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_permisos",
+          "score": 0.94884,
+          "baselineScore": 0.3652,
+          "evidenceNodeIds": [
+            "c_permisos",
+            "p_orillas",
+            "p_puente",
+            "p_ronda",
+            "r_permisos"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e188",
+            "e189",
+            "e190"
+          ],
+          "reason": "Documenta gestión de permisos. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_convoca",
+          "score": 0.94867,
+          "baselineScore": 0.4808,
+          "evidenceNodeIds": [
+            "c_comunica",
+            "p_orillas",
+            "p_puente",
+            "p_ronda",
+            "r_convoca"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e239",
+            "e237",
+            "e240"
+          ],
+          "reason": "Documenta comunicación cultural. Comparte territorio con la propuesta. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_presupuesto",
+          "score": 0.80893,
+          "baselineScore": 0.3304,
+          "evidenceNodeIds": [
+            "c_permisos",
+            "p_orillas",
+            "p_puente",
+            "p_ronda",
+            "r_presupuesto"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e225",
+            "e227",
+            "e228"
+          ],
+          "reason": "Documenta gestión de permisos. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_repara",
+          "score": 0.67612,
+          "baselineScore": 0.318,
+          "evidenceNodeIds": [
+            "c_sostenible",
+            "p_patio",
+            "p_puente",
+            "p_ronda",
+            "r_repara"
+          ],
+          "evidenceEdgeIds": [
+            "e046",
+            "e252",
+            "e253",
+            "e255"
+          ],
+          "reason": "Documenta producción sostenible. Experiencia registrada en Ronda de Oficios, Cine al Patio."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_licencias",
+          "score": 0.46657,
+          "baselineScore": 0.364,
+          "evidenceNodeIds": [
+            "c_permisos",
+            "p_orillas",
+            "p_puente",
+            "p_ronda",
+            "r_licencias"
+          ],
+          "evidenceEdgeIds": [
+            "e044",
+            "e261",
+            "e264",
+            "e265"
+          ],
+          "reason": "Documenta gestión de permisos. Experiencia registrada en Ronda de Oficios, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_rutas",
+          "score": 0.3062,
+          "baselineScore": 0.33,
+          "evidenceNodeIds": [
+            "c_sostenible",
+            "p_huerta",
+            "p_puente",
+            "p_semilla",
+            "r_rutas"
+          ],
+          "evidenceEdgeIds": [
+            "e046",
+            "e209",
+            "e207",
+            "e210"
+          ],
+          "reason": "Documenta producción sostenible. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_archivo",
+          "score": 0.11226,
+          "baselineScore": 0.3424,
+          "evidenceNodeIds": [
+            "c_comunica",
+            "p_hilos",
+            "p_orillas",
+            "p_puente",
+            "r_archivo"
+          ],
+          "evidenceEdgeIds": [
+            "e045",
+            "e235",
+            "e233",
+            "e236"
+          ],
+          "reason": "Documenta comunicación cultural. Experiencia registrada en Orillas Abiertas, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_voluntarios",
+          "score": 0.07509,
+          "baselineScore": 0.2288,
+          "evidenceNodeIds": [
+            "p_orillas",
+            "p_puente",
+            "p_ronda",
+            "r_voluntarios"
+          ],
+          "evidenceEdgeIds": [
+            "e242",
+            "e245"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_evalua",
+          "score": 0.04917,
+          "baselineScore": 0.348,
+          "evidenceNodeIds": [
+            "c_sostenible",
+            "p_puente",
+            "p_talleres",
+            "r_evalua"
+          ],
+          "evidenceEdgeIds": [
+            "e046",
+            "e249",
+            "e247"
+          ],
+          "reason": "Documenta producción sostenible. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_rider",
+          "score": 0.00663,
+          "baselineScore": 0.236,
+          "evidenceNodeIds": [
+            "p_cauce",
+            "p_nocturno",
+            "p_puente",
+            "r_rider"
+          ],
+          "evidenceEdgeIds": [
+            "e194",
+            "e197"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Laboratorio Nocturno, Festival Cauce."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_cuidados",
+          "score": 0.00227,
+          "baselineScore": 0.1192,
+          "evidenceNodeIds": [
+            "p_orillas",
+            "p_puente",
+            "p_ronda",
+            "r_cuidados"
+          ],
+          "evidenceEdgeIds": [
+            "e221",
+            "e223"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_mediacion",
+          "score": 0.00196,
+          "baselineScore": 0.1404,
+          "evidenceNodeIds": [
+            "p_puente",
+            "p_ronda",
+            "r_mediacion"
+          ],
+          "evidenceEdgeIds": [
+            "e200"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_bitacora",
+          "score": 0.00052,
+          "baselineScore": 0.1136,
+          "evidenceNodeIds": [
+            "p_mapa",
+            "p_puente",
+            "p_ronda",
+            "r_bitacora"
+          ],
+          "evidenceEdgeIds": [
+            "e198",
+            "e267"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_luces",
+          "score": 0.00024,
+          "baselineScore": 0.0804,
+          "evidenceNodeIds": [
+            "p_linternas",
+            "p_patio",
+            "p_puente",
+            "r_luces"
+          ],
+          "evidenceEdgeIds": [
+            "e211",
+            "e213"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Linternas del Puerto."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_audio",
+          "score": 0.00021,
+          "baselineScore": 0.084,
+          "evidenceNodeIds": [
+            "p_linternas",
+            "p_nocturno",
+            "p_puente",
+            "r_audio"
+          ],
+          "evidenceEdgeIds": [
+            "e229",
+            "e232"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Laboratorio Nocturno, Linternas del Puerto."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_acceso",
+          "score": 8e-05,
+          "baselineScore": 0.2444,
+          "evidenceNodeIds": [
+            "p_cauce",
+            "p_puente",
+            "p_umbrales",
+            "r_acceso"
+          ],
+          "evidenceEdgeIds": [
+            "e191",
+            "e193"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_puente",
+          "candidateId": "r_proyecta",
+          "score": 6e-05,
+          "baselineScore": 0.2616,
+          "evidenceNodeIds": [
+            "p_puente",
+            "p_umbrales",
+            "r_proyecta"
+          ],
+          "evidenceEdgeIds": [
+            "e257"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Comparte territorio con la propuesta. Experiencia registrada en Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_cuidados",
+          "score": 0.99997,
+          "baselineScore": 0.7192,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "c_mediacion",
+            "p_huerta",
+            "p_ronda",
+            "p_senderos",
+            "r_cuidados"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e042",
+            "e218",
+            "e219",
+            "e217",
+            "e221"
+          ],
+          "reason": "Documenta accesibilidad, mediación comunitaria. Comparte territorio con la propuesta. Experiencia registrada en Huerta de Escenas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_mediacion",
+          "score": 0.99522,
+          "baselineScore": 0.5004,
+          "evidenceNodeIds": [
+            "c_mediacion",
+            "p_ronda",
+            "p_senderos",
+            "r_mediacion"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e201",
+            "e200"
+          ],
+          "reason": "Documenta mediación comunitaria. Comparte territorio con la propuesta. Experiencia registrada en Ronda de Oficios."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_repara",
+          "score": 0.98399,
+          "baselineScore": 0.438,
+          "evidenceNodeIds": [
+            "c_sostenible",
+            "p_cauce",
+            "p_semilla",
+            "p_senderos",
+            "r_repara"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e252",
+            "e250",
+            "e254"
+          ],
+          "reason": "Documenta producción sostenible. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Festival Cauce."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_rutas",
+          "score": 0.96972,
+          "baselineScore": 0.45,
+          "evidenceNodeIds": [
+            "c_sostenible",
+            "p_huerta",
+            "p_semilla",
+            "p_senderos",
+            "r_rutas"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e209",
+            "e207",
+            "e210"
+          ],
+          "reason": "Documenta producción sostenible. Comparte territorio con la propuesta. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_voluntarios",
+          "score": 0.4912,
+          "baselineScore": 0.3488,
+          "evidenceNodeIds": [
+            "c_mediacion",
+            "p_orillas",
+            "p_ronda",
+            "p_senderos",
+            "r_voluntarios"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e244",
+            "e242",
+            "e245"
+          ],
+          "reason": "Documenta mediación comunitaria. Experiencia registrada en Ronda de Oficios, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_senal",
+          "score": 0.12323,
+          "baselineScore": 0.3632,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "p_cauce",
+            "p_senderos",
+            "p_talleres",
+            "r_senal"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e203",
+            "e202",
+            "e205"
+          ],
+          "reason": "Documenta accesibilidad. Experiencia registrada en Festival Cauce, Talleres en Red."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_licencias",
+          "score": 0.12033,
+          "baselineScore": 0.124,
+          "evidenceNodeIds": [
+            "p_hilos",
+            "p_ronda",
+            "p_senderos",
+            "r_licencias"
+          ],
+          "evidenceEdgeIds": [
+            "e260",
+            "e264"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_evalua",
+          "score": 0.06652,
+          "baselineScore": 0.348,
+          "evidenceNodeIds": [
+            "c_sostenible",
+            "p_senderos",
+            "p_talleres",
+            "r_evalua"
+          ],
+          "evidenceEdgeIds": [
+            "e043",
+            "e249",
+            "e247"
+          ],
+          "reason": "Documenta producción sostenible. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_acceso",
+          "score": 0.04005,
+          "baselineScore": 0.3644,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "p_cauce",
+            "p_senderos",
+            "p_umbrales",
+            "r_acceso"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e192",
+            "e191",
+            "e193"
+          ],
+          "reason": "Documenta accesibilidad. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_convoca",
+          "score": 0.03321,
+          "baselineScore": 0.3608,
+          "evidenceNodeIds": [
+            "c_mediacion",
+            "p_orillas",
+            "p_ronda",
+            "p_senderos",
+            "r_convoca"
+          ],
+          "evidenceEdgeIds": [
+            "e042",
+            "e238",
+            "e237",
+            "e240"
+          ],
+          "reason": "Documenta mediación comunitaria. Experiencia registrada en Ronda de Oficios, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_proyecta",
+          "score": 0.01454,
+          "baselineScore": 0.3816,
+          "evidenceNodeIds": [
+            "c_acceso",
+            "p_senderos",
+            "p_umbrales",
+            "r_proyecta"
+          ],
+          "evidenceEdgeIds": [
+            "e041",
+            "e258",
+            "e257"
+          ],
+          "reason": "Documenta accesibilidad. Experiencia registrada en Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_rider",
+          "score": 0.00263,
+          "baselineScore": 0.116,
+          "evidenceNodeIds": [
+            "p_cauce",
+            "p_senderos",
+            "p_umbrales",
+            "r_rider"
+          ],
+          "evidenceEdgeIds": [
+            "e194",
+            "e268"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_archivo",
+          "score": 0.00135,
+          "baselineScore": 0.1024,
+          "evidenceNodeIds": [
+            "p_hilos",
+            "p_orillas",
+            "p_senderos",
+            "r_archivo"
+          ],
+          "evidenceEdgeIds": [
+            "e233",
+            "e236"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Orillas Abiertas, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_bitacora",
+          "score": 0.00128,
+          "baselineScore": 0.1136,
+          "evidenceNodeIds": [
+            "p_mapa",
+            "p_ronda",
+            "p_senderos",
+            "r_bitacora"
+          ],
+          "evidenceEdgeIds": [
+            "e198",
+            "e267"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Mapa Sonoro."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_presupuesto",
+          "score": 0.00124,
+          "baselineScore": 0.0904,
+          "evidenceNodeIds": [
+            "p_orillas",
+            "p_ronda",
+            "p_senderos",
+            "r_presupuesto"
+          ],
+          "evidenceEdgeIds": [
+            "e227",
+            "e228"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_permisos",
+          "score": 0.00114,
+          "baselineScore": 0.1252,
+          "evidenceNodeIds": [
+            "p_orillas",
+            "p_ronda",
+            "p_senderos",
+            "r_permisos"
+          ],
+          "evidenceEdgeIds": [
+            "e189",
+            "e190"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Ronda de Oficios, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_luces",
+          "score": 0.00015,
+          "baselineScore": 0.0804,
+          "evidenceNodeIds": [
+            "p_cauce",
+            "p_patio",
+            "p_senderos",
+            "r_luces"
+          ],
+          "evidenceEdgeIds": [
+            "e213",
+            "e214"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Cine al Patio."
+        },
+        {
+          "projectId": "p_senderos",
+          "candidateId": "r_audio",
+          "score": 5e-05,
+          "baselineScore": 0.084,
+          "evidenceNodeIds": [
+            "p_nocturno",
+            "p_senderos",
+            "p_umbrales",
+            "r_audio"
+          ],
+          "evidenceEdgeIds": [
+            "e231",
+            "e232"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Umbrales en Movimiento, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_archivo",
+          "score": 0.99957,
+          "baselineScore": 0.7024,
+          "evidenceNodeIds": [
+            "c_comunica",
+            "c_documenta",
+            "p_hilos",
+            "p_orillas",
+            "p_tejido",
+            "r_archivo"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e040",
+            "e234",
+            "e235",
+            "e233",
+            "e236"
+          ],
+          "reason": "Documenta comunicación cultural, documentación. Comparte territorio con la propuesta. Experiencia registrada en Orillas Abiertas, Hilos de Memoria."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_licencias",
+          "score": 0.99337,
+          "baselineScore": 0.484,
+          "evidenceNodeIds": [
+            "c_documenta",
+            "p_hilos",
+            "p_orillas",
+            "p_tejido",
+            "r_licencias"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e262",
+            "e260",
+            "e265"
+          ],
+          "reason": "Documenta documentación. Comparte territorio con la propuesta. Experiencia registrada en Hilos de Memoria, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_convoca",
+          "score": 0.9806,
+          "baselineScore": 0.6008,
+          "evidenceNodeIds": [
+            "c_comunica",
+            "c_mediacion",
+            "p_nocturno",
+            "p_orillas",
+            "p_tejido",
+            "r_convoca"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e040",
+            "e238",
+            "e239",
+            "e237",
+            "e241"
+          ],
+          "reason": "Documenta comunicación cultural, mediación comunitaria. Experiencia registrada en Orillas Abiertas, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_senal",
+          "score": 0.97643,
+          "baselineScore": 0.3632,
+          "evidenceNodeIds": [
+            "c_comunica",
+            "p_cauce",
+            "p_talleres",
+            "p_tejido",
+            "r_senal"
+          ],
+          "evidenceEdgeIds": [
+            "e040",
+            "e204",
+            "e202",
+            "e205"
+          ],
+          "reason": "Documenta comunicación cultural. Experiencia registrada en Talleres en Red, Festival Cauce."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_evalua",
+          "score": 0.91607,
+          "baselineScore": 0.468,
+          "evidenceNodeIds": [
+            "c_documenta",
+            "p_talleres",
+            "p_tejido",
+            "r_evalua"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e248",
+            "e247"
+          ],
+          "reason": "Documenta documentación. Comparte territorio con la propuesta. Experiencia registrada en Talleres en Red."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_bitacora",
+          "score": 0.8391,
+          "baselineScore": 0.4736,
+          "evidenceNodeIds": [
+            "c_documenta",
+            "p_mapa",
+            "p_ronda",
+            "p_tejido",
+            "r_bitacora"
+          ],
+          "evidenceEdgeIds": [
+            "e038",
+            "e199",
+            "e198",
+            "e267"
+          ],
+          "reason": "Documenta documentación. Comparte territorio con la propuesta. Experiencia registrada en Mapa Sonoro, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_cuidados",
+          "score": 0.35843,
+          "baselineScore": 0.3592,
+          "evidenceNodeIds": [
+            "c_mediacion",
+            "p_mapa",
+            "p_orillas",
+            "p_tejido",
+            "r_cuidados"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e219",
+            "e220",
+            "e223"
+          ],
+          "reason": "Documenta mediación comunitaria. Experiencia registrada en Mapa Sonoro, Orillas Abiertas."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_mediacion",
+          "score": 0.16457,
+          "baselineScore": 0.3804,
+          "evidenceNodeIds": [
+            "c_mediacion",
+            "p_ronda",
+            "p_tejido",
+            "r_mediacion"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e201",
+            "e200"
+          ],
+          "reason": "Documenta mediación comunitaria. Experiencia registrada en Ronda de Oficios."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_permisos",
+          "score": 0.02229,
+          "baselineScore": 0.1252,
+          "evidenceNodeIds": [
+            "p_orillas",
+            "p_patio",
+            "p_tejido",
+            "r_permisos"
+          ],
+          "evidenceEdgeIds": [
+            "e187",
+            "e190"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Orillas Abiertas, Cine al Patio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_voluntarios",
+          "score": 0.01709,
+          "baselineScore": 0.3488,
+          "evidenceNodeIds": [
+            "c_mediacion",
+            "p_orillas",
+            "p_ronda",
+            "p_tejido",
+            "r_voluntarios"
+          ],
+          "evidenceEdgeIds": [
+            "e039",
+            "e244",
+            "e242",
+            "e245"
+          ],
+          "reason": "Documenta mediación comunitaria. Experiencia registrada en Orillas Abiertas, Ronda de Oficios."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_repara",
+          "score": 0.00209,
+          "baselineScore": 0.078,
+          "evidenceNodeIds": [
+            "p_patio",
+            "p_semilla",
+            "p_tejido",
+            "r_repara"
+          ],
+          "evidenceEdgeIds": [
+            "e250",
+            "e253"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Semilla de Barrio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_presupuesto",
+          "score": 0.002,
+          "baselineScore": 0.0904,
+          "evidenceNodeIds": [
+            "p_orillas",
+            "p_patio",
+            "p_tejido",
+            "r_presupuesto"
+          ],
+          "evidenceEdgeIds": [
+            "e224",
+            "e228"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Orillas Abiertas, Cine al Patio."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_proyecta",
+          "score": 0.00168,
+          "baselineScore": 0.1416,
+          "evidenceNodeIds": [
+            "p_tejido",
+            "p_umbrales",
+            "r_proyecta"
+          ],
+          "evidenceEdgeIds": [
+            "e257"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_rider",
+          "score": 0.00066,
+          "baselineScore": 0.116,
+          "evidenceNodeIds": [
+            "p_cauce",
+            "p_nocturno",
+            "p_tejido",
+            "r_rider"
+          ],
+          "evidenceEdgeIds": [
+            "e194",
+            "e197"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Laboratorio Nocturno."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_audio",
+          "score": 0.00049,
+          "baselineScore": 0.084,
+          "evidenceNodeIds": [
+            "p_nocturno",
+            "p_tejido",
+            "p_umbrales",
+            "r_audio"
+          ],
+          "evidenceEdgeIds": [
+            "e231",
+            "e232"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Laboratorio Nocturno, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_rutas",
+          "score": 0.00031,
+          "baselineScore": 0.09,
+          "evidenceNodeIds": [
+            "p_huerta",
+            "p_semilla",
+            "p_tejido",
+            "r_rutas"
+          ],
+          "evidenceEdgeIds": [
+            "e207",
+            "e210"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Semilla de Barrio, Huerta de Escenas."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_acceso",
+          "score": 0.00017,
+          "baselineScore": 0.1244,
+          "evidenceNodeIds": [
+            "p_cauce",
+            "p_tejido",
+            "p_umbrales",
+            "r_acceso"
+          ],
+          "evidenceEdgeIds": [
+            "e191",
+            "e193"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Festival Cauce, Umbrales en Movimiento."
+        },
+        {
+          "projectId": "p_tejido",
+          "candidateId": "r_luces",
+          "score": 6e-05,
+          "baselineScore": 0.0804,
+          "evidenceNodeIds": [
+            "p_nocturno",
+            "p_patio",
+            "p_tejido",
+            "r_luces"
+          ],
+          "evidenceEdgeIds": [
+            "e213",
+            "e216"
+          ],
+          "reason": "Aporta experiencia de proyectos relacionados; no coincide directamente con las capacidades requeridas. Experiencia registrada en Cine al Patio, Laboratorio Nocturno."
+        }
+      ],
+      "evaluation": {
+        "queries": 160,
+        "candidatesPerQuery": 18,
+        "positivesPerQuery": 3,
+        "pairs": 2880,
+        "metricAggregation": "AP y AUC sobre todos los pares; NDCG, Recall y Precision@3 promediados por consulta. GNN/MLP: media de tres inicializaciones."
+      },
+      "selectedModel": {
+        "model": "gnn",
+        "seed": 7,
+        "bestEpoch": 135,
+        "epochsRun": 235,
+        "validationNdcgAt3": 0.6888,
+        "finalTrainLoss": 0.28619,
+        "test": {
+          "ap": 0.6641,
+          "rocAuc": 0.9046,
+          "ndcgAt3": 0.7057,
+          "recallAt3": 0.6583,
+          "precisionAt3": 0.6583
+        }
+      }
+    }
+  }
+}
