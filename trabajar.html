@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Prepará tu próximo proyecto cultural con los antecedentes de tu propia planilla. Carga y consultas locales, con filas de origen." />
+    <title>SINC — Trabajar con tus datos</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="assets/fonts/instrument-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/fraunces-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="sistema.css?v=20261006-marca1" />
+    <link rel="stylesheet" href="trabajar.css?v=20261007-local1" />
+    <script type="module" src="trabajar.js?v=20261007-local1"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="work-topbar shell">
+      <a class="work-brand" href="index.html" aria-label="SINC, ir a la demo"><img src="assets/logo/sinc-logo.svg" width="110" height="48" alt="SINC" /></a>
+      <nav aria-label="Navegación"><a href="index.html">Ver la demo</a></nav>
+      <span class="local-label"><span class="icon icon-info" aria-hidden="true"></span>Procesamiento en tu navegador</span>
+    </header>
+
+    <main class="shell work-main" id="contenido">
+      <div class="work-intro">
+        <h1 class="t-title">Lo que ya hiciste,<br /><em>para lo que viene.</em></h1>
+        <p>Prepará tu próximo proyecto cultural con los antecedentes de una planilla. SINC te ayuda a consultar lo registrado y a decidir qué añadir.</p>
+      </div>
+      <ol class="work-steps" aria-label="Pasos de trabajo">
+        <li aria-current="step" data-step="1"><span>1</span>Cargá tu archivo</li>
+        <li data-step="2"><span>2</span>Confirmá las columnas</li>
+        <li data-step="3"><span>3</span>Prepará lo que viene</li>
+      </ol>
+      <p class="work-status" id="work-status" role="status" aria-live="polite"></p>
+      <div class="notice notice--error" id="work-error" role="alert" hidden><span class="icon icon-alert" aria-hidden="true"></span><p id="work-error-text"></p></div>
+
+      <div class="work-layout">
+        <div class="work-area">
+          <section id="load-step" aria-labelledby="load-title">
+            <h2 class="t-heading" id="load-title" tabindex="-1">Empezá por lo que tenés</h2>
+            <p class="section-note">No hace falta una base perfecta. Un nombre de proyecto por fila alcanza para empezar.</p>
+            <div class="upload-zone" id="upload-zone">
+              <input class="visually-hidden" type="file" id="data-file" accept=".csv,.json" tabindex="-1" aria-label="Elegir una planilla CSV o una copia de SINC" />
+              <p class="upload-lead">Tu planilla es el punto de partida.</p>
+              <p class="muted">Arrastrá un CSV acá o elegilo desde tu equipo.</p>
+              <button class="button button-primary button-lg" type="button" id="choose-file">Elegir mi archivo<span class="icon icon-arrow" aria-hidden="true"></span></button>
+              <p class="field-help">CSV en UTF-8 · hasta 5 MB y 5.000 filas.<br />También podés abrir una copia JSON exportada desde SINC.</p>
+            </div>
+            <div class="example-row"><p>¿Querés ver cómo funciona primero?</p><button type="button" class="button button-outline" id="try-example">Probar con un ejemplo ficticio</button></div>
+            <button type="button" class="button-quiet" id="download-template">Descargar una plantilla vacía<span class="icon icon-download" aria-hidden="true"></span></button>
+            <button type="button" class="button-quiet" id="return-workspace" hidden>Volver a mis datos actuales</button>
+          </section>
+
+          <section id="map-step" aria-labelledby="map-title" hidden>
+            <h2 class="t-heading" id="map-title" tabindex="-1">Decile a SINC qué significa cada columna</h2>
+            <p class="section-note" id="map-description"></p>
+            <form id="mapping-form" novalidate>
+              <div id="mapping-main" class="mapping-grid"></div>
+              <details class="optional-fields"><summary>Año, función, territorio y notas</summary><div id="mapping-extra" class="mapping-grid"></div></details>
+              <details class="file-preview"><summary>Revisar las primeras filas del archivo</summary><div id="preview" class="table-scroll" tabindex="0" role="region" aria-label="Vista previa del CSV"></div></details>
+              <p class="mapping-note" id="mapping-note"></p>
+              <div class="work-actions"><button type="submit" class="button button-primary" id="mapping-submit">Usar estas columnas<span class="icon icon-arrow" aria-hidden="true"></span></button><button type="button" class="button-quiet" id="map-back">Elegir otro archivo</button></div>
+            </form>
+          </section>
+
+          <section id="query-step" aria-labelledby="query-title" hidden>
+            <div class="section-header"><h2 class="t-heading" id="query-title" tabindex="-1">Prepará tu próximo proyecto</h2><button type="button" class="button-quiet" id="change-file">Cambiar archivo</button></div>
+            <p class="file-caption" id="current-file"></p>
+            <ul class="dataset-overview" id="dataset-overview" aria-label="Datos reconocidos"></ul>
+            <div class="notice" id="save-notice" hidden><span class="icon icon-info" aria-hidden="true"></span><p id="save-notice-text"></p></div>
+            <form id="scope-form" class="scope-form" onsubmit="return false">
+              <div class="field goal-field"><label for="next-project">Nombre del próximo proyecto <span class="muted">(opcional)</span></label><input type="text" id="next-project" maxlength="120" placeholder="Para titular el informe que te llevás" /></div>
+              <div class="field"><label for="project-scope">Antecedentes de</label><select id="project-scope"><option value="">Todos los proyectos</option></select></div>
+              <div class="field"><label for="capability-scope">Necesidad que querés explorar</label><select id="capability-scope"><option value="">Todas las capacidades registradas</option></select><p class="field-help" id="capability-help"></p></div>
+            </form>
+            <div class="query-buttons" role="group" aria-label="Consultas de la planilla">
+              <button type="button" class="chip" data-query="Mostrá los antecedentes" aria-pressed="true"><span class="glyph glyph-project" aria-hidden="true"></span>Antecedentes</button>
+              <button type="button" class="chip" data-query="¿Qué equipos participaron?" aria-pressed="false"><span class="glyph glyph-actor" aria-hidden="true"></span>Participantes</button>
+              <button type="button" class="chip" data-query="¿Qué recursos hay?" aria-pressed="false"><span class="glyph glyph-resource" aria-hidden="true"></span>Recursos</button>
+              <button type="button" class="chip" data-query="¿Qué datos puedo añadir?" aria-pressed="false">Qué añadir</button>
+            </div>
+            <form id="question-form" class="question-form">
+              <label class="visually-hidden" for="local-question">Pregunta sobre tu archivo</label>
+              <input type="text" id="local-question" maxlength="400" placeholder="O preguntá sobre este archivo" required />
+              <button class="button button-outline" type="submit">Consultar</button>
+            </form>
+            <section class="query-result" id="query-result" aria-labelledby="answer-title" aria-live="polite" aria-atomic="false">
+              <h3 class="t-heading" id="answer-title">Antecedentes registrados</h3>
+              <p id="answer-text"></p>
+              <div id="answer-items"></div>
+            </section>
+            <div class="export-actions"><button type="button" class="button button-primary" id="download-report">Llevarme este informe<span class="icon icon-download" aria-hidden="true"></span></button><button type="button" class="button-quiet" id="download-copy">Guardar una copia de mis datos</button></div>
+            <p class="field-help">La copia conserva el archivo y sus columnas para seguir en otro momento. El informe describe los registros; no confirma disponibilidad ni condiciones actuales.</p>
+            <button type="button" class="button-quiet forget-data" id="forget-data">Olvidar los datos de este navegador</button>
+          </section>
+        </div>
+
+        <aside class="work-guide" aria-labelledby="guide-title">
+          <h2 class="t-heading" id="guide-title">Una planilla. Nuevas preguntas.</h2>
+          <div id="guide-content">
+            <p>Podés empezar con nombres de proyectos y sumar información a tu ritmo.</p>
+            <ul class="guide-legend">
+              <li><span class="glyph glyph-project" aria-hidden="true"></span><span><strong>Proyectos</strong>Qué hiciste y cuándo.</span></li>
+              <li><span class="glyph glyph-actor" aria-hidden="true"></span><span><strong>Equipos</strong>Quién participó y qué función tuvo.</span></li>
+              <li><span class="glyph glyph-capability" aria-hidden="true"></span><span><strong>Capacidades</strong>Qué se trabajó en cada proyecto.</span></li>
+              <li><span class="glyph glyph-resource" aria-hidden="true"></span><span><strong>Recursos</strong>Qué materiales quedaron relacionados.</span></li>
+            </ul>
+            <p class="guide-bottom">Cada respuesta vuelve a una fila de tu archivo. Lo que no está registrado queda por confirmar.</p>
+          </div>
+        </aside>
+      </div>
+      <noscript><p class="notice">Necesitás activar JavaScript para procesar el CSV en tu navegador.</p></noscript>
+    </main>
+    <footer class="work-footer shell"><p>SINC · Memoria de proyectos culturales</p><a href="marca.html">Nuestra marca</a></footer>
+  </body>
+</html>
