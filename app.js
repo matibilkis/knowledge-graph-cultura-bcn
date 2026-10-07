@@ -19,7 +19,7 @@ let predictionsAvailable = false;
 let gnnRuntime;
 let selectedNodeId = null;
 
-function status(id, text) { if (byId(id)) byId(id).textContent = text; }
+function status(id, text, isError = false) { const node = byId(id); if (!node) return; node.textContent = text; node.classList.toggle('is-error', isError); }
 async function fetchJSON(path) {
   const response = await fetch(`${path}?v=${ASSET_VERSION}`);
   if (!response.ok) throw new Error(`No se pudo cargar ${path}: HTTP ${response.status}`);
@@ -42,7 +42,7 @@ function focusEvidence(nodeIds, edgeIds = []) {
   status('graph-subtitle', `${evidence.nodeIds.length} nodos vinculados con el resultado seleccionado`);
 }
 function evidenceButton(label, nodeIds, edgeIds = [], type = null) {
-  const button = el('button', 'evidence-link', label);
+  const button = el('button', 'evidence-link chip chip--small has-glyph', label);
   if(type || store.nodes.get(nodeIds[0]))button.dataset.type=type || store.nodes.get(nodeIds[0]).type;
   button.type = 'button';
   button.addEventListener('click', () => { focusEvidence(nodeIds, edgeIds); if (nodeIds[0]) showNode(nodeIds[0]); });
@@ -54,7 +54,9 @@ function showNode(id) {
   selectedNodeId=id;
   const panel = byId('node-detail');
   panel.replaceChildren();
-  panel.append(el('p', 'detail-type', { project: 'Proyecto', actor: 'Equipo', capability: 'Capacidad', resource: 'Recurso' }[node.type]), el('h3', '', node.name), el('p', '', node.description));
+  const typeTag = el('p', 'detail-type tag tag--plain has-glyph', { project: 'Proyecto', actor: 'Equipo', capability: 'Capacidad', resource: 'Recurso' }[node.type]);
+  typeTag.dataset.type = node.type;
+  panel.append(typeTag, el('h3', '', node.name), el('p', '', node.description));
   if (node.territory || node.year || node.status) panel.append(el('p', 'detail-meta', [node.territory, node.year, isPlanned(node) ? 'Planificado' : null].filter(Boolean).join(' · ')));
   if (node.facts?.length) {
     const facts = el('ul', 'detail-list');
@@ -74,7 +76,7 @@ function showNode(id) {
   }
   panel.append(list);
   if (node.type === 'project') {
-    const button = el('button', 'evidence-link', 'Consultar este proyecto');
+    const button = el('button', 'evidence-link chip chip--small', 'Consultar este proyecto');
     button.type = 'button';
     button.addEventListener('click', () => runAgent(`Mostrá el contexto de ${node.name}`));
     panel.append(button);
@@ -104,7 +106,7 @@ function fillOverview() {
   const cards = byId('project-list');
   cards.replaceChildren();
   for (const project of store.ofType('project')) {
-    const card = el('button', 'project-card');
+    const card = el('button', 'project-card card card--compact card--action');
     card.dataset.status=project.status || '';
     card.type = 'button';
     card.append(el('span', 'project-card-meta', [project.year, project.territory, isPlanned(project) ? 'Planificado' : 'Realizado'].filter(Boolean).join(' · ')), el('strong', '', project.name), el('span', '', project.description));
@@ -143,7 +145,7 @@ async function runAgent(query) {
       const group = el('div', 'agent-evidence');
       group.append(el('h4', '', section.title));
       for (const item of section.items) {
-        const card = el('div', 'recommendation-card');
+        const card = el('div', 'recommendation-card card card--compact card--proposed');
         if(!Number.isFinite(item.score))card.classList.add('is-known');
         card.append(el('strong', '', item.label), el('p', '', item.description));
         if (Number.isFinite(item.score)) card.append(scoreBadge('GNN',item.score));
@@ -156,13 +158,13 @@ async function runAgent(query) {
       const sources = el('div', 'agent-evidence');
       sources.append(el('h4', '', 'Información de referencia'));
       for (const source of result.sources) {
-        const link = el('a', 'evidence-link', source.label);
+        const link = el('a', 'evidence-link chip chip--small', source.label);
         link.href = source.href; sources.append(link);
       }
       message.append(sources);
     }
     if (result.trace.length) {
-      const trace = el('details', 'agent-trace');
+      const trace = el('details', 'agent-trace disclosure');
       trace.append(el('summary', '', `${result.trace.length} pasos de consulta · ver recorrido`));
       const list = el('ol');
       for (const step of result.trace) {
@@ -173,7 +175,7 @@ async function runAgent(query) {
       trace.append(list); message.append(trace);
     }
     for (const suggestion of result.suggestions) {
-      const button = el('button', 'evidence-link', suggestion);
+      const button = el('button', 'evidence-link chip chip--small', suggestion);
       button.type = 'button'; button.addEventListener('click',()=>runAgent(suggestion)); message.append(button);
     }
     if (result.highlightNodeIds.length) focusEvidence(result.highlightNodeIds, result.highlightEdgeIds);
@@ -181,7 +183,7 @@ async function runAgent(query) {
     message.scrollIntoView({ block: 'nearest', behavior: 'instant' });
   } catch (error) {
     addAgentMessage('assistant', 'No pude completar esta consulta. Probá con una capacidad o un proyecto de la red.');
-    status('agent-status', 'La consulta no se completó');
+    status('agent-status', 'La consulta no se completó', true);
     console.error(error);
   } finally {
     querying = false; submit.disabled = false; byId('agent-form').removeAttribute('aria-busy');
@@ -218,7 +220,7 @@ function renderGNN() {
   renderMetrics(task);
   status('gnn-status', results.length ? `${results.length} candidatos para ${project.name}, ordenados por ${ranking==='baseline'?'reglas':'GraphSAGE'}. Sugerencias pendientes de validación.` : 'No hay resultados del modelo para este proyecto.');
   for (const item of results.slice(0,6)) {
-    const card = el('article', 'recommendation-card');
+    const card = el('article', 'recommendation-card card card--compact card--proposed');
     card.append(el('h4', '', item.node.name), scoreBadge(ranking==='baseline'?'reglas':'GNN',ranking==='baseline'?item.baselineScore:item.score), el('p', '', item.reason || item.node.description));
     if (Number.isFinite(item.baselineScore)) card.append(el('p', 'baseline-score', `Puntuación ${ranking==='baseline'?'GNN':'reglas'} ${(ranking==='baseline'?item.score:item.baselineScore).toFixed(3)} · escala propia de cada método`));
     card.append(evidenceButton('Explorar contexto', item.nodeIds, item.edgeIds,item.node.type));
@@ -228,7 +230,7 @@ function renderGNN() {
   const method = byId('gnn-method'); method.replaceChildren();
   const gnnNdcg = task.metrics?.gnn?.ndcgAt3, baselineNdcg = task.metrics?.baseline?.ndcgAt3;
   if(Number.isFinite(gnnNdcg) && Number.isFinite(baselineNdcg)) method.append(el('p','benchmark-conclusion',gnnNdcg < baselineNdcg ? 'En este experimento las reglas obtuvieron mayor NDCG@3 que la GNN. Podés comparar ambos ordenamientos; estos resultados describen el generador ficticio.' : `NDCG@3: GNN ${gnnNdcg.toFixed(3)}, reglas ${baselineNdcg.toFixed(3)} y MLP ${task.metrics.mlp.ndcgAt3.toFixed(3)}. Estos resultados describen el generador ficticio y no establecen una ventaja en redes reales.`));
-  const details=el('details');details.append(el('summary','','Cómo se entrenó y evaluó'));
+  const details=el('details','disclosure');details.append(el('summary','','Cómo se entrenó y evaluó'));
   details.append(el('p', '', `${meta.model || 'GraphSAGE'} entrenado en CPU sobre grafos sintéticos. Los mundos de evaluación son distintos de los de entrenamiento; los vínculos a predecir se excluyen de la entrada del modelo.`));
   const limitations = Array.isArray(meta.limitations) ? meta.limitations : [meta.limitations || 'Los resultados describen el generador ficticio y requieren validación con datos reales.'];
   limitations.forEach(text => details.append(el('p','',text)));
@@ -256,7 +258,7 @@ function runGNN() {
     renderGNN();
     status('gnn-status',`Inferencia local: ${ranking.length} candidatos evaluados en ${(performance.now()-start).toFixed(0)} ms. Sugerencias pendientes de validación.`);
   } catch(error) {
-    status('gnn-status','No se pudo ejecutar la inferencia local.');
+    status('gnn-status','No se pudo ejecutar la inferencia local.', true);
     console.error(error);
   }
 }
@@ -312,8 +314,8 @@ async function init() {
     renderGNN(); initMotion();
     document.documentElement.dataset.ready='true';
   } catch(error) {
-    status('graph-count','No se pudieron cargar los datos');
-    status('agent-status','No se pudo iniciar el agente. Recargá la página.');
+    status('graph-count','No se pudieron cargar los datos', true);
+    status('agent-status','No se pudo iniciar el agente. Recargá la página.', true);
     if(byId('agent-submit')) byId('agent-submit').disabled=true;
     console.error(error);
   }
