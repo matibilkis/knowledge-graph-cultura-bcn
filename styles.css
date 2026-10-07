@@ -312,6 +312,7 @@
   content: ''; position: absolute; left: var(--space-4); top: var(--space-4); width: var(--size-icon); height: var(--size-icon); background: currentColor;
   -webkit-mask: var(--icon-download) center / contain no-repeat; mask: var(--icon-download) center / contain no-repeat;
 }
+.download--page::before { -webkit-mask-image: var(--icon-arrow); mask-image: var(--icon-arrow); }
 .download-name { font: var(--type-ui); font-weight: 600; }
 .download-meta { font: 400 var(--text-xs) / 1.4 var(--font-sans); color: var(--color-text-muted); }
 

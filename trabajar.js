@@ -150,7 +150,8 @@ function renderGroup(group) {
   const context = distinct(group.rows.map(row => `${row.project}${row.year ? ` (${row.year})` : ' (año sin registrar)'}`));
   if (result.kind === 'projects') {
     const first = group.rows[0];
-    article.append(element('p', `${first.year || 'Año sin registrar'} · ${distinct(group.rows.map(row => row.team)).length} equipos en las filas seleccionadas`));
+    const teamCount = distinct(group.rows.map(row => row.team)).length;
+    article.append(element('p', `${first.year || 'Año sin registrar'} · ${teamCount} ${teamCount === 1 ? 'equipo' : 'equipos'} en las filas seleccionadas`));
     const capabilities = distinct(group.rows.flatMap(row => row.capabilities));
     if (capabilities.length) article.append(element('p', `Capacidades registradas: ${capabilities.join(' · ')}`));
   } else article.append(element('p', `Relacionado con: ${context.join(' · ')}`));
