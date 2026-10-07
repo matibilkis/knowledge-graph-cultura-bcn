@@ -3,11 +3,14 @@
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const VIEW = { w: 1000, h: 700 };
-const TYPE_LABEL = { project: 'Proyecto', actor: 'Actor', capability: 'Capacidad', resource: 'Recurso' };
+const TYPE_LABEL = { project: 'Proyecto', actor: 'Equipo', capability: 'Capacidad', resource: 'Recurso' };
 const RADIUS = { project: 15, actor: 10, capability: 10, resource: 10 };
 const ZOOM_MIN = 0.45;
 const ZOOM_MAX = 6;
 const LABEL_PX = 12.5;
+const LABEL_WRAP = 17; // desde este largo el nombre va en dos renglones; nunca se recorta
+const LABEL_DENSE = 26; // con más nodos que estos y el mapa chico, solo se nombran proyectos y capacidades
+const CAPTION_REST_MS = 9000; // cuánto queda el cartel de la animación después de terminar
 const MAX_FOCUS_EDGE_LABELS = 6;
 const MAX_PULSE_MESSAGES = 120;
 
@@ -15,6 +18,18 @@ const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const safeToken = value => String(value ?? '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+const isPlanned = node => ['planned', 'planificado'].includes(node?.status);
+
+// Parte un nombre largo en dos renglones parejos, por un espacio. El texto no cambia.
+function wrapName(name) {
+  if (name.length <= LABEL_WRAP || !name.includes(' ')) return [name];
+  let best = null;
+  for (let i = name.indexOf(' '); i >= 0; i = name.indexOf(' ', i + 1)) {
+    const longest = Math.max(i, name.length - i - 1);
+    if (!best || longest < best.longest) best = { i, longest };
+  }
+  return [name.slice(0, best.i), name.slice(best.i + 1)];
+}
 
 function svgEl(name, attrs = {}) {
   const node = document.createElementNS(SVG_NS, name);
@@ -194,7 +209,7 @@ function computeLayout(nodes, edges, width, height) {
 }
 
 export class GraphView {
-  constructor(svgElement, { onSelect } = {}) {
+  constructor(svgElement, { onSelect, captionHost } = {}) {
     this.svg = svgElement;
     this.onSelect = typeof onSelect === 'function' ? onSelect : () => {};
     this.nodes = [];
@@ -202,7 +217,7 @@ export class GraphView {
     this.nodeById = new Map();
     this.edgeById = new Map();
     this.neighbors = new Map();
-    this.state = { nodeIds: null, edgeIds: null, selectedId: null, highlightIds: [], highlightEdgeIds: [] };
+    this.state = { nodeIds: null, edgeIds: null, selectedId: null, highlightIds: [], highlightEdgeIds: [], emphasisIds: [], proposals: [] };
     this.transform = { x: 0, y: 0, k: 1 };
     this.base = 1;
     this.region = { x: 0, y: 0, w: VIEW.w, h: VIEW.h };
@@ -219,6 +234,9 @@ export class GraphView {
     this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     this.layoutCache = new Map();
     this.comparisons = [];
+    this.proposalLines = [];
+    this.pad = { top: 58, bottom: 58 };
+    this.captionTimer = 0;
     this.pulseRootIds = new Set();
 
     this.svg.querySelector(':scope > .gv-viewport')?.remove();
@@ -232,7 +250,6 @@ export class GraphView {
     this.svg.append(this.viewport);
     this.emptyState = svgEl('text', { x: VIEW.w / 2, y: VIEW.h / 2, 'text-anchor': 'middle', class: 'graph-empty' });
     this.emptyState.textContent = 'No hay nodos que coincidan con esta vista';
-    this.emptyState.style.display = 'none';
     this.svg.append(this.emptyState);
     this.svg.classList.add('gv');
 
@@ -248,7 +265,7 @@ export class GraphView {
     this.caption.className = 'graph-animation-caption';
     this.caption.hidden = true;
     this.caption.setAttribute('role', 'status');
-    (this.svg.parentElement || document.body).append(this.caption);
+    (captionHost || this.svg.parentElement || document.body).append(this.caption);
 
     this.handlers = {
       pointerdown: event => this.onPointerDown(event),
@@ -278,14 +295,14 @@ export class GraphView {
   setData(nodes = [], edges = []) {
     this.stopFrames();
     this.pulseToken += 1;
-    this.clearPulse();this.comparisons=[];this.caption.hidden=true;
+    this.clearPulse();this.comparisons=[];this.proposalLines=[];this.hideCaption();
     const previous = new Map(this.nodes.map(node => [node.id, { x: node.x, y: node.y }]));
     this.nodeById = new Map();
     this.edgeById = new Map();
     this.neighbors = new Map();
     this.nodes = nodes
       .filter(node => node && node.id != null)
-      .map(node => ({ id: String(node.id), type: safeToken(node.type) || 'actor', name: String(node.name ?? node.id), x: 0, y: 0, degree: 0, el: null }));
+      .map(node => ({ id: String(node.id), type: safeToken(node.type) || 'actor', name: String(node.name ?? node.id), lines: wrapName(String(node.name ?? node.id)), planned: node.type === 'project' && isPlanned(node), x: 0, y: 0, degree: 0, el: null }));
     this.layoutCache.clear();
     for (const node of this.nodes) {
       this.nodeById.set(node.id, node);
@@ -313,7 +330,7 @@ export class GraphView {
       this.neighbors.get(target.id).set(source.id, record);
     });
 
-    this.state = { nodeIds: null, edgeIds: null, selectedId: null, highlightIds: [], highlightEdgeIds: [] };
+    this.state = { nodeIds: null, edgeIds: null, selectedId: null, highlightIds: [], highlightEdgeIds: [], emphasisIds: [], proposals: [] };
     this.measure();
     const layout = this.layoutFor(this.portrait);
     for (const node of this.nodes) {
@@ -337,7 +354,6 @@ export class GraphView {
     const drawOrder = [...this.nodes].sort((a, b) => (a.type === 'project') - (b.type === 'project'));
     for (const node of drawOrder) this.nodeLayer.append(this.buildNode(node));
 
-    this.state = { nodeIds: null, edgeIds: null, selectedId: null, highlightIds: [], highlightEdgeIds: [] };
     this.rovingId = null;
     this.userMoved = false;
     this.positionAll();
@@ -366,10 +382,10 @@ export class GraphView {
   buildNode(node) {
     const radius = RADIUS[node.type] ?? 10;
     const group = svgEl('g', {
-      class: `graph-node type-${node.type}`,
+      class: `graph-node type-${node.type}${node.planned ? ' is-planned' : ''}`,
       role: 'button',
       tabindex: '-1',
-      'aria-label': `${node.name}, ${TYPE_LABEL[node.type] ?? 'Nodo'}, ${node.degree} ${node.degree === 1 ? 'vínculo' : 'vínculos'}`,
+      'aria-label': `${node.name}, ${TYPE_LABEL[node.type] ?? 'Nodo'}${node.planned ? ' planificado' : ''}, ${node.degree} ${node.degree === 1 ? 'vínculo' : 'vínculos'}`,
       'aria-pressed': 'false',
     });
     group.dataset.id = node.id;
@@ -388,8 +404,13 @@ export class GraphView {
       glyph.append(svgEl('circle', { class: 'node-shape', r: radius }));
       if (node.type === 'project') glyph.append(svgEl('circle', { class: 'node-core', r: 3.5 }));
     }
+    // El nombre va completo, en uno o dos renglones: el texto visible coincide con el nombre accesible.
     const label = svgEl('text', { class: 'node-label', 'text-anchor': 'middle' });
-    label.textContent = node.name;
+    node.lines.forEach((line, i) => {
+      const span = svgEl('tspan');
+      span.textContent = i < node.lines.length - 1 ? `${line} ` : line;
+      label.append(span);
+    });
     group.append(glyph, label);
     node.el = group;
     return group;
@@ -405,12 +426,15 @@ export class GraphView {
     if ('selectedId' in next) state.selectedId = next.selectedId == null ? null : String(next.selectedId);
     if ('highlightIds' in next) state.highlightIds = [...(next.highlightIds ?? [])].map(String);
     if ('highlightEdgeIds' in next) state.highlightEdgeIds = [...(next.highlightEdgeIds ?? [])].map(String);
+    if ('emphasisIds' in next) state.emphasisIds = [...(next.emphasisIds ?? [])].map(String);
+    if ('proposals' in next) state.proposals = [...(next.proposals ?? [])].map(pair => pair.map(String));
     this.pulseToken += 1;
     this.clearPulse();
     this.suggestLayer.replaceChildren();
     this.comparisons=[];
     this.pulseRootIds=new Set();
-    this.caption.hidden=true;
+    this.hideCaption();
+    this.renderProposals();
     if(before!==this.visibleKey() && this.nodes.length) {
       this.cancel('nodes');
       const layout=this.layoutFor(this.portrait);
@@ -498,11 +522,46 @@ export class GraphView {
     for (const edge of focusEdges) this.edgeLayer.append(edge.el);
 
     this.visibleCount = visibleCount;
-    this.emptyState.style.display=visibleCount?'none':'block';
+    // Lo que hay en pantalla queda a la vista como clases y atributos: la leyenda y el estado vacío los leen.
+    this.svg.classList.toggle('is-empty', !visibleCount);
+    this.svg.toggleAttribute('data-planned', this.nodes.some(node => node.planned && this.isVisible(node)));
+    this.svg.toggleAttribute('data-edges', this.edges.some(edge => this.isEdgeVisible(edge)));
     this.svg.classList.toggle('has-focus', focused);
     this.renderEdgeLabels(focusEdges, highlightEdges);
     this.updateRoving();
     this.applyTransform();
+  }
+
+  // Un vínculo propuesto une dos nodos visibles con trazo punteado. No es una arista: no entra en el layout,
+  // en los vecindarios ni en el recorrido por teclado.
+  renderProposals() {
+    this.proposalLines = [];
+    for (const [a, b] of this.state.proposals) {
+      const source = this.nodeById.get(a);
+      const target = this.nodeById.get(b);
+      if (!source || !target || source === target || !this.isVisible(source) || !this.isVisible(target)) continue;
+      const line = svgEl('line', { class: 'graph-suggestion graph-proposal' });
+      this.suggestLayer.append(line);
+      this.proposalLines.push({ source, target, line });
+    }
+    this.positionProposals();
+    this.syncProposed();
+  }
+
+  positionProposals() {
+    for (const { source, target, line } of this.proposalLines ?? []) {
+      line.setAttribute('x1', source.x.toFixed(1));
+      line.setAttribute('y1', source.y.toFixed(1));
+      line.setAttribute('x2', target.x.toFixed(1));
+      line.setAttribute('y2', target.y.toFixed(1));
+    }
+  }
+
+  syncProposed() { this.svg.toggleAttribute('data-proposed', this.suggestLayer.childElementCount > 0); }
+
+  hideCaption() {
+    clearTimeout(this.captionTimer);
+    this.caption.hidden = true;
   }
 
   renderEdgeLabels(focusEdges, highlightEdges) {
@@ -550,6 +609,7 @@ export class GraphView {
       edge.el.setAttribute('y2', edge.target.y.toFixed(1));
     }
     this.positionComparisons();
+    this.positionProposals();
     this.layoutLabels();
     this.positionEdgeLabels();
   }
@@ -576,6 +636,9 @@ export class GraphView {
   measure() {
     const rect = this.svg.getBoundingClientRect();
     this.rect = rect;
+    const style = getComputedStyle(this.svg);
+    const px = (name, fallback) => { const value = parseFloat(style.getPropertyValue(name)); return Number.isFinite(value) ? value : fallback; };
+    this.pad = { top: px('--gv-pad-top', 58), bottom: px('--gv-pad-bottom', 58) };
     if (rect.width < 2 || rect.height < 2) {
       this.base = 1;
       this.region = { x: 0, y: 0, w: VIEW.w, h: VIEW.h };
@@ -632,35 +695,72 @@ export class GraphView {
 
   boxesOverlap(a,b) { return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y; }
 
+  // Política de etiquetas: el nombre va completo (uno o dos renglones) y nunca se pisa con otro nombre
+  // ni con un nodo. Si no hay lugar, el nodo queda sin rótulo y se lee al pasar el cursor, enfocarlo o elegirlo.
+  // Orden de prioridad: elegido / bajo el cursor / con foco, después lo que la vista quiere destacar
+  // (emphasisIds), después proyectos, capacidades y el resto por cantidad de vínculos.
   layoutLabels() {
     const scale=this.base*this.transform.k;
     if(!Number.isFinite(scale)||scale<=0)return;
-    const ns=clamp(0.62/scale,1,2.4),ls=LABEL_PX/scale;
-    const selected=this.state.selectedId;
+    const ns=clamp(0.62/scale,1,2.4),ls=LABEL_PX/scale,lineHeight=ls*1.18;
     const focusedId=this.nodeFromEvent({target:document.activeElement})?.id;
-    const candidates=this.nodes.filter(node=>this.isVisible(node) && (!node.el.classList.contains('is-dim') || [selected,this.hoverId,focusedId].includes(node.id)));
-    const priority=node=>[selected,this.hoverId,focusedId].includes(node.id) || this.pulseRootIds.has(node.id)?10000:(node.type==='project'?1000:node.type==='capability'?500:0)+node.degree;
+    const pinned=new Set([this.state.selectedId,this.hoverId,focusedId,...this.pulseRootIds].filter(Boolean));
+    const emphasis=new Set(this.state.emphasisIds);
+    const visible=this.nodes.filter(node=>this.isVisible(node));
+    // Vista general en un lienzo chico: nombrar equipos y recursos sueltos confunde más de lo que orienta.
+    const landmarksOnly=visible.length>LABEL_DENSE && scale<0.5;
+    const candidates=visible.filter(node=>pinned.has(node.id) || (!node.el.classList.contains('is-dim') && (!landmarksOnly || node.type==='project' || node.type==='capability' || emphasis.has(node.id))));
+    const priority=node=>(pinned.has(node.id)?20000:0)+(emphasis.has(node.id)?5000:0)+(node.type==='project'?1000:node.type==='capability'?500:0)+node.degree;
     candidates.sort((a,b)=>priority(b)-priority(a)||a.id.localeCompare(b.id));
-    const obstacles=this.nodes.filter(node=>this.isVisible(node)).map(node=>{const r=(RADIUS[node.type]||10)*ns+3/scale;return{x:node.x-r,y:node.y-r,w:r*2,h:r*2};});
+    const obstacles=visible.map(node=>{const r=(RADIUS[node.type]||10)*ns+3/scale;return{id:node.id,x:node.x-r,y:node.y-r,w:r*2,h:r*2};});
     this.nodeObstacles=obstacles;
     const camera=this.transform;
-    const bounds={left:(this.region.x-camera.x)/camera.k+12/scale,right:(this.region.x+this.region.w-camera.x)/camera.k-12/scale,top:(this.region.y-camera.y)/camera.k+52/scale,bottom:(this.region.y+this.region.h-camera.y)/camera.k-55/scale};
+    const bounds={left:(this.region.x-camera.x)/camera.k+8/scale,right:(this.region.x+this.region.w-camera.x)/camera.k-8/scale,top:(this.region.y-camera.y)/camera.k+Math.max(6,this.pad.top-8)/scale,bottom:(this.region.y+this.region.h-camera.y)/camera.k-Math.max(6,this.pad.bottom-4)/scale};
     const occupied=[];
     for(const node of this.nodes)node.el.classList.remove('show-label');
     for(const node of candidates) {
-      const important=[selected,this.hoverId,focusedId].includes(node.id) || this.pulseRootIds.has(node.id);
-      const name=important || node.name.length<=27?node.name:node.name.slice(0,25)+'…';
-      const text=node.el.querySelector('.node-label');if(text.textContent!==name)text.textContent=name;
-      const width=name.length*ls*0.58+ls*0.4,height=ls*1.25,r=(RADIUS[node.type]||10)*ns+ls*0.65;
-      const options=[{x:node.x-width/2,y:node.y+r},{x:node.x+r,y:node.y-height/2},{x:node.x-r-width,y:node.y-height/2},{x:node.x-width/2,y:node.y-r-height}];
-      let box=options.find(option=>option.x>=bounds.left && option.x+width<=bounds.right && option.y>=bounds.top && option.y+height<=bounds.bottom && !occupied.some(other=>this.boxesOverlap({...option,w:width,h:height},other)) && !obstacles.some(other=>this.boxesOverlap({...option,w:width,h:height},other)));
-      if(!box && important)box=options[0];
-      if(!box)continue;
-      const labelBounds={...box,w:width,h:height};occupied.push(labelBounds);
-      text.setAttribute('text-anchor','start');text.setAttribute('x',(box.x-node.x+ls*0.2).toFixed(2));text.setAttribute('y',(box.y-node.y).toFixed(2));
+      const chars=Math.max(...node.lines.map(line=>line.length));
+      const width=chars*ls*(node.type==='project'?0.6:0.56)+ls*0.5,height=node.lines.length*lineHeight;
+      const r=(RADIUS[node.type]||10)*ns+ls*0.45,d=r*0.72;
+      const options=[
+        {x:node.x-width/2,y:node.y+r,anchor:'middle',dx:0,dy:1},
+        {x:node.x+r,y:node.y-height/2,anchor:'start',dx:1,dy:0},
+        {x:node.x-r-width,y:node.y-height/2,anchor:'end',dx:-1,dy:0},
+        {x:node.x-width/2,y:node.y-r-height,anchor:'middle',dx:0,dy:-1},
+        {x:node.x+d,y:node.y+d,anchor:'start',dx:0.7,dy:0.7},
+        {x:node.x-d-width,y:node.y+d,anchor:'end',dx:-0.7,dy:0.7},
+        {x:node.x+d,y:node.y-d-height,anchor:'start',dx:0.7,dy:-0.7},
+        {x:node.x-d-width,y:node.y-d-height,anchor:'end',dx:-0.7,dy:-0.7},
+      ];
+      // Si los vínculos del nodo salen hacia un lado, el nombre va primero hacia el lado libre.
+      const clear=this.clearSide(node);
+      if(clear)options.forEach((option,i)=>{option.rank=-(option.dx*clear.x+option.dy*clear.y)-(i===0?0.2:0)+i*0.001;}),options.sort((a,b)=>a.rank-b.rank);
+      const inside=option=>option.x>=bounds.left && option.x+width<=bounds.right && option.y>=bounds.top && option.y+height<=bounds.bottom;
+      const free=option=>{const box={x:option.x,y:option.y,w:width,h:height};return !occupied.some(other=>this.boxesOverlap(box,other)) && !obstacles.some(other=>other.id!==node.id && this.boxesOverlap(box,other));};
+      let choice=options.find(option=>inside(option) && free(option));
+      // El nodo elegido, enfocado o bajo el cursor siempre muestra su nombre, aunque tape algo.
+      if(!choice && pinned.has(node.id))choice=options.find(free) || options.find(inside) || options[0];
+      if(!choice)continue;
+      occupied.push({x:choice.x,y:choice.y,w:width,h:height});
+      const text=node.el.querySelector('.node-label');
+      const x=(choice.anchor==='middle'?choice.x+width/2:choice.anchor==='start'?choice.x+ls*0.25:choice.x+width-ls*0.25)-node.x;
+      text.setAttribute('text-anchor',choice.anchor);
+      [...text.children].forEach((span,i)=>{span.setAttribute('x',x.toFixed(2));span.setAttribute('y',(choice.y-node.y+i*lineHeight+ls*0.1).toFixed(2));});
       node.el.classList.add('show-label');
     }
     this.labelBoxes=occupied;
+  }
+
+  // Dirección opuesta a la de los vínculos visibles del nodo, o null si salen para todos lados.
+  clearSide(node) {
+    let sx=0,sy=0;
+    for(const [otherId,edge] of this.neighbors.get(node.id)) {
+      if(!this.isEdgeVisible(edge))continue;
+      const other=this.nodeById.get(otherId),dx=other.x-node.x,dy=other.y-node.y,distance=Math.hypot(dx,dy)||1;
+      sx+=dx/distance;sy+=dy/distance;
+    }
+    const length=Math.hypot(sx,sy);
+    return length>0.5?{x:-sx/length,y:-sy/length}:null;
   }
 
   setTransform(target, animate = true) {
@@ -699,8 +799,8 @@ export class GraphView {
     }
     const region = this.region;
     const padX = Math.min(54, this.rect.width * 0.09) / this.base;
-    const padTop = 58 / this.base;
-    const padBottom = 58 / this.base;
+    const padTop = this.pad.top / this.base;
+    const padBottom = this.pad.bottom / this.base;
     const k = clamp(Math.min((region.w - padX * 2) / Math.max(maxX - minX, 1), (region.h - padTop - padBottom) / Math.max(maxY - minY, 1)), ZOOM_MIN, 1.8);
     const cx = region.x + region.w / 2;
     const cy = region.y + padTop + (region.h - padTop - padBottom) / 2;
@@ -972,6 +1072,9 @@ export class GraphView {
     this.clearPulse();
     this.suggestLayer.replaceChildren();
     this.comparisons = [];
+    this.proposalLines = [];
+    this.syncProposed();
+    clearTimeout(this.captionTimer);
     const roots = [...new Set(ids.map(String))].map(id => this.nodeById.get(id)).filter(node => node && this.isVisible(node));
     if (!roots.length) return Promise.resolve();
     this.pulseRootIds=new Set(roots.map(node=>node.id));this.layoutLabels();
@@ -1012,6 +1115,7 @@ export class GraphView {
           this.suggestLayer.append(...paths, label);
           this.comparisons.push({source:candidate, target:roots[0], paths, label, progress});
         }
+        this.syncProposed();
       }
       for (const comparison of this.comparisons) comparison.progress=progress;
       this.positionComparisons();
@@ -1049,7 +1153,10 @@ export class GraphView {
       await receive(roots); if(!alive())return;
       caption('Comparación de embeddings del modelo: la línea punteada no es un vínculo registrado ni un mensaje de la GNN.');
       await new Promise(resolve => this.animate(450,t=>compare(ease(t)),'comparison',resolve));
-      if(alive())this.clearPulse();
+      if(!alive())return;
+      // Al terminar queda el resultado: los dos nodos comparados y la línea punteada. El cartel se retira solo.
+      this.clearPulse();
+      this.captionTimer=setTimeout(()=>{ if(alive())this.caption.hidden=true; },CAPTION_REST_MS);
     })();
   }
 
@@ -1115,13 +1222,14 @@ export class GraphView {
 
   destroy() {
     this.pulseToken += 1;
+    clearTimeout(this.captionTimer);
     this.stopFrames();
     this.resizeObserver?.disconnect();
     for (const [type, handler] of Object.entries(this.handlers)) this.svg.removeEventListener(type, handler);
     this.viewport.remove();
     this.tooltip.remove();
     this.emptyState.remove();this.caption.remove();
-    this.svg.classList.remove('gv', 'has-focus', 'is-pulsing', 'is-dragging');
-    delete this.svg.dataset.lod;
+    this.svg.classList.remove('gv', 'has-focus', 'is-pulsing', 'is-dragging', 'is-empty');
+    for (const name of ['data-lod', 'data-planned', 'data-edges', 'data-proposed']) this.svg.removeAttribute(name);
   }
 }

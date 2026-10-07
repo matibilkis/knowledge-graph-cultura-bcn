@@ -27,6 +27,40 @@
   src: url('assets/fonts/instrument-sans-latin-var.woff2') format('woff2');
   font-weight: 400 700; font-style: normal; font-display: swap;
 }
+/* Fuentes de reserva con las métricas ajustadas a las del sistema: mientras cargan las tipografías
+   el texto ocupa casi el mismo lugar y la página no salta. Los valores salen de medir cada familia contra
+   su reserva (Times New Roman y Arial, o sus equivalentes libres) en los tamaños que usa el sistema.
+   Fraunces se angosta en tamaños grandes, por eso el titular tiene su propia reserva. */
+@font-face {
+  font-family: 'Fraunces Fallback'; font-style: normal;
+  src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Liberation Serif'), local('Tinos');
+  size-adjust: 117%; ascent-override: 83.6%; descent-override: 21.8%; line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Fraunces Fallback'; font-style: italic;
+  src: local('Times New Roman Italic'), local('TimesNewRomanPS-ItalicMT'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust: 110.5%; ascent-override: 88.5%; descent-override: 23.1%; line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Fraunces Display Fallback'; font-style: normal;
+  src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Liberation Serif'), local('Tinos');
+  size-adjust: 112%; ascent-override: 87.3%; descent-override: 22.8%; line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Fraunces Display Fallback'; font-style: italic;
+  src: local('Times New Roman Italic'), local('TimesNewRomanPS-ItalicMT'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust: 104.5%; ascent-override: 93.6%; descent-override: 24.4%; line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Instrument Sans Fallback'; font-weight: 400;
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Arimo');
+  size-adjust: 101%; ascent-override: 96%; descent-override: 24.8%; line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Instrument Sans Fallback'; font-weight: 700;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Arimo Bold');
+  size-adjust: 97.3%; ascent-override: 99.7%; descent-override: 25.7%; line-gap-override: 0%;
+}
 
 :root {
   /* ---------- primitivos: los únicos valores de color escritos a mano ---------- */
@@ -97,8 +131,9 @@
   --dash-proposed: 5 5;
 
   /* ---------- tipografía: dos familias, seis tamaños ---------- */
-  --font-serif: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
-  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Fraunces', 'Fraunces Fallback', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-display: 'Fraunces', 'Fraunces Display Fallback', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;  /* solo el titular */
+  --font-sans: 'Instrument Sans', 'Instrument Sans Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
   --text-xs: 0.8125rem;                                   /* 13 · rótulos y datos */
   --text-sm: 0.9375rem;                                   /* 15 · interfaz */
@@ -106,7 +141,7 @@
   --text-lg: 1.3125rem;                                   /* 21 · encabezado y bajada */
   --text-xl: clamp(1.5rem, 1.25rem + 1vw, 1.875rem);      /* 24 a 30 · título de sección */
   --text-2xl: clamp(2.25rem, 1.35rem + 3.6vw, 3.75rem);   /* 36 a 60 · titular */
-  --type-display: 400 var(--text-2xl) / 1.05 var(--font-serif);
+  --type-display: 400 var(--text-2xl) / 1.05 var(--font-display);
   --type-title: 500 var(--text-xl) / 1.15 var(--font-serif);
   --type-heading: 500 var(--text-lg) / 1.25 var(--font-serif);
   --type-body: 400 var(--text-md) / 1.55 var(--font-sans);
@@ -145,6 +180,7 @@
   --size-icon: 1.125rem;
   --size-glyph: 0.875rem;
   --size-topbar: 3.5rem;
+  --size-topbar-narrow: 3rem;                              /* barra de una fila en pantallas angostas */
   --shell-max: 97.5rem;
   --shell-pad: clamp(var(--space-4), 3vw, var(--space-7));
 
@@ -161,6 +197,7 @@
 
   /* ---------- capas ---------- */
   --z-map: 5;
+  --z-dock: 20;                                            /* el mapa acoplado: sobre el contenido, bajo la barra */
   --z-sticky: 30;
   --z-overlay: 40;
   --z-skip: 50;
@@ -199,7 +236,7 @@ body {
   font: var(--type-body); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   overflow-x: clip;
 }
-h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+h1, h2, h3, h4, h5, h6, p, ul, ol, dl, dd, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
@@ -267,6 +304,7 @@ code, .code { font: 500 var(--text-xs) / 1.4 var(--font-mono); }
 .icon-alert { --icon: var(--icon-alert); }
 .icon-arrow { --icon: var(--icon-arrow); }
 .icon-close { --icon: var(--icon-close); }
+.icon--down { rotate: 90deg; }
 
 /* Glifos de entidad para texto corrido: las mismas formas y colores que el mapa. */
 /* Se usan como <span class="glyph glyph-project"> o desde un atributo: <… class="has-glyph" data-type="project">. */
@@ -275,6 +313,8 @@ code, .code { font: 500 var(--text-xs) / 1.4 var(--font-mono); }
 .glyph-actor, .has-glyph[data-type='actor']::before { border-radius: 50%; background: var(--node-actor); scale: 0.8; }
 .glyph-capability, .has-glyph[data-type='capability']::before { border-radius: 13%; background: var(--node-capability); rotate: 45deg; scale: 0.72; }
 .glyph-resource, .has-glyph[data-type='resource']::before { border: var(--border-thick) solid var(--node-resource-stroke); border-radius: 24%; background: var(--node-resource); scale: 0.88; }
+/* Proyecto planificado: el mismo anillo, punteado. */
+.glyph-planned { border: var(--border-thick) var(--stroke-proposed) var(--node-project); border-radius: 50%; background: var(--node-outline); }
 /* Los mismos glifos dibujados en SVG (chips, motivo de la portada). */
 .g-project, .m-project { fill: var(--node-project); }
 .g-actor, .m-actor { fill: var(--node-actor); }
@@ -320,6 +360,14 @@ code, .code { font: 500 var(--text-xs) / 1.4 var(--font-mono); }
 }
 .button-quiet:is(:disabled, [aria-disabled='true']) { --button-bg: transparent; }
 .button:is(.is-loading, [aria-busy='true']) { cursor: progress; }
+
+/* Enlace de texto que lleva a otra parte de la página. */
+.text-link {
+  display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-control-sm);
+  font: var(--type-ui); font-weight: 600; color: var(--color-text);
+}
+.text-link .icon { width: var(--size-glyph); height: var(--size-glyph); transition: translate var(--dur-1) var(--ease-out); }
+.text-link:is(:hover, [data-demo='hover']) .icon { translate: var(--space-1) 0; }
 
 /* Botón de icono: controles del mapa y acciones sin texto. */
 .icon-button {
@@ -457,11 +505,25 @@ input[type='search']::-webkit-search-cancel-button { cursor: pointer; }
 .disclosure > summary:is(:active, [data-demo='pressed']) { color: var(--color-action-pressed); }
 .disclosure[aria-disabled='true'] > summary { color: var(--color-text-disabled); cursor: not-allowed; pointer-events: none; }
 .disclosure > :not(summary) { margin-top: var(--space-2); }
+/* Plegable de sección: guarda un bloque entero (el laboratorio del modelo) bajo un título. */
+.disclosure--section { border-block: var(--border-thin) solid var(--color-rule); }
+.disclosure--section > summary {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--space-4);
+  width: 100%; min-height: var(--size-control-lg); padding: var(--space-4) 0; color: var(--color-text);
+}
+.disclosure--section > summary::before { grid-column: 2; grid-row: 1 / span 2; width: var(--size-icon); height: var(--size-icon); rotate: 90deg; }
+.disclosure--section[open] > summary::before { rotate: -90deg; }
+.disclosure--section > summary > * { grid-column: 1; }
+.disclosure--section > summary > :first-child { font: var(--type-title); letter-spacing: var(--tracking-title); }
+.disclosure--section > summary > :nth-child(2) { margin-top: var(--space-1); font: 400 var(--text-sm) / 1.4 var(--font-sans); color: var(--color-text-muted); }
+.disclosure--section > :not(summary) { margin-top: var(--space-2); padding-bottom: var(--space-6); }
 /* Donde el navegador lo permite, el contenido se despliega en vez de aparecer de golpe. */
 @supports (interpolate-size: allow-keywords) {
   .disclosure { interpolate-size: allow-keywords; }
   .disclosure::details-content { block-size: 0; overflow: clip; transition: block-size var(--dur-2) var(--ease-out), content-visibility var(--dur-2) allow-discrete; }
   .disclosure[open]::details-content { block-size: auto; }
+  /* Cuando un enlace abre el plegable para llegar a algo de adentro, no hay transición. */
+  .disclosure.is-instant::details-content { transition: none; }
 }
 
 /* ---------- barra superior ---------- */
@@ -490,6 +552,17 @@ input[type='search']::-webkit-search-cancel-button { cursor: pointer; }
   .topbar { flex-wrap: wrap; gap: 0 var(--space-3); padding-block: var(--space-1) 0; }
   .brand { --logo-height: calc(var(--space-5) + var(--space-1)); }
   .topnav { order: 3; flex-basis: 100%; margin: 0; justify-content: space-between; gap: var(--space-4); }
+}
+/* Barra partida: en pantallas angostas queda fija una sola fila (marca y aviso) y la navegación
+   va debajo, en un segundo <nav class="topnav topnav--below">, sin fijar. Deja más alto para el contenido. */
+.note-short, .topnav--below { display: none; }
+@media (max-width: 720px) {
+  .topbar--split { flex-wrap: nowrap; min-height: var(--size-topbar-narrow); gap: var(--space-3); padding-block: 0; }
+  .topbar--split .topnav { display: none; }
+  .topbar--split .notice--inline { margin-left: auto; }
+  .topbar--split .note-long { display: none; }
+  .topbar--split .note-short { display: inline; }
+  .topnav--below { display: flex; padding-inline: var(--shell-pad); border-bottom: var(--border-thin) solid var(--color-border); }
 }
 
 /* ---------- regla de sección: una línea de tinta abre cada bloque ---------- */
@@ -543,7 +616,7 @@ input[type='search']::-webkit-search-cancel-button { cursor: pointer; }
 .type-capability .node-shape { fill: var(--node-capability); }
 .type-resource .node-shape { fill: var(--node-resource); stroke: var(--node-resource-stroke); }
 .node-core { fill: var(--node-outline); }
-/* Proyecto planificado: todavía no pasó, así que va punteado. La página lo emite desde la fase 2. */
+/* Proyecto planificado: todavía no pasó, así que va punteado. graph-view.js lo marca con is-planned. */
 .graph-node.is-planned .node-shape { fill: var(--node-outline); stroke: var(--node-project); stroke-dasharray: 3 3; }
 .graph-node.is-planned .node-core { fill: var(--node-project); }
 
@@ -553,6 +626,8 @@ input[type='search']::-webkit-search-cancel-button { cursor: pointer; }
 .is-hover:not(.is-selected) .node-ring { opacity: 0.45; }
 .is-selected .node-ring { opacity: 1; }
 .is-highlight .node-halo { opacity: 0.13; }
+/* Si todo lo que se ve está resaltado, el halo ya no distingue nada: se apaga. */
+.gv-nodes:not(:has(> .graph-node:not(.is-hidden):not(.is-highlight))) .node-halo { opacity: 0; }
 .graph-node:is(:focus-visible, [data-demo='focus']) .node-ring { opacity: 1; stroke-width: var(--node-ring-width-focus); }
 .in-layer1 .node-ring { opacity: 0.45; }
 .in-layer2 .node-ring { opacity: 1; stroke-width: var(--node-ring-width-focus); }
@@ -564,6 +639,7 @@ input[type='search']::-webkit-search-cancel-button { cursor: pointer; }
   paint-order: stroke; stroke: var(--node-outline); stroke-width: calc(var(--ls) * 0.3px); stroke-linejoin: round;
   dominant-baseline: hanging; opacity: 0; pointer-events: none; transition: opacity var(--dur-1) var(--ease-out);
 }
+.node-label tspan { dominant-baseline: hanging; }
 .type-project .node-label { font-weight: 600; }
 .show-label .node-label { opacity: 1; }
 .gv.has-focus .is-dim:not(.is-hover):not(:focus-visible) .node-label { opacity: 0; }
@@ -572,7 +648,8 @@ input[type='search']::-webkit-search-cancel-button { cursor: pointer; }
   paint-order: stroke; stroke: var(--node-outline); stroke-width: calc(var(--ls) * 0.34px); stroke-linejoin: round; pointer-events: none;
 }
 .comparison-label { fill: var(--color-text); dominant-baseline: auto; }
-.graph-empty { font-family: var(--font-sans); fill: var(--color-text-muted); }
+.graph-empty { display: none; font-family: var(--font-sans); fill: var(--color-text-muted); }
+.gv.is-empty .graph-empty { display: block; }
 
 .gv.is-pulsing .graph-node:not(.in-pulse) { opacity: 0.14; }
 .gv.is-pulsing .graph-node.in-pulse { opacity: 1; }
