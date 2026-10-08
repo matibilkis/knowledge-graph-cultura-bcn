@@ -1,7 +1,8 @@
 /* Composición del espacio local. La identidad y los componentes son sistema.css. */
 .work-topbar { display:flex; align-items:center; gap:var(--space-5); min-height:var(--size-topbar); padding-block:var(--space-2); border-bottom:var(--border-thin) solid var(--color-border); }
 .work-brand { display:flex; align-items:center; flex:none; }
-.work-brand img { display:block; width:auto; height:var(--space-6); }
+/* El logo va dibujado en línea con las clases del sistema: toma los colores de los roles, también al imprimir. */
+.work-brand { --logo-height:var(--space-6); }
 .work-topbar nav { font:var(--type-ui); }
 .work-topbar nav a { display:inline-flex; align-items:center; min-height:var(--size-control); }
 .local-label { display:flex; align-items:center; gap:var(--space-2); margin-left:auto; color:var(--color-text-muted); font:var(--type-label); }

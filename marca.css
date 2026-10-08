@@ -8,9 +8,10 @@
 .cover { padding-block: clamp(var(--space-7), 8vw, var(--space-9)); }
 .cover-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(var(--space-6), 6vw, var(--space-9)); align-items: center; }
 .cover-mark { display: grid; justify-items: center; --logo-height: clamp(12rem, 30vw, 24rem); }
-.cover .lede { margin-top: var(--space-4); }
+.cover .lede { margin-top: var(--space-4); font-size: var(--text-xl); line-height: 1.3; color: var(--color-on-brand); }
 .cover-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
-.cover-meta { margin-top: var(--space-6); max-width: var(--measure); font: 400 var(--text-xs) / 1.5 var(--font-sans); color: var(--color-on-brand-muted); }
+/* La nota chica va debajo de la portada, sobre la página: encima del rojo solo entra texto de 24 px o más. */
+.cover-meta { padding-block: var(--space-3); font: 400 var(--text-xs) / 1.5 var(--font-sans); color: var(--color-text-muted); }
 /* El único gesto autoral de la hoja: el símbolo se arma como se arma un vínculo. */
 .cover-symbol :is(.logo-ring, .logo-dot) { transform-box: fill-box; transform-origin: center; }
 .cover-symbol .logo-ring { animation: mark-node var(--dur-2) var(--ease-out) backwards; }
@@ -57,7 +58,9 @@
   position: relative; display: grid; place-items: center; gap: var(--space-3); min-height: 10rem; padding: var(--space-5);
   background: var(--color-surface); border: var(--border-thin) solid var(--color-border); border-radius: var(--radius-3); overflow: hidden;
 }
-.tile--paper { background: var(--color-bg); }
+.tile--page { background: var(--color-bg); }
+/* Muestra de papel, para las versiones del logo que van sobre fondos claros. */
+.tile--light { background: var(--color-action); border-color: transparent; }
 .tile--brand { background: var(--color-surface-brand); border-color: transparent; }
 .tile--tall { min-height: 16rem; }
 .tile img, .tile > svg { max-width: 100%; height: auto; }
@@ -81,8 +84,10 @@
 .misuse .is-stretched { transform: scaleX(1.55); }
 .misuse .is-rotated { rotate: -14deg; }
 .misuse .is-recolored { filter: hue-rotate(205deg) saturate(1.6); }
-.misuse .is-effect { filter: drop-shadow(3px 4px 3px rgb(27 40 35 / 0.55)); }
-.misuse .is-lowcontrast { background: var(--node-capability); }
+.misuse .is-effect { filter: drop-shadow(3px 4px 2px var(--color-text-disabled)); }
+/* El logo principal sobre un fondo claro: para eso está la versión de papel. */
+.misuse .is-lowcontrast { background: var(--color-action-hover); }
+.misuse .is-lowcontrast::after { background: var(--color-on-action); }
 .misuse .retyped { display: inline-flex; align-items: center; gap: var(--space-2); font: 700 var(--text-xl) / 1 var(--font-sans); letter-spacing: 0.08em; }
 .misuse .retyped img { height: var(--space-7); }
 
@@ -100,7 +105,7 @@
 .on-brand .token, .tile--error .token { color: inherit; }
 .cr { font: 600 var(--text-xs) / 1.4 var(--font-sans); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .cr[data-pass='false'] { color: var(--color-error); }
-.inks { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-3); }
+.inks { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-3); }
 .ink-swatch { height: var(--space-8); border-radius: var(--radius-2); }
 .entities { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
 .entity { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-5); background: var(--color-bg); border: var(--border-thin) solid var(--color-border); border-radius: var(--radius-3); }
@@ -205,8 +210,9 @@
 .closing { padding-block: var(--space-8); }
 .closing-grid { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-6); }
 .closing .logo { --logo-height: var(--space-8); }
-.closing p { max-width: var(--measure); font: 400 var(--text-sm) / 1.55 var(--font-sans); color: var(--color-on-brand-muted); }
-.closing a { color: var(--color-on-brand); }
+/* Sobre el rojo, el texto del cierre va en el tamaño de una bajada. */
+.closing p { max-width: 34ch; font: 400 var(--text-xl) / 1.3 var(--font-sans); color: var(--color-on-brand); text-wrap: pretty; }
+.closing a { color: inherit; text-decoration-color: currentColor; }
 
 /* ---------- adaptación ---------- */
 @media (min-width: 1080px) {
@@ -241,4 +247,13 @@
   .entities { grid-template-columns: minmax(0, 1fr); }
   .space-row { grid-template-columns: minmax(0, 6rem) minmax(0, 1fr); }
   .space-row span:nth-child(2) { display: none; }
+}
+
+/* ---------- impresión ---------- */
+@media print {
+  /* En papel, la muestra clara es el papel mismo. */
+  .tile--light, .misuse .is-lowcontrast { background: var(--color-bg); border-color: var(--color-border); }
+  /* Los archivos del logo principal son de hueso: sus muestras conservan el fondo de noche. */
+  .tile--night, .minimum img:not([src*='favicon']) { background: var(--color-on-brand); color: var(--color-bg); }
+  .minimum img:not([src*='favicon']) { outline: var(--space-1) solid var(--color-on-brand); }
 }
